@@ -5,8 +5,8 @@ Hardware required:
 Arduino version:  
 - Arduino Leonardo R3
 - Ethernet Shield
-- USB to Ethernet adapter (Optional)
-Raspberry version:
+- USB to Ethernet adapter (Optional)  
+Raspberry version:   
 - Raspberry Pi Pico W
   
 Software required:

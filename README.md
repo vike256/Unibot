@@ -2,12 +2,12 @@ Colorbot/aimbot that works for both Raspberry Pi Pico W and Arduino Leonardo.
 The board acts as a mouse and gets instructions from host machine through internet. 
 
 Hardware required:
-    Arduino version:
-    - Arduino Leonardo R3
-    - Ethernet Shield
-    - USB to Ethernet adapter (Optional)
-    Raspberry version:
-    - Raspberry Pi Pico W
+Arduino version:
+- Arduino Leonardo R3
+- Ethernet Shield
+- USB to Ethernet adapter (Optional)
+Raspberry version:
+- Raspberry Pi Pico W
   
 Software required:
 - Arduino IDE

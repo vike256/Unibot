@@ -1,7 +1,4 @@
-Join an open discussion on hardware hacking by dm'ing @vivyvivyvivy on dc or finding the link on my socials.
-
-Colorbot/aimbot that works for both Raspberry Pi Pico W and Arduino Leonardo.  
-The board acts as a mouse and gets instructions from the host machine. 
+Colorbot/aimbot that works for both Raspberry Pi Pico W and Arduino Leonardo.  The board acts as a mouse and gets instructions from the host machine. 
 
 ## How to use:
 1. Upload the .ino-file to the board
@@ -31,3 +28,7 @@ The board acts as a mouse and gets instructions from the host machine.
     https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json
 - Add below package to Arduino IDE > Tools > Board > Boards Manager  
     Raspberry Pi Pico/RP2040 by Earle F. Philhower, III
+
+
+
+Join an open discussion on hardware cheating by dm'ing @vivyvivyvivy on dc or finding the link on my socials.

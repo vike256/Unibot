@@ -1,3 +1,5 @@
+Join an open discussion on hardware hacking by dm'ing @vivyvivyvivy on dc or finding the link on my socials.
+
 Colorbot/aimbot that works for both Raspberry Pi Pico W and Arduino Leonardo.  
 The board acts as a mouse and gets instructions from the host machine. 
 

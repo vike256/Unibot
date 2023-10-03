@@ -29,4 +29,3 @@ Colorbot/aimbot that works for both Raspberry Pi Pico W and Arduino Leonardo.  T
 - Add below package to Arduino IDE > Tools > Board > Boards Manager  
     Raspberry Pi Pico/RP2040 by Earle F. Philhower, III
   
-Join an open discussion on hardware cheating from the link in my profile.

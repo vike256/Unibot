@@ -30,4 +30,4 @@ Showcase: https://youtube.com/watch?v=kHSEqLzd-O0
     https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json
 - Add below package to Arduino IDE > Tools > Board > Boards Manager  
     Raspberry Pi Pico/RP2040 by Earle F. Philhower, III
-  
+

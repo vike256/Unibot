@@ -53,6 +53,9 @@ def read_config():
     global toggleAim
     global toggleRecoil
 
+    toggleAim = False
+    toggleRecoil = False
+
     configFile.read("config.ini")
     ip = configFile.get('network', 'ip')
     port = int(configFile.get('network', 'port'))

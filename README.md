@@ -11,7 +11,7 @@ Showcase: https://youtube.com/watch?v=kHSEqLzd-O0
 - F1: Reload config
 - F2: Toggle aim
 - F3: Toggle recoil
-- F4: Toggle triggerbot
+- Mouse5: Triggerbot
 
 ## Hardware required:  
 ### Arduino version:  

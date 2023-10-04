@@ -1,47 +1,91 @@
 import time
 import numpy as np
-
 import cfg
+
+if cfg.com_type == 'none':
+    import ctypes
 
 
 def move(x, y):
-    x = np.floor(x + 0.5)
-    y = np.floor(y + 0.5)
+    x = int(np.floor(x + 0.5))
+    y = int(np.floor(y + 0.5))
 
     if x != 0 or y != 0:
         # Mouse.Move takes char (8 bits) as input
         # 8bit signed value range is from -128 to 127
         max = 127
         if abs(x) > abs(max):
-            x = x/abs(x) * abs(max)
+            x = int(x/abs(x) * abs(max))
         if abs(y) > abs(max):
-            y = y/abs(y) * abs(max)
+            y = int(y/abs(y) * abs(max))
 
         command = f"M{x},{y}\r"
-        cfg.client.sendall(command.encode())
-        print(f"SENT: Move({x}, {y})", end='')
-        waitForResponse()
+
+        if cfg.com_type == 'socket':
+            cfg.client.sendall(command.encode())
+        elif cfg.com_type == 'serial':
+            cfg.board.write(command.encode())
+        elif cfg.com_type == 'none':
+            ctypes.windll.user32.mouse_event(0x0001, x, y, 0, 0)
+
+        print(f"Move({x}, {y})", end='')
+        if cfg.com_type == 'socket':
+            waitForResponse()
+        else:
+            print('')
 
 
 def click():
     command = "C\r"
-    cfg.client.sendall(command.encode())
-    print("SENT: Click", end='')
-    waitForResponse()
+    
+    if cfg.com_type == 'socket':
+        cfg.client.sendall(command.encode())
+    elif cfg.com_type == 'serial':
+        cfg.board.write(command.encode())
+    elif cfg.com_type == 'none':
+        ctypes.windll.user32.mouse_event(0x0002, 0, 0, 0, 0)
+        time.sleep((np.random.randint(40) + 40) // 1000)
+        ctypes.windll.user32.mouse_event(0x0004, 0, 0, 0, 0)
+
+    print("Click", end='')
+    if cfg.com_type == 'socket':
+        waitForResponse()
+    else:
+        print('')
 
 
 def press():
     command = "B1\r"
-    cfg.client.sendall(command.encode())
-    print("SENT: LButton down", end='')
-    waitForResponse()
+
+    if cfg.com_type == 'socket':
+        cfg.client.sendall(command.encode())
+    elif cfg.com_type == 'serial':
+        cfg.board.write(command.encode())
+    elif cfg.com_type == 'none':
+        ctypes.windll.user32.mouse_event(0x0002, 0, 0, 0, 0)
+
+    print("LButton down", end='')
+    if cfg.com_type == 'socket':
+            waitForResponse()
+    else:
+        print('')
 
 
 def release():
     command = "B0\r"
-    cfg.client.sendall(command.encode())
-    print("SENT: LButton up", end='')
-    waitForResponse()
+    if cfg.comtype == 'socket':
+        cfg.client.sendall(command.encode())
+    elif cfg.com_type == 'serial':
+        cfg.board.write(command.encode())
+    elif cfg.com_type == 'none':
+        ctypes.windll.user32.mouse_event(0x0004, 0, 0, 0, 0)
+
+
+    print("LButton up", end='')
+    if cfg.com_type == 'socket':
+            waitForResponse()
+    else:
+        print('')
 
 
 def waitForResponse():

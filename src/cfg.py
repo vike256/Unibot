@@ -9,6 +9,9 @@ configFile = configparser.ConfigParser()
 ip = None
 port = None
 client = None
+com_type = None
+com_port = None
+board = None
 
 # Aim
 offset = None
@@ -37,6 +40,8 @@ def read_config():
     global ip
     global port
     global client
+    global com_type
+    global com_port
     global offset
     global smooth
     global speed
@@ -57,8 +62,10 @@ def read_config():
     toggleRecoil = False
 
     configFile.read("config.ini")
-    ip = configFile.get('network', 'ip')
-    port = int(configFile.get('network', 'port'))
+    ip = configFile.get('communication', 'ip')
+    port = int(configFile.get('communication', 'port'))
+    com_type = configFile.get('communication', 'type')
+    com_port = configFile.get('communication', 'com_port')
 
     upper_color = configFile.get('screen', 'upper_color').split(',')
     lower_color = configFile.get('screen', 'lower_color').split(',')
@@ -91,6 +98,7 @@ def read_config():
 
     print(f"""Config: 
 - Network: {ip}:{port}
+- Communication: {com_type}
 - Color: LOWER: {lower_color}, UPPER: {upper_color}
 - FOV: {fov}
 - Offset: {offset}
@@ -99,3 +107,5 @@ def read_config():
 - xMultiplier: {xMultiplier}
 - Recoil: ({recoilX}, {recoilY})
 Config read, all cheats defaulted to off.""")
+
+read_config()

@@ -1,5 +1,4 @@
 import cv2
-import socket
 import time
 import numpy as np
 import win32api as wapi
@@ -11,17 +10,22 @@ import screen
 
 
 def main():
+    if cfg.com_type == 'socket':
+        import socket
+        cfg.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    elif cfg.com_type == 'serial':
+        import serial
+        cfg.board = serial.Serial(cfg.com_port, 115200)
+
     startTime = time.time()
     previousX = 0
     previousY = 0
-    cfg.read_config()
-
-    cfg.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     print("Connecting...")
 
     try:
-        cfg.client.connect((cfg.ip, cfg.port))
+        if cfg.com_type == 'socket':
+            cfg.client.connect((cfg.ip, cfg.port))
         print("Connected")
 
         while True:
@@ -73,7 +77,8 @@ def main():
         print("Connection attempt failed")
 
     finally:
-        cfg.client.close()
+        if cfg.com_type == 'socket':
+            cfg.client.close()
         print("Closed")
 
 

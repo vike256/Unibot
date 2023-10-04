@@ -3,7 +3,7 @@ Colorbot/aimbot that works for both software and hardware.
 Showcase: https://youtube.com/watch?v=kHSEqLzd-O0  
 
 ## How to use:
-1. Upload the .ino-file to the board
+1. Upload the .ino-file to the board (If you use hardware)
 2. Change HSV values and communication settings in config.ini
 3. Run run.bat on host pc
 

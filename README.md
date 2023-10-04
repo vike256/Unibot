@@ -13,22 +13,20 @@ Showcase: https://youtube.com/watch?v=kHSEqLzd-O0
 - F3: Toggle recoil
 - Mouse5: Triggerbot
 
-## Input and communication methods supported:  
+## Input and communication methods supported + hardware tested:  
 ### WinApi version:  
 - Uses ctypes to call mouse inputs. No hardware needed.  
 
-### Serial version: 
-Requires:  
+### Serial version:  
+Tested with:
 - Arduino Leonardo R3  
 
 ### Ethernet version:  
-Requires:  
-- Arduino Leonardo R3
-- Ethernet Shield
-- USB to Ethernet adapter (Optional)  
+Tested with:  
+- Arduino Leonardo R3 + Ethernet Shield + USB to Ethernet adapter (Optional)  
 
 ### Wi-Fi version:   
-Requires:  
+Tested with:  
 - Raspberry Pi Pico W
 
 ## Raspberry Pi Pico W setup for Arduino IDE: 

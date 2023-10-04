@@ -1,5 +1,7 @@
 Colorbot/aimbot that works for both Raspberry Pi Pico W and Arduino Leonardo.  The board acts as a mouse and gets instructions from the host machine. 
 
+Showcase: https://youtube.com/watch?v=kHSEqLzd-O0  
+
 ## How to use:
 1. Upload the .ino-file to the board
 2. Change HSV values and network settings in config.ini

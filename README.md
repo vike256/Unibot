@@ -5,7 +5,7 @@ Showcase: https://youtube.com/watch?v=kHSEqLzd-O0
 ## How to use:
 1. Upload the .ino-file to the board
 2. Change HSV values and network settings in config.ini
-3. Run main.py on host pc
+3. Run run.bat on host pc
 
 ## Hotkeys:
 - F1: Reload config

@@ -1,27 +1,23 @@
 import keyboard
 from time import sleep
-import setup
 
-delay = 0.3
+import cfg
 
-def check(config):
+
+delay = 0.2
+
+
+def check():
     if keyboard.is_pressed('F1'):
-        config = setup.read_config()
+        config = cfg.read_config()
         sleep(delay)
 
     if keyboard.is_pressed('F2'):
-        config['toggleAim'] = not config['toggleAim']
-        print("AIM: " + str(config['toggleAim']))
+        cfg.toggleAim = not cfg.toggleAim
+        print("AIM: " + str(cfg.toggleAim))
         sleep(delay)
 
     if keyboard.is_pressed('F3'):
-        config['toggleRecoil'] = not config['toggleRecoil']
-        print("RECOIL: " + str(config['toggleRecoil']))
+        cfg.toggleRecoil = not cfg.toggleRecoil
+        print("RECOIL: " + str(cfg.toggleRecoil))
         sleep(delay)
-
-    if keyboard.is_pressed('F4'):
-        config['toggleTriggerbot'] = not config['toggleTriggerbot']
-        print("TRIGGER: " + str(config['toggleTriggerbot']))
-        sleep(delay)
-
-    return config

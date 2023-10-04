@@ -1,7 +1,10 @@
 import time
 import numpy as np
 
-def move(x, y, client):
+import cfg
+
+
+def move(x, y):
     x = np.floor(x + 0.5)
     y = np.floor(y + 0.5)
 
@@ -14,37 +17,35 @@ def move(x, y, client):
         if abs(y) > abs(max):
             y = y/abs(y) * abs(max)
 
-        # Raspberry checks the first character to check if the instruction is to move (M) or click (C)
         command = f"M{x},{y}\r"
-        client.sendall(command.encode())
+        cfg.client.sendall(command.encode())
         print(f"SENT: Move({x}, {y})", end='')
-        waitForResponse(client)
+        waitForResponse()
 
 
-def click(client):
-    # Raspberry checks the first character to check if the instruction is to move (M) or click (C)
+def click():
     command = "C\r"
-    client.sendall(command.encode())
+    cfg.client.sendall(command.encode())
     print("SENT: Click", end='')
-    waitForResponse(client)
+    waitForResponse()
 
-def press(client):
-    # Raspberry checks the first character to check if the instruction is to move (M) or click (C)
+
+def press():
     command = "B1\r"
-    client.sendall(command.encode())
+    cfg.client.sendall(command.encode())
     print("SENT: LButton down", end='')
-    waitForResponse(client)
+    waitForResponse()
 
-def release(client):
-    # Raspberry checks the first character to check if the instruction is to move (M) or click (C)
+
+def release():
     command = "B0\r"
-    client.sendall(command.encode())
+    cfg.client.sendall(command.encode())
     print("SENT: LButton up", end='')
-    waitForResponse(client)
+    waitForResponse()
 
 
-def waitForResponse(client):
+def waitForResponse():
     start = time.time()
-    ack = client.recv(4).decode()
+    ack = cfg.client.recv(4).decode()
     if ack == "a\r":
         print(f" (ACK {np.floor((time.time() - start) * 1000 + 0.5):g} ms)") # Print latency in milliseconds

@@ -29,8 +29,8 @@ DO THIS STEP ONLY IF YOU ARE USING EXTERNAL HARDWARE TO SEND MOUSE INPUT
         - `port` is the port of your board
 
 ### Screen
-- `upper_color` and `lower_color` are used for target detection. 
-    - You can find the needed HSV values with https://github.com/hariangr/HsvRangeTool  
+- `upper_color` and `lower_color` are used for target detection 
+    - See [Guide for finding HSV upper and lower color](HSV_Guide.md)  
 - `fov` sets the width and height of the target detection area that is in the center of the screen  
 - `resolution` is your game resolution.  
 - `monitor_hz` is your monitor's refresh rate.  
@@ -42,7 +42,7 @@ DO THIS STEP ONLY IF YOU ARE USING EXTERNAL HARDWARE TO SEND MOUSE INPUT
     - Should be in range `0 < smooth <= 1`
 
 ### Recoil
-- `recoilX` and `recoilY` are used to negate the recoil in some FPS games.
+- `recoilX` and `recoilY` are used to negate the recoil in some FPS games
 
 ## Run Unibot
 Requirements:

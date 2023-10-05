@@ -7,7 +7,7 @@
 Setup Windows Mobile hotspot like this:  
 - Set your own Wi-Fi name and password
 - Set band to 2.4 GHz  
-![Settings preview](https://i.imgur.com/Ghh0aka.png)
+<img src=https://i.imgur.com/Ghh0aka.png alt="Image" width="600"/>
 
 ## Control Panel setup
 Set up sharing with your main connection:
@@ -18,7 +18,7 @@ Set up sharing with your main connection:
 - Turn on `Allow other network users to connect through this computer's Internet connection`
 - Select your Wi-Fi hotspot from the dropdown
 - Click `OK`  
-![Settings preview](https://i.imgur.com/kHX00BN.png)
+<img src=https://i.imgur.com/kHX00BN.png alt="Image" width="400"/>
 
 ## Upload ino file to board
 - Connect the board to the PC

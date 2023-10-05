@@ -4,7 +4,7 @@ Showcase: https://youtube.com/watch?v=kHSEqLzd-O0
 
 ## How to use:
 [Guide](/guides/Guide.md)  
-You can find more guides in `Unibot/guides/`
+You can find more guides in `Unibot/guides/` (WIP)
 
 ## Input and communication methods supported + hardware tested:  
 ### WinApi version:  

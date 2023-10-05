@@ -1,3 +1,5 @@
+# Unibot Wi-Fi guide
+
 ## Wi-Fi setup
 Setup Windows Mobile hotspot like this:  
 - Set your own Wi-Fi name and password

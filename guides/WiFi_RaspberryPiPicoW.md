@@ -1,18 +1,8 @@
-## Introduction
-This is a guide to setup Raspberry Pi Pico W for https://github.com/vike256/Unibot
+# Guide to use Raspberry Pi Pico W with Unibot (Wi-Fi version)
 
-To follow this tutorial you need:
+## Hardware needed
 - Raspberry Pi Pico W
 - Wi-Fi support on your PC
-
-Steps:  
-- [Wi-Fi setup](#wi-fi-setup)
-- [Control Panel setup](#control-panel-setup)
-- [Install Arduino IDE and required dependencies](#install-arduino-ide-and-required-dependencies)
-- [Configure and upload ino file to board](#configure-and-upload-ino-file-to-pico-w)
-- [Check board IP](#check-board-ip)
-- [Configure config](#configure-config)
-- [Run Unibot](#run-unibot)
 
 ## Wi-Fi setup
 [WiFi.md | Wi-Fi setup](WiFi.md#wi-fi-setup)

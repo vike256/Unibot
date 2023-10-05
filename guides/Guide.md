@@ -22,7 +22,7 @@ DO THIS STEP ONLY IF YOU ARE USING EXTERNAL HARDWARE TO SEND MOUSE INPUT
 ## Configure config
 ### Communication
 - `type` is the communication type used.  
-    - `none` to use WinAPi calls for mouse input instead of hardware  
+    - `none` to use WinApi calls for mouse input instead of hardware  
     - `serial` to use serial communication  
         - `com_port` is the COM port of your board
     - `socket` to use ethernet or Wi-Fi  

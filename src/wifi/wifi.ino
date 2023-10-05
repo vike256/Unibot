@@ -15,20 +15,12 @@ WiFiServer server(port);
 WiFiClient client;
 
 void setup() {
-  pinMode(LED_BUILTIN, OUTPUT);
-  digitalWrite(LED_BUILTIN, LOW);
-
   Mouse.begin();
-  digitalWrite(LED_BUILTIN, HIGH);
   WiFi.begin(ssid, password);
   
   while (WiFi.status() != WL_CONNECTED) {
-    digitalWrite(LED_BUILTIN, HIGH);
-    delay(1000);
-    digitalWrite(LED_BUILTIN, LOW);
     delay(1000);
   }
-  digitalWrite(LED_BUILTIN, HIGH);
 
   server.begin();
 }

@@ -1,5 +1,7 @@
 # Guide for Unibot
 
+Discord: https://discord.gg/r8SFKkhQWU
+
 ## Follow these guides to setup Unibot
 [Ethernet guide](Ethernet.md)  
 [Serial guide](Serial.md)  

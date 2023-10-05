@@ -1,5 +1,8 @@
 # Unibot Wi-Fi guide
 
+## Download and install Arduino IDE
+[Guide.md | Download and install Arduino IDE](Guide.md#download-and-install-arduino-ide)
+
 ## Wi-Fi setup
 Setup Windows Mobile hotspot like this:  
 - Set your own Wi-Fi name and password
@@ -17,7 +20,7 @@ Set up sharing with your main connection:
 - Click `OK`  
 ![Settings preview](https://i.imgur.com/kHX00BN.png)
 
-## Configure and upload ino file to board
+## Upload ino file to board
 - Connect the board to the PC
 - Open `Unibot/src/wifi/wifi.ino` with Arduino IDE
 - Go to `Tools > Board` and select the board you are using 
@@ -30,3 +33,9 @@ Set up sharing with your main connection:
 - Connect the board to the PC
 - Open Mobile hotspot settings
 - You should see the board and its IP in the connected devices
+
+## Configure config
+[Guide.md | Configure config](Guide.md#configure-config)
+
+## Run Unibot
+[Guide.md | Run Unibot](Guide.md#run-unibot)

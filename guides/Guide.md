@@ -17,6 +17,7 @@
 DO THIS STEP ONLY IF YOU ARE USING EXTERNAL HARDWARE TO SEND MOUSE INPUT
 - Go to https://www.arduino.cc/en/software
 - Download and install the latest Arduino IDE version (2.x.x)
+- If you are using Raspberry Pi Pico W: [Guide to use setup Raspberry Pi Pico W for Arduino IDE](RaspberryPiPicoW_Setup.md)
 
 ## Configure config
 ### Communication

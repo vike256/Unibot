@@ -17,7 +17,7 @@ def main():
         import serial
         cfg.board = serial.Serial(cfg.com_port, 115200)
 
-    startTime = time.time()
+    start_time = time.time()
     previousX = 0
     previousY = 0
 
@@ -29,9 +29,7 @@ def main():
         print("Connected")
 
         while True:
-            deltaTime = time.time() - startTime
-            startTime = time.time()
-            deltaTime *= 1000
+            start_time = time.time()
             x = 0
             y = 0
             
@@ -57,9 +55,11 @@ def main():
                     previousY = y
 
             # RECOIL
-            if cfg.toggleRecoil and wapi.GetAsyncKeyState(0x01) < 0 and deltaTime != 0:
-                x += cfg.recoilX / deltaTime
-                y += cfg.recoilY / deltaTime
+            if cfg.toggleRecoil and wapi.GetAsyncKeyState(0x01) < 0:
+                delta_time = (time.time() - start_time) * 1000
+                if delta_time != 0:
+                    x += cfg.recoilX / delta_time
+                    y += cfg.recoilY / delta_time
 
             # TRIGGERBOT
             if wapi.GetAsyncKeyState(0x06) < 0:
@@ -68,7 +68,9 @@ def main():
 
             mouse.move(x, y)
             
-            time.sleep(0.001)     
+            time_spent = (time.time() - start_time) * 1000
+            if time_spent < cfg.monitor_hz_wait:
+                time.sleep((cfg.monitor_hz_wait - time_spent) / 1000)
 
     except KeyboardInterrupt:
         pass

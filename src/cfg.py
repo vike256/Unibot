@@ -29,6 +29,7 @@ region = None
 resolution = None
 upper_color = None
 lower_color = None
+monitor_hz_wait = None
 
 # Booleans
 toggleAim = False
@@ -55,6 +56,7 @@ def read_config():
     global resolution
     global upper_color
     global lower_color
+    global monitor_hz_wait
     global toggleAim
     global toggleRecoil
 
@@ -80,6 +82,7 @@ def read_config():
     resolution = (int(resolution[0]), int(resolution[1]))
 
     fov = int(configFile.get('screen', 'fov'))
+    monitor_hz_wait = int(np.floor(1000 / int(configFile.get('screen', 'monitor_hz')) + 1))
     offset = int(configFile.get('aim', 'offset'))
     smooth = float(configFile.get('aim', 'smooth'))
     speed = float(configFile.get('aim', 'speed'))

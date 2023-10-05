@@ -5,7 +5,8 @@ Showcase: https://youtube.com/watch?v=kHSEqLzd-O0
 ## How to use:
 1. Upload the .ino-file to the board (If you use hardware)
 2. Change HSV values and communication settings in config.ini (Find HSV values with this tool: https://github.com/hariangr/HsvRangeTool)
-3. Run run.bat on host pc
+3. Install requirements with `pip install -r requirements.txt`
+4. Run run.bat on host pc
 
 ## Hotkeys:
 - F1: Reload config

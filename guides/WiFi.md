@@ -33,6 +33,7 @@ Set up sharing with your main connection:
 - Connect the board to the PC
 - Open Mobile hotspot settings
 - You should see the board and its IP in the connected devices
+The IP may reset everytime the board connects to Wi-Fi. Remember to update the IP.
 
 ## Configure config
 [Guide.md | Configure config](Guide.md#configure-config)

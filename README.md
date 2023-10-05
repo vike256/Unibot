@@ -30,7 +30,7 @@ Tested with:
 - Raspberry Pi Pico W
 
 ## Raspberry Pi Pico W setup for Arduino IDE: 
-- Add below link to Arduino IDE > File > Preferences > Additional boards manger URLs  
+- Add below link to Arduino IDE > File > Preferences > Additional boards manager URLs  
     https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json
 - Add below package to Arduino IDE > Tools > Board > Boards Manager  
     Raspberry Pi Pico/RP2040 by Earle F. Philhower, III

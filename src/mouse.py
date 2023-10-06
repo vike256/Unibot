@@ -48,15 +48,16 @@ def click():
     elif cfg.com_type == 'serial':
         cfg.board.write(command.encode())
     elif cfg.com_type == 'none':
+        randomDelay = (np.random.randint(40) + 40) / 1000
         ctypes.windll.user32.mouse_event(0x0002, 0, 0, 0, 0)
-        time.sleep((np.random.randint(40) + 40) // 1000)
+        time.sleep(randomDelay)
         ctypes.windll.user32.mouse_event(0x0004, 0, 0, 0, 0)
 
     print(f"{np.floor(cfg.runtime + 0.5):g} Click", end='')
     if cfg.com_type == 'socket':
         waitForResponse()
     else:
-        print('')
+        print(f' (randomDelay {randomDelay * 1000:g} ms)')
 
 
 def press():

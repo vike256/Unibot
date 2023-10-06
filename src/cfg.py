@@ -1,6 +1,7 @@
 import configparser
 import numpy as np
 import dxcam
+import os
 
 
 configFile = configparser.ConfigParser()
@@ -63,7 +64,9 @@ def read_config():
     toggleAim = False
     toggleRecoil = False
 
-    configFile.read("config.ini")
+    path = os.path.join(os.path.dirname(__file__), '../config.ini')
+    configFile.read(path)
+    print(path)
     ip = configFile.get('communication', 'ip')
     port = int(configFile.get('communication', 'port'))
     com_type = configFile.get('communication', 'type')

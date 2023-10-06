@@ -43,10 +43,10 @@ def main():
                 if target is not None:
                     cX, cY = target
 
-                    x = -(cfg.center[0] - cX) if cX < cfg.center[0] else cX - cfg.center[0]
-                    y = -(cfg.center[1] - cY) if cY < cfg.center[1] else cY - cfg.center[1]
-                    x *= cfg.speed
-                    y *= cfg.speed / cfg.xMultiplier
+                    distanceX = cX - cfg.center[0]
+                    distanceY = cY - cfg.center[1]
+                    x = distanceX * cfg.speed
+                    y = distanceY * cfg.speed / cfg.xMultiplier
                     y += cfg.offset
 
                     #Smoothing

@@ -2,8 +2,6 @@
  
 int x = 0;
 int y = 0;
-int maxValue = 127;
-int minValue = -127;
 String cmd = "";
  
 void setup() {

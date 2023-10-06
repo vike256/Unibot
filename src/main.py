@@ -69,8 +69,8 @@ def main():
             mouse.move(x, y)
             
             time_spent = (time.time() - start_time) * 1000
-            if time_spent < cfg.monitor_hz_wait:
-                time.sleep((cfg.monitor_hz_wait - time_spent) / 1000)
+            if time_spent < cfg.fps:
+                time.sleep((cfg.fps - time_spent) / 1000)
             
             cfg.runtime += delta_time
 

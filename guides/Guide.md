@@ -36,7 +36,10 @@ DO THIS STEP ONLY IF YOU ARE USING EXTERNAL HARDWARE TO SEND MOUSE INPUT
     - See [Guide for finding HSV upper and lower color](HSV_Guide.md)  
 - `fov` sets the width and height of the target detection area that is in the center of the screen  
 - `resolution` is your game resolution.  
-- `monitor_hz` is your monitor's refresh rate.  
+- `fps` is the target fps  
+    - Unibot will not loop more than `fps` times per second  
+    - This setting should not be higher than your monitor's refresh rate  
+    - Lower this if the aimbot is jittery
 
 ### Aim
 - `offset` sets the aimbot to aim _x_ pixels below the target  

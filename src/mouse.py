@@ -5,10 +5,23 @@ import cfg
 if cfg.com_type == 'none':
     import ctypes
 
+remainderX = 0
+remainderY = 0
 
 def move(x, y):
+    global remainderX
+    global remainderY
+
+    x += remainderX
+    y += remainderY
+
+    remainderX, remainderY = (x, y)
+
     x = int(np.floor(x + 0.5))
     y = int(np.floor(y + 0.5))
+
+    remainderX -= x
+    remainderY -= y
 
     if x != 0 or y != 0:
         command = f"M{x},{y}\r"
@@ -20,7 +33,7 @@ def move(x, y):
         elif cfg.com_type == 'none':
             ctypes.windll.user32.mouse_event(0x0001, x, y, 0, 0)
 
-        print(f"Move({x}, {y})", end='')
+        print(f"{np.floor(cfg.runtime + 0.5):g} Move({x}, {y})", end='')
         if cfg.com_type == 'socket':
             waitForResponse()
         else:
@@ -39,7 +52,7 @@ def click():
         time.sleep((np.random.randint(40) + 40) // 1000)
         ctypes.windll.user32.mouse_event(0x0004, 0, 0, 0, 0)
 
-    print("Click", end='')
+    print(f"{np.floor(cfg.runtime + 0.5):g} Click", end='')
     if cfg.com_type == 'socket':
         waitForResponse()
     else:
@@ -56,7 +69,7 @@ def press():
     elif cfg.com_type == 'none':
         ctypes.windll.user32.mouse_event(0x0002, 0, 0, 0, 0)
 
-    print("LButton down", end='')
+    print(f"{np.floor(cfg.runtime + 0.5):g} LButton down", end='')
     if cfg.com_type == 'socket':
             waitForResponse()
     else:
@@ -73,7 +86,7 @@ def release():
         ctypes.windll.user32.mouse_event(0x0004, 0, 0, 0, 0)
 
 
-    print("LButton up", end='')
+    print(f"{np.floor(cfg.runtime + 0.5):g} LButton up", end='')
     if cfg.com_type == 'socket':
             waitForResponse()
     else:

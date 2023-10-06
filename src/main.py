@@ -29,6 +29,7 @@ def main():
         print("Connected")
 
         while True:
+            delta_time = (time.time() - start_time) * 1000
             start_time = time.time()
             x = 0
             y = 0
@@ -56,7 +57,6 @@ def main():
 
             # RECOIL
             if cfg.toggleRecoil and wapi.GetAsyncKeyState(0x01) < 0:
-                delta_time = (time.time() - start_time) * 1000
                 if delta_time != 0:
                     x += cfg.recoilX / delta_time
                     y += cfg.recoilY / delta_time
@@ -71,6 +71,8 @@ def main():
             time_spent = (time.time() - start_time) * 1000
             if time_spent < cfg.monitor_hz_wait:
                 time.sleep((cfg.monitor_hz_wait - time_spent) / 1000)
+            
+            cfg.runtime += delta_time
 
     except KeyboardInterrupt:
         pass

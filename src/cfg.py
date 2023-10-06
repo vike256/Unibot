@@ -5,6 +5,7 @@ import os
 
 
 configFile = configparser.ConfigParser()
+runtime = 0
 
 # Network
 ip = None

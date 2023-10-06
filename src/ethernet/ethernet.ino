@@ -47,7 +47,7 @@ void loop() {
             int moveX = constrain(x, -128, 127);
             int moveY = constrain(y, -128, 127);
 
-            Mouse.move(x, y);
+            Mouse.move(moveX, moveY);
 
             x -= moveX;
             y -= moveY;

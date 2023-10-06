@@ -34,11 +34,16 @@ def get_target():
 
 def get_center():
     global thresh
+
     target = False
+    if thresh is None:
+        return target
+
     value = 8
     if thresh[cfg.center[0] + value, cfg.center[1]] == 255:
         if thresh[cfg.center[0] - value, cfg.center[1]] == 255:
             if thresh[cfg.center[0], cfg.center[1] - value] == 255:
                 if thresh[cfg.center[0], cfg.center[1] + value] == 255:
                     target = True
+    thresh = None
     return target

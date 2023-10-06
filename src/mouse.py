@@ -56,7 +56,7 @@ def click():
     print(f"{np.floor(cfg.runtime + 0.5):g} Click", end='')
     if cfg.com_type == 'socket':
         waitForResponse()
-    else if cfg.com_type == 'none':
+    elif cfg.com_type == 'none':
         print(f' ({randomDelay * 1000:g} ms)')
     else:
         print('')

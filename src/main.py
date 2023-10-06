@@ -61,7 +61,7 @@ def main():
                     x += cfg.recoilX / delta_time
                     y += cfg.recoilY / delta_time
 
-            # TRIGGERBOT
+            # TRIGGER
             if wapi.GetAsyncKeyState(0x06) < 0:
                 if screen.get_center():
                     mouse.click()

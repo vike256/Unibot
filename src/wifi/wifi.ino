@@ -41,13 +41,32 @@ void loop() {
         if (commaIndex != -1) {
           x = cmd.substring(1, commaIndex).toInt();
           y = cmd.substring(commaIndex + 1).toInt();
+          int rX = x;
+          int rY = y;
 
-          if (x > maxValue) x = maxValue;
-          if (x < minValue) x = minValue;
-          if (y > maxValue) y = maxValue;
-          if (y < minValue) y = minValue;
-
-          Mouse.move(x, y);
+          while (rX != 0 || rY != 0) {
+            if (rX > maxValue) {
+              x = maxValue;
+              rX = rX - maxValue;
+            } else if (rX < minValue) {
+              x = minValue;
+              rX = rX - minValue;
+            } else {
+              x = rX;
+              rX = 0;
+            }
+            if (rY > maxValue) {
+              y = maxValue;
+              rY = rY - maxValue;
+            } else if (rY < minValue) {
+              y = minValue;
+              rY = rY - minValue;
+            } else {
+              y = rY;
+              rY = 0;
+            }
+            Mouse.move(x, y);
+          }
         }
       } else if (cmd[0] == 'C') {
         int randomDelay = random(40, 80);

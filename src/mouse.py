@@ -11,14 +11,6 @@ def move(x, y):
     y = int(np.floor(y + 0.5))
 
     if x != 0 or y != 0:
-        # Mouse.Move takes char (8 bits) as input
-        # 8bit signed value range is from -128 to 127
-        max = 127
-        if abs(x) > abs(max):
-            x = int(x/abs(x) * abs(max))
-        if abs(y) > abs(max):
-            y = int(y/abs(y) * abs(max))
-
         command = f"M{x},{y}\r"
 
         if cfg.com_type == 'socket':

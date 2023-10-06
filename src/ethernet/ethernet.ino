@@ -42,31 +42,15 @@ void loop() {
         if (commaIndex != -1) {
           x = cmd.substring(1, commaIndex).toInt();
           y = cmd.substring(commaIndex + 1).toInt();
-          int rX = x;
-          int rY = y;
 
-          while (rX != 0 || rY != 0) {
-            if (rX > maxValue) {
-              x = maxValue;
-              rX = rX - maxValue;
-            } else if (rX < minValue) {
-              x = minValue;
-              rX = rX - minValue;
-            } else {
-              x = rX;
-              rX = 0;
-            }
-            if (rY > maxValue) {
-              y = maxValue;
-              rY = rY - maxValue;
-            } else if (rY < minValue) {
-              y = minValue;
-              rY = rY - minValue;
-            } else {
-              y = rY;
-              rY = 0;
-            }
+          while (x != 0 || y != 0) {
+            int moveX = constrain(x, -128, 127);
+            int moveY = constrain(y, -128, 127);
+
             Mouse.move(x, y);
+
+            x -= moveX;
+            y -= moveY;
           }
         }
       } else if (cmd[0] == 'C') {

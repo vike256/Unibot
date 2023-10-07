@@ -19,7 +19,7 @@ DO THIS STEP ONLY IF YOU ARE USING EXTERNAL HARDWARE TO SEND MOUSE INPUT
 - Download and install the latest Arduino IDE version (2.x.x)
 - If you are using Raspberry Pi Pico W: [Guide to use setup Raspberry Pi Pico W for Arduino IDE](RaspberryPiPicoW_Setup.md)
 
-## Configure config
+## Config
 ### Communication
 - `type` is the communication type used.  
     - `none` to use WinApi calls for mouse input instead of hardware  

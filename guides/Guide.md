@@ -44,6 +44,8 @@ DO THIS STEP ONLY IF YOU ARE USING EXTERNAL HARDWARE TO SEND MOUSE INPUT
 - `smooth` sets the value used for calculating smoothess for the aimbot 
     - Higher value = less smoothing. 
     - Should be in range `0 < smooth <= 1`
+- `speed` adjusts the mouse movement amount
+- `xMultiplier` divides the y-axis movement amount
 
 ### Recoil
 - `recoilX` and `recoilY` are used to negate the recoil in some FPS games

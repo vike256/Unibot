@@ -16,8 +16,8 @@
 - Go to `Windows Settings > Network & internet > Ethernet`
 - Find your ethernet shield's settings
 - Set IP assignment to manual for IPv4
-- Set IP address to 192.168.137.123
-- Set subnet mask to the same as your main network (Command `ipconfig` in terminal might help to find that)
+- Set IP address to the same range as your main connection (`x.x.x.y`, replace the y with any value that is not being used)
+- Set subnet mask to the same as your main connection (Command `ipconfig` in terminal might help to find that)
 - Click `OK`
 
 ## Upload ino file
@@ -26,7 +26,7 @@
 - Go to `Tools > Board` and select the board you are using 
 - Go to `Tools > Port` and select the correct port
 - In `ethernet.ino` change `mac` to your ethernet shield's MAC address
-- Change `ip` to 192.168.137.124 (NOTE: This is different from the IP in [Set ethernet shield IP](#set-ethernet-shield-ip))
+- Change `ip` to the same range as your main connection (`x.x.x.y`, replace the `y` with any value that is not being used) (NOTE: This should be different from the IP in [Set ethernet shield IP](#set-ethernet-shield-ip))
 - Click `Upload`
 
 ## Configure config

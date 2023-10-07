@@ -16,7 +16,7 @@
 - Go to `Windows Settings > Network & internet > Ethernet`
 - Find your ethernet shield's settings
 - Set IP assignment to manual for IPv4
-- Set IP address to the same range as your main connection (`x.x.x.y`, replace the y with any value that is not being used)
+- Set IP address to the same range as your main connection (`x.x.x.y`, replace the `y` with any value that is not being used)
 - Set subnet mask to the same as your main connection (Command `ipconfig` in terminal might help to find that)
 - Click `OK`
 

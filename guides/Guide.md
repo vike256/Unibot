@@ -1,11 +1,10 @@
 # Guide for Unibot
 
 ## Follow these guides to setup Unibot
-[Ethernet guide](Ethernet.md)  
-[Serial guide](Serial.md)  
-[Wi-Fi guide](WiFi.md)  
-[WinApi guide](WinApi.md)  
-[Raspberry Pi Pico W setup guide](RaspberryPiPicoW_Setup.md)  
+[Ethernet](Ethernet.md)  
+[Serial](Serial.md)  
+[Wi-Fi](WiFi.md)  
+[WinApi](WinApi.md)  
 
 ## Hotkeys
 - F1: Reload config

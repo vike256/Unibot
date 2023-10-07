@@ -35,7 +35,7 @@ Set up sharing with your main connection:
 - You should see the board and its IP in the connected devices  
 The IP may reset everytime the board connects to Wi-Fi. Remember to update the IP.
 
-## Configure config
+## Config
 [Guide.md | Config](Guide.md#config)
 
 ## Run Unibot

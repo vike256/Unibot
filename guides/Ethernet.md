@@ -29,7 +29,7 @@
 - Change `ip` to the same range as your main connection (`x.x.x.y`, replace the `y` with any value that is not being used) (NOTE: This should be different from the IP in [Set ethernet shield IP](#set-ethernet-shield-ip))
 - Click `Upload`
 
-## Configure config
+## Config
 [Guide.md | Config](Guide.md#config)
 
 ## Run Unibot

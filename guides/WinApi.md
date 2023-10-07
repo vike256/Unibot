@@ -1,4 +1,4 @@
-## Configure config
+## Config
 [Config](Guide.md#config)
 
 ## Run Unibot

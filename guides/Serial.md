@@ -10,7 +10,7 @@
 - Go to `Tools > Port` and select the correct port
 - Click `Upload`
 
-## Configure config
+## Config
 [Guide.md | Config](Guide.md#config)
 
 ## Run Unibot

@@ -30,8 +30,6 @@ void loop() {
   } 
 
   while (client.connected()) {
-    if (!client.connected()) return;
-
     String cmd = client.readStringUntil('\r');
 
     if (cmd.length() > 0) {
@@ -68,7 +66,6 @@ void loop() {
       client.print("a\r");
       client.flush();
     }
-    delay(1);
   }
   delay(1);
 }

@@ -44,5 +44,4 @@ void loop() {
     }
     cmd = "";
   }
-  delay(1);
 }

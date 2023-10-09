@@ -1,7 +1,5 @@
 # Unibot
 
-Unibot Discord is now available. You can find the link in the guide.
-
 Unibot is a program made for 3D games that detects targets on the screen based on a specified range of color.  
   
 Features:

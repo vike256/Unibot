@@ -1,13 +1,10 @@
 # Guide for Unibot
 
-Discord: https://discord.gg/r8SFKkhQWU
-
 ## Follow these guides to setup Unibot
-[Ethernet guide](Ethernet.md)  
-[Serial guide](Serial.md)  
-[Wi-Fi guide](WiFi.md)  
-[WinApi guide](WinApi.md)  
-[Raspberry Pi Pico W setup guide](RaspberryPiPicoW_Setup.md)  
+[Ethernet](Ethernet.md)  
+[Serial](Serial.md)  
+[Wi-Fi](WiFi.md)  
+[WinApi](WinApi.md)  
 
 ## Hotkeys
 - F1: Reload config
@@ -21,7 +18,7 @@ DO THIS STEP ONLY IF YOU ARE USING EXTERNAL HARDWARE TO SEND MOUSE INPUT
 - Download and install the latest Arduino IDE version (2.x.x)
 - If you are using Raspberry Pi Pico W: [Guide to use setup Raspberry Pi Pico W for Arduino IDE](RaspberryPiPicoW_Setup.md)
 
-## Configure config
+## Config
 ### Communication
 - `type` is the communication type used.  
     - `none` to use WinApi calls for mouse input instead of hardware  
@@ -46,6 +43,8 @@ DO THIS STEP ONLY IF YOU ARE USING EXTERNAL HARDWARE TO SEND MOUSE INPUT
 - `smooth` sets the value used for calculating smoothess for the aimbot 
     - Higher value = less smoothing. 
     - Should be in range `0 < smooth <= 1`
+- `speed` adjusts the mouse movement amount
+- `xMultiplier` divides the y-axis movement amount
 
 ### Recoil
 - `recoilX` and `recoilY` are used to negate the recoil in some FPS games

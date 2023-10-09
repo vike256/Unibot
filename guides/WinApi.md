@@ -1,5 +1,5 @@
-## Configure config
-[Configure config](Guide.md#configure-config)
+## Config
+[Config](Guide.md#config)
 
 ## Run Unibot
 [Run Unibot](Guide.md#run-unibot)

@@ -11,7 +11,7 @@ def get_target():
     global thresh
     target = None
     min_distance = float('inf')
-    img = cfg.cam.grab(region=cfg.region)
+    img = cfg.cam.grab(region=(cfg.region_left, int(cfg.region_top - cfg.recoil_offset), cfg.region_right, cfg.region_right))
     if img is not None:
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         mask = cv2.inRange(hsv, cfg.lower_color, cfg.upper_color)
@@ -25,11 +25,11 @@ def get_target():
                 M = cv2.moments(contour)
                 cX = int(M["m10"] / M["m00"])
                 cY = int(M["m01"] / M["m00"])
-                distance = np.sqrt((cX - cfg.center[0])**2 + (cY - cfg.center[1])**2)
-
+                distance = np.sqrt((cX - cfg.center[0])**2 + (cY - cfg.center[1] - cfg.recoil_offset)**2)
                 if distance < min_distance:
                     min_distance = distance
-                    target = (cX, cY)
+                    target = (cX, cY + cfg.recoil_offset)
+    
     return target
 
 def get_center():

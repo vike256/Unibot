@@ -44,7 +44,7 @@ def main():
                     cX, cY = target
 
                     distanceX = cX - cfg.center[0]
-                    distanceY = cY - cfg.center[1]
+                    distanceY = cY - cfg.center[1] - cfg.recoil_offset
                     x = distanceX * cfg.speed
                     y = distanceY * cfg.speed / cfg.xMultiplier
                     y += cfg.offset
@@ -56,10 +56,23 @@ def main():
                     previousY = y
 
             # RECOIL
-            if cfg.toggleRecoil and wapi.GetAsyncKeyState(0x01) < 0:
+            if cfg.toggleRecoil:
                 if delta_time != 0:
-                    x += cfg.recoilX / delta_time
-                    y += cfg.recoilY / delta_time
+                    if cfg.recoil_mode == 'move' and wapi.GetAsyncKeyState(0x01) < 0:
+                        x += cfg.recoilX / delta_time
+                        y += cfg.recoilY / delta_time
+                    elif cfg.recoil_mode == 'offset':
+                        if wapi.GetAsyncKeyState(0x01) < 0:
+                            if cfg.recoil_offset < cfg.max_offset:
+                                cfg.recoil_offset += cfg.recoilY / delta_time
+                                if cfg.recoil_offset > cfg.max_offset:
+                                    cfg.recoil_offset = cfg.max_offset
+                        else:
+                            if cfg.recoil_offset > 0:
+                                cfg.recoil_offset -= cfg.recoil_recover / delta_time
+                                if cfg.recoil_offset < 0:
+                                    cfg.recoil_offset = 0
+
 
             # TRIGGER
             if wapi.GetAsyncKeyState(0x06) < 0:

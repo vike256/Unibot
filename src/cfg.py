@@ -6,6 +6,7 @@ import os
 
 configFile = configparser.ConfigParser()
 runtime = 0
+recoil_offset = 0
 
 # Network
 ip = None
@@ -20,8 +21,11 @@ offset = None
 smooth = None
 speed = None
 xMultiplier = None
+recoil_mode = None
+max_offset = None
 recoilX = None
 recoilY = None
+recoil_recover = None
 
 # Screen
 cam = None
@@ -32,6 +36,10 @@ resolution = None
 upper_color = None
 lower_color = None
 fps = None
+region_left = None
+region_top = None
+region_right = None
+region_bottom = None
 
 # Booleans
 toggleAim = False
@@ -49,8 +57,11 @@ def read_config():
     global smooth
     global speed
     global xMultiplier
+    global recoil_mode
+    global max_offset
     global recoilX
     global recoilY
+    global recoil_recover
     global cam
     global center
     global fov
@@ -59,6 +70,10 @@ def read_config():
     global upper_color
     global lower_color
     global fps
+    global region_left
+    global region_top
+    global region_right
+    global region_bottom
     global toggleAim
     global toggleRecoil
 
@@ -91,16 +106,18 @@ def read_config():
     smooth = float(configFile.get('aim', 'smooth'))
     speed = float(configFile.get('aim', 'speed'))
     xMultiplier = float(configFile.get('aim', 'xMultiplier'))
+    recoil_mode = configFile.get('recoil', 'mode')
+    max_offset = int(configFile.get('recoil', 'max_offset'))
     recoilX = float(configFile.get('recoil', 'recoilX'))
     recoilY = float(configFile.get('recoil', 'recoilY'))
+    recoil_recover = int(configFile.get('recoil', 'recover'))
 
     if not cam:
         cam = dxcam.create(output_color="BGR")
-    left = (resolution[0] - fov) // 2
-    top = (resolution[1] - fov) // 2
-    right = left + fov
-    bottom = top + fov
-    region = (left, top, right, bottom)
+    region_left = (resolution[0] - fov) // 2
+    region_top = (resolution[1] - fov) // 2
+    region_right = region_left + fov
+    region_bottom = region_top + fov
     center = (fov // 2, fov // 2)
 
     print(f"""Config: 

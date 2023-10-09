@@ -19,5 +19,6 @@ def check():
 
     if keyboard.is_pressed('F3'):
         cfg.toggleRecoil = not cfg.toggleRecoil
+        cfg.recoil_offset = 0
         print("RECOIL: " + str(cfg.toggleRecoil))
         sleep(delay)

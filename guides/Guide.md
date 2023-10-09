@@ -47,7 +47,14 @@ DO THIS STEP ONLY IF YOU ARE USING EXTERNAL HARDWARE TO SEND MOUSE INPUT
 - `xMultiplier` divides the y-axis movement amount
 
 ### Recoil
-- `recoilX` and `recoilY` are used to negate the recoil in some FPS games
+- `mode` is the recoil method used
+    - `move` for games where the bullet always hits the center of the screen
+        - `recoilX` and `recoilY` set the move speed
+    - `offset` for games where the recoil goes above crosshair
+        - `recoilY` increases aiming offset when left button is pressed
+        - `max_offset` is the maximum offset the recoil can have
+        - `recover` sets how fast the recoil recovers when left button is not pressed
+
 
 ## Run Unibot
 Requirements:

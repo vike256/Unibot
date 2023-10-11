@@ -11,7 +11,7 @@ def get_target():
     global thresh
     target = None
     min_distance = float('inf')
-    img = cfg.cam.grab(region=(cfg.region_left, int(cfg.region_top - cfg.recoil_offset), cfg.region_right, cfg.region_right))
+    img = cfg.cam.grab(region=(cfg.region_left, int(cfg.region_top - cfg.recoil_offset), cfg.region_right, cfg.region_bottom))
     if img is not None:
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         mask = cv2.inRange(hsv, cfg.lower_color, cfg.upper_color)

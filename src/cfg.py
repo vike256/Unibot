@@ -82,7 +82,6 @@ def read_config():
 
     path = os.path.join(os.path.dirname(__file__), '../config.ini')
     configFile.read(path)
-    print(path)
     ip = configFile.get('communication', 'ip')
     port = int(configFile.get('communication', 'port'))
     com_type = configFile.get('communication', 'type')
@@ -101,7 +100,8 @@ def read_config():
     resolution = (int(resolution[0]), int(resolution[1]))
 
     fov = int(configFile.get('screen', 'fov'))
-    fps = int(np.floor(1000 / int(configFile.get('screen', 'fps')) + 1))
+    fps_value = int(configFile.get('screen', 'fps'))
+    fps = int(np.floor(1000 / fps_value + 1))
     offset = int(configFile.get('aim', 'offset'))
     smooth = float(configFile.get('aim', 'smooth'))
     speed = float(configFile.get('aim', 'speed'))
@@ -120,16 +120,50 @@ def read_config():
     region_bottom = region_top + fov
     center = (fov // 2, fov // 2)
 
-    print(f"""Config: 
-- Network: {ip}:{port}
-- Communication: {com_type}
-- Color: LOWER: {lower_color}, UPPER: {upper_color}
-- FOV: {fov}
-- Offset: {offset}
-- Smooth: {smooth}
-- Speed: {speed}
-- xMultiplier: {xMultiplier}
-- Recoil: ({recoilX}, {recoilY})
-Config read, all cheats defaulted to off.""")
+    str_communication = f'''
+Type: {com_type}'''
+
+    if type == 'serial':
+        str_communication += f'''
+COM port: {com_port}'''
+    elif type == 'socket':
+        str_communication += f'''
+Network: {ip}:{port}'''
+
+    str_screen = f'''
+Upper color: {upper_color}
+Lower color: {lower_color}
+FOV: {fov}
+Resolution: {resolution}
+FPS: {fps_value}'''
+
+    str_aim = f'''
+Offset: {offset}
+Smooth: {smooth}
+Speed: {speed}
+xMultiplier: {xMultiplier}'''
+
+    str_recoil = f'''
+Mode: {recoil_mode}'''
+
+    if recoil_mode == 'move':
+        str_recoil += f'''
+Recoil: ({recoilX}, {recoilY})'''
+    elif recoil_mode == 'offset':
+        str_recoil += f'''
+RecoilY: {recoilY}
+Max Offset: {max_offset}
+Recover: {recover}'''
+
+    print(f'''Config: 
+COMMUNICATION {str_communication}
+
+SCREEN {str_screen}
+
+AIM {str_aim}
+
+RECOIL {str_recoil}
+
+Config read, all cheats defaulted to off.''')
 
 read_config()

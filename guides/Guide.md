@@ -71,5 +71,4 @@ To setup Unibot:
 - Use command `pip install -r requirements.txt`
 
 To run Unibot:
-- Make sure that `config.ini` is set properly
-- Run `run.bat`
+- Run `Unibot/src/main.py` with Python

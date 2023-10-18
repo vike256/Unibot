@@ -30,12 +30,13 @@ def get_target():
                 for x in range(cfg.fov):
                     pixel = hsv[y, x]
                     h, s, v = pixel
-                    if (cfg.lower_color[0] <= h and h <= cfg.upper_color[0]
+                    img_rel_x = x - cfg.center[0]
+                    img_rel_y = y - cfg.center[1]
+                    distance = np.sqrt(img_rel_x**2 + img_rel_y**2)
+                    if (distance <= cfg.fov // 2
+                    and cfg.lower_color[0] <= h and h <= cfg.upper_color[0]
                     and cfg.lower_color[1] <= s and s <= cfg.upper_color[1]
                     and cfg.lower_color[2] <= v and v <= cfg.upper_color[2]):
-                        img_rel_x = x - cfg.center[0]
-                        img_rel_y = y - cfg.center[1]
-                        distance = np.sqrt(img_rel_x**2 + img_rel_y**2)
                         if distance < min_distance:
                             min_distance = distance
                             target = (img_rel_x + cfg.center[0], img_rel_y + cfg.center[1])
@@ -77,6 +78,14 @@ def get_target():
                         (255, 255, 255),
                         1
                     )
+                # Draw FOV circle
+                img = cv2.circle(
+                    img,
+                    cfg.center,
+                    cfg.fov // 2,
+                    (0, 255, 0),
+                    1
+                )
             elif cfg.aim_type == 'shape':
                 # Draw rectangle around closest target
                 if closest_contour is not None:

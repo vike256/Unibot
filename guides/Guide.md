@@ -22,7 +22,7 @@ DO THIS STEP ONLY IF YOU ARE USING EXTERNAL HARDWARE TO SEND MOUSE INPUT
 ### Communication
 - `type` is the communication type used.  
     - `none` to use WinApi calls for mouse input
-    - `driver` to use the Interception driver for mouse input
+    - `driver` to use the Interception driver for mouse input (https://github.com/oblitum/Interception)
     - `serial` to use serial communication  
         - `com_port` is the COM port of your board
     - `socket` to use ethernet or Wi-Fi  

@@ -153,7 +153,7 @@ Recoil: ({recoilX}, {recoilY})'''
         str_recoil += f'''
 RecoilY: {recoilY}
 Max Offset: {max_offset}
-Recover: {recover}'''
+Recover: {recoil_recover}'''
 
     print(f'''Config: 
 COMMUNICATION {str_communication}

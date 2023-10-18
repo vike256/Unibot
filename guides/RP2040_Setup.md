@@ -1,4 +1,4 @@
-# Guide to use setup Raspberry Pi Pico W for Arduino IDE
+# RP2040 board setup
 - Open Arduino IDE
 - Go to `File > Preferences > Additional boards manager URLs`
 - Paste this link there: `https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json`

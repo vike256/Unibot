@@ -48,6 +48,9 @@ region_bottom = None
 toggleAim = False
 toggleRecoil = False
 
+# Misc
+debug = False
+
 
 def read_config():
     global configFile
@@ -80,6 +83,7 @@ def read_config():
     global region_bottom
     global toggleAim
     global toggleRecoil
+    global debug
 
     toggleAim = False
     toggleRecoil = False
@@ -116,6 +120,9 @@ def read_config():
     recoilX = float(configFile.get('recoil', 'recoilX'))
     recoilY = float(configFile.get('recoil', 'recoilY'))
     recoil_recover = int(configFile.get('recoil', 'recover'))
+    
+    if configFile.get('misc', 'debug').lower() == 'true':
+        debug = True
 
     if not cam:
         cam = dxcam.create(output_color="BGR")
@@ -160,6 +167,8 @@ RecoilY: {recoilY}
 Max Offset: {max_offset}
 Recover: {recoil_recover}'''
 
+    str_misc = f'''\nDebug: {debug}'''
+
     print(f'''Config: 
 COMMUNICATION {str_communication}
 
@@ -168,6 +177,8 @@ SCREEN {str_screen}
 AIM {str_aim}
 
 RECOIL {str_recoil}
+
+MISC {str_misc}
 
 Config read, all cheats defaulted to off.''')
 

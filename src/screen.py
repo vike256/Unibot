@@ -6,6 +6,9 @@ import cfg
 
 thresh = None
 
+if cfg.debug:
+    cv2.namedWindow('Unibot Display')
+
 
 def get_target():
     global thresh
@@ -29,6 +32,10 @@ def get_target():
                 if distance < min_distance:
                     min_distance = distance
                     target = (cX, cY + cfg.recoil_offset)
+
+        if cfg.debug:
+            cv2.imshow('Unibot Display', thresh)
+            cv2.waitKey(1)
     
     return target
 

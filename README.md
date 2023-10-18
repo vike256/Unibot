@@ -14,6 +14,7 @@ Showcase: https://youtube.com/watch?v=kHSEqLzd-O0
 
 ## Input communication methods supported
 - WinApi (No hardware needed)
+- Interception driver (No hardware needed)
 - Ethernet
 - Serial
 - Wi-Fi

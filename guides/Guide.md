@@ -33,17 +33,22 @@ DO THIS STEP ONLY IF YOU ARE USING EXTERNAL HARDWARE TO SEND MOUSE INPUT
 - `upper_color` and `lower_color` are used for target detection 
     - See [Guide for finding HSV upper and lower color](HSV_Guide.md)  
 - `fov` sets the width and height of the target detection area that is in the center of the screen  
-- `resolution` is your game resolution.  
+- `resolution` is your game resolution  
 - `fps` is the target fps  
     - Unibot will not loop more than `fps` times per second  
     - This setting should not be higher than your monitor's refresh rate  
     - Lower this if the aimbot is jittery
 
 ### Aim
+- `type` is the target detecting type used
+    - `shape` detects shapes on screen and aims at the nearest shape
+        - Very fast
+    - `pixel` detects target pixels on screen and aims at the nearest pixel
+        - Slow method. Don't use a big FOV
 - `offset` sets the aimbot to aim _x_ pixels below the target  
 - `smooth` sets the value used for calculating smoothess for the aimbot 
     - Should be in range `0 < x <= 1`
-    - Higher value = less smoothing. 
+    - Higher value = less smoothing 
 - `speed` adjusts the mouse movement amount
 - `xMultiplier` divides the y-axis movement amount
 - `head_height` determines the vertical position of the aim
@@ -58,6 +63,11 @@ DO THIS STEP ONLY IF YOU ARE USING EXTERNAL HARDWARE TO SEND MOUSE INPUT
         - `recoilY` increases aiming offset when left button is pressed
         - `max_offset` is the maximum offset the recoil can have
         - `recover` sets how fast the recoil recovers when left button is not pressed
+
+### Misc
+- `debug`
+    - `true` creates a window and displays the filtered image
+        - Slows down the program. Only use for testing
 
 
 ## Run Unibot

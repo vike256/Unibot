@@ -36,7 +36,7 @@ def main():
             
             keybinds.check()
 
-            target = screen.get_target()
+            target, trigger = screen.get_target()
 
             # AIM if mouse left or right down
             if cfg.toggleAim and (wapi.GetAsyncKeyState(0x01) < 0 or wapi.GetAsyncKeyState(0x02) < 0):
@@ -75,9 +75,8 @@ def main():
 
 
             # TRIGGER
-            if wapi.GetAsyncKeyState(0x06) < 0:
-                if screen.get_center():
-                    mouse.click()
+            if wapi.GetAsyncKeyState(0x06) < 0 and trigger:
+                mouse.click()
 
             mouse.move(x, y)
             

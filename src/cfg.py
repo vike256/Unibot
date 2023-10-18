@@ -17,6 +17,7 @@ com_port = None
 board = None
 
 # Aim
+aim_type = None
 offset = None
 smooth = None
 speed = None
@@ -59,6 +60,7 @@ def read_config():
     global client
     global com_type
     global com_port
+    global aim_type
     global offset
     global smooth
     global speed
@@ -110,6 +112,7 @@ def read_config():
     fov = int(configFile.get('screen', 'fov'))
     fps_value = int(configFile.get('screen', 'fps'))
     fps = int(np.floor(1000 / fps_value + 1))
+    aim_type = configFile.get('aim', 'type')
     offset = int(configFile.get('aim', 'offset'))
     smooth = float(configFile.get('aim', 'smooth'))
     speed = float(configFile.get('aim', 'speed'))
@@ -128,8 +131,6 @@ def read_config():
         cam = dxcam.create(output_color="BGR")
     region_left = (resolution[0] - fov) // 2
     region_top = (resolution[1] - fov) // 2
-    region_right = region_left + fov
-    region_bottom = region_top + fov
     center = (fov // 2, fov // 2)
 
     str_communication = f'''

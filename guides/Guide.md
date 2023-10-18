@@ -43,6 +43,9 @@ DO THIS STEP ONLY IF YOU ARE USING EXTERNAL HARDWARE TO SEND MOUSE INPUT
 - `type` is the target detection type used
     - `shape` detects shapes on screen and aims at the nearest shape
         - Very fast
+        - `head_height` determines the vertical position of the aim
+            - Should be in range `0 < x < 1`
+            - Value `0.5` aims at the center of the target
     - `pixel` detects target pixels on screen and aims at the nearest pixel
         - Slow method. Don't use a big FOV
 - `offset` sets the aimbot to aim _x_ pixels below the target  
@@ -51,9 +54,7 @@ DO THIS STEP ONLY IF YOU ARE USING EXTERNAL HARDWARE TO SEND MOUSE INPUT
     - Higher value = less smoothing 
 - `speed` adjusts the mouse movement amount
 - `xMultiplier` divides the y-axis movement amount
-- `head_height` determines the vertical position of the aim
-    - Should be in range `0 < x < 1`
-    - Value `0.5` aims at the center of the target
+
 
 ### Recoil
 - `mode` is the recoil method used

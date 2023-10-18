@@ -6,7 +6,7 @@ import cfg
 
 if cfg.debug:
     window_name = 'Unibot Display'
-    window_resolution = (400, 400)
+    window_resolution = (1280, 720)
     cv2.namedWindow(window_name)
 
 
@@ -56,7 +56,7 @@ def get_target():
                 for contour in contours:
                     x, y, w, h = cv2.boundingRect(contour)
                     cX = x + w // 2
-                    cY = y + h // cfg.head_height
+                    cY = int(y + h / cfg.head_height)
                     distance = np.sqrt((cX - cfg.center[0])**2 + (cY - cfg.center[1])**2)
                     if distance < min_distance:
                         min_distance = distance
@@ -71,7 +71,13 @@ def get_target():
                 trigger = True
 
         if cfg.debug:
-            if cfg.aim_type == 'pixel':
+            full_img = cfg.cam.grab(region=(
+                0, 
+                0, 
+                cfg.resolution[0], 
+                cfg.resolution[1]
+            ))
+            if full_img is not None:
                 # Draw line to closest target
                 if target is not None:
                     img = cv2.line(
@@ -79,30 +85,43 @@ def get_target():
                         cfg.center,
                         target,
                         (255, 255, 255),
+                        2
+                    )
+
+                if cfg.aim_type == 'pixel':
+                    # Draw FOV circle
+                    img = cv2.circle(
+                        img,
+                        cfg.center,
+                        cfg.fov // 2,
+                        (0, 255, 0),
                         1
                     )
-                # Draw FOV circle
-                img = cv2.circle(
-                    img,
-                    cfg.center,
-                    cfg.fov // 2,
-                    (0, 255, 0),
-                    1
-                )
-            elif cfg.aim_type == 'shape':
-                # Draw rectangle around closest target
-                if closest_contour is not None:
-                    x, y, w, h = cv2.boundingRect(closest_contour)
+                elif cfg.aim_type == 'shape':
+                    # Draw rectangle around closest target
+                    if closest_contour is not None:
+                        x, y, w, h = cv2.boundingRect(closest_contour)
+                        img = cv2.rectangle(
+                            img,
+                            (x, y),
+                            (x + w, y + h),
+                            (0, 0, 255),
+                            2
+                        )
+                    # Draw FOV
                     img = cv2.rectangle(
                         img,
-                        (x, y),
-                        (x + w, y + h),
+                        (0, 0),
+                        (cfg.fov, cfg.fov),
                         (0, 255, 0),
                         2
                     )
-            
-            img = cv2.resize(img, window_resolution)
-            cv2.imshow(window_name, img)
-            cv2.waitKey(1)
+                
+                offset_x = (cfg.resolution[0] - cfg.fov) // 2
+                offset_y = (cfg.resolution[1] - cfg.fov) // 2
+                full_img[offset_y:offset_y+img.shape[1], offset_x:offset_x+img.shape[0]] = img
+                full_img = cv2.resize(full_img, window_resolution)
+                cv2.imshow(window_name, full_img)
+                cv2.waitKey(1)
     
     return target, trigger

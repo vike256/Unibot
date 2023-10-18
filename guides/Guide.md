@@ -40,7 +40,7 @@ DO THIS STEP ONLY IF YOU ARE USING EXTERNAL HARDWARE TO SEND MOUSE INPUT
     - Lower this if the aimbot is jittery
 
 ### Aim
-- `type` is the target detecting type used
+- `type` is the target detection type used
     - `shape` detects shapes on screen and aims at the nearest shape
         - Very fast
     - `pixel` detects target pixels on screen and aims at the nearest pixel

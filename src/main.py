@@ -44,7 +44,7 @@ def main():
                     cX, cY = target
 
                     distanceX = cX - cfg.center[0]
-                    distanceY = cY - cfg.center[1] - cfg.recoil_offset
+                    distanceY = cY - cfg.center[1]
                     x = distanceX * cfg.speed
                     y = distanceY * cfg.speed / cfg.xMultiplier
                     y += cfg.offset

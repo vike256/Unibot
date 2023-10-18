@@ -5,12 +5,15 @@ import cfg
 
 
 if cfg.debug:
-    cv2.namedWindow('Unibot Display')
+    window_name = 'Unibot Display'
+    window_resolution = (400, 400)
+    cv2.namedWindow(window_name)
 
 
 def get_target():
     target = None
     trigger = False
+    closest_contour = None
     min_distance = float('inf')
     img = cfg.cam.grab(region=(
         cfg.region_left, 
@@ -23,21 +26,19 @@ def get_target():
         mask = cv2.inRange(hsv, cfg.lower_color, cfg.upper_color)
 
         if cfg.aim_type == 'pixel':
-            size = cfg.fov
-            center = (size // 2, size // 2)
-            for y in range(size):
-                for x in range(size):
+            for y in range(cfg.fov):
+                for x in range(cfg.fov):
                     pixel = hsv[y, x]
                     h, s, v = pixel
                     if (cfg.lower_color[0] <= h and h <= cfg.upper_color[0]
                     and cfg.lower_color[1] <= s and s <= cfg.upper_color[1]
                     and cfg.lower_color[2] <= v and v <= cfg.upper_color[2]):
-                        img_rel_x = x - center[0]
-                        img_rel_y = y - center[1]
+                        img_rel_x = x - cfg.center[0]
+                        img_rel_y = y - cfg.center[1]
                         distance = np.sqrt(img_rel_x**2 + img_rel_y**2)
                         if distance < min_distance:
                             min_distance = distance
-                            target = (img_rel_x + cfg.center[0], img_rel_y + cfg.center[1] + cfg.recoil_offset)
+                            target = (img_rel_x + cfg.center[0], img_rel_y + cfg.center[1])
             if min_distance == 0:
                 trigger = True
 
@@ -55,7 +56,8 @@ def get_target():
                     distance = np.sqrt((cX - cfg.center[0])**2 + (cY - cfg.center[1])**2)
                     if distance < min_distance:
                         min_distance = distance
-                        target = (cX, cY + cfg.recoil_offset)
+                        closest_contour = contour
+                        target = (cX, cY)
             
             value = 8
             if thresh[cfg.center[0] + value, cfg.center[1]] == 255:
@@ -66,10 +68,29 @@ def get_target():
 
         if cfg.debug:
             if cfg.aim_type == 'pixel':
-                cv2.imshow('Unibot Display', mask)
-                cv2.waitKey(1)
+                # Draw line to closest target
+                if target is not None:
+                    img = cv2.line(
+                        img,
+                        cfg.center,
+                        target,
+                        (255, 255, 255),
+                        1
+                    )
             elif cfg.aim_type == 'shape':
-                cv2.imshow('Unibot Display', thresh)
-                cv2.waitKey(1)
+                # Draw rectangle around closest target
+                if closest_contour is not None:
+                    x, y, w, h = cv2.boundingRect(closest_contour)
+                    img = cv2.rectangle(
+                        img,
+                        (x, y),
+                        (x + w, y + h),
+                        (0, 255, 0),
+                        2
+                    )
+            
+            img = cv2.resize(img, window_resolution)
+            cv2.imshow(window_name, img)
+            cv2.waitKey(1)
     
     return target, trigger

@@ -21,6 +21,9 @@ offset = None
 smooth = None
 speed = None
 xMultiplier = None
+head_height = None
+
+# Recoil
 recoil_mode = None
 max_offset = None
 recoilX = None
@@ -57,6 +60,7 @@ def read_config():
     global smooth
     global speed
     global xMultiplier
+    global head_height
     global recoil_mode
     global max_offset
     global recoilX
@@ -106,6 +110,7 @@ def read_config():
     smooth = float(configFile.get('aim', 'smooth'))
     speed = float(configFile.get('aim', 'speed'))
     xMultiplier = float(configFile.get('aim', 'xMultiplier'))
+    head_height = 1 / (1.0 - float(configFile.get('aim', 'head_height')))
     recoil_mode = configFile.get('recoil', 'mode')
     max_offset = int(configFile.get('recoil', 'max_offset'))
     recoilX = float(configFile.get('recoil', 'recoilX'))

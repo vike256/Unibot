@@ -41,10 +41,13 @@ DO THIS STEP ONLY IF YOU ARE USING EXTERNAL HARDWARE TO SEND MOUSE INPUT
 ### Aim
 - `offset` sets the aimbot to aim _x_ pixels below the target  
 - `smooth` sets the value used for calculating smoothess for the aimbot 
+    - Should be in range `0 < x <= 1`
     - Higher value = less smoothing. 
-    - Should be in range `0 < smooth <= 1`
 - `speed` adjusts the mouse movement amount
 - `xMultiplier` divides the y-axis movement amount
+- `head_height` determines the vertical position of the aim
+    - Should be in range `0 < x < 1`
+    - Value `0.5` aims at the center of the target
 
 ### Recoil
 - `mode` is the recoil method used

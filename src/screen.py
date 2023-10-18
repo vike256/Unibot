@@ -22,9 +22,9 @@ def get_target():
 
         if len(contours) != 0:
             for contour in contours:
-                M = cv2.moments(contour)
-                cX = int(M["m10"] / M["m00"])
-                cY = int(M["m01"] / M["m00"])
+                x, y, w, h = cv2.boundingRect(contour)
+                cX = x + w // 2
+                cY = y + h // cfg.head_height
                 distance = np.sqrt((cX - cfg.center[0])**2 + (cY - cfg.center[1] - cfg.recoil_offset)**2)
                 if distance < min_distance:
                     min_distance = distance

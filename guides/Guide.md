@@ -4,7 +4,7 @@
 [Ethernet](Ethernet.md)  
 [Serial](Serial.md)  
 [Wi-Fi](WiFi.md)  
-[WinApi](WinApi.md)  
+[No hardware](NoHardware.md)  
 
 ## Hotkeys
 - F1: Reload config
@@ -21,7 +21,8 @@ DO THIS STEP ONLY IF YOU ARE USING EXTERNAL HARDWARE TO SEND MOUSE INPUT
 ## Config
 ### Communication
 - `type` is the communication type used.  
-    - `none` to use WinApi calls for mouse input instead of hardware  
+    - `none` to use WinApi calls for mouse input
+    - `driver` to use the Interception driver for mouse input
     - `serial` to use serial communication  
         - `com_port` is the COM port of your board
     - `socket` to use ethernet or Wi-Fi  

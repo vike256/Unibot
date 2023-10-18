@@ -4,6 +4,9 @@ import cfg
 
 if cfg.com_type == 'none':
     import ctypes
+elif cfg.com_type == 'driver':
+    import interception
+    interception.auto_capture_devices(mouse=True)
 
 remainderX = 0
 remainderY = 0
@@ -30,6 +33,8 @@ def move(x, y):
             cfg.client.sendall(command.encode())
         elif cfg.com_type == 'serial':
             cfg.board.write(command.encode())
+        elif cfg.com_type == 'driver':
+            interception.move_relative(x, y)
         elif cfg.com_type == 'none':
             ctypes.windll.user32.mouse_event(0x0001, x, y, 0, 0)
 
@@ -47,6 +52,11 @@ def click():
         cfg.client.sendall(command.encode())
     elif cfg.com_type == 'serial':
         cfg.board.write(command.encode())
+    elif cfg.com_type == 'driver':
+        randomDelay = (np.random.randint(40) + 40) / 1000
+        interception.mouse_down('left')
+        time.sleep(randomDelay)
+        interception.mouse_up('left')
     elif cfg.com_type == 'none':
         randomDelay = (np.random.randint(40) + 40) / 1000
         ctypes.windll.user32.mouse_event(0x0002, 0, 0, 0, 0)
@@ -56,11 +66,13 @@ def click():
     print(f"{np.floor(cfg.runtime + 0.5):g} Click", end='')
     if cfg.com_type == 'socket':
         waitForResponse()
-    elif cfg.com_type == 'none':
+    elif cfg.com_type == 'driver' or cfg.com_type == 'none':
         print(f' ({randomDelay * 1000:g} ms)')
     else:
         print('')
 
+
+''' Functions not currently in use
 
 def press():
     command = "B1\r"
@@ -94,7 +106,7 @@ def release():
             waitForResponse()
     else:
         print('')
-
+'''
 
 def waitForResponse():
     start = time.time()

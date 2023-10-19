@@ -1,6 +1,13 @@
 # Guide for Unibot
 
-## Follow these guides to setup Unibot
+## Sections  
+[Setup specific guides](#setup-specific-guides)  
+[Hotkeys](#hotkeys)  
+[Download and install Arduino IDE](#download-and-install-arduino-ide)  
+[Config](#config)  
+[Run Unibot](#run-unibot)  
+
+## Setup specific guides
 [Ethernet](Ethernet.md)  
 [Serial](Serial.md)  
 [Wi-Fi](WiFi.md)  

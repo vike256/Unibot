@@ -51,7 +51,7 @@ DO THIS STEP ONLY IF YOU ARE USING EXTERNAL HARDWARE TO SEND MOUSE INPUT
     - `shape` detects shapes on screen and aims at the nearest shape
         - Very fast
         - `head_height` determines the vertical position of the aim
-            - Should be in range `0 < x < 1`
+            - Should be in range `0 <= x <= 1`
             - Value `0.5` aims at the center of the target
     - `pixel` detects target pixels on screen and aims at the nearest pixel
         - Slow method. Don't use a big FOV

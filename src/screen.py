@@ -56,7 +56,7 @@ def get_target():
                 for contour in contours:
                     x, y, w, h = cv2.boundingRect(contour)
                     cX = x + w // 2
-                    cY = int(y + h / cfg.head_height)
+                    cY = int(y + h * cfg.head_height)
                     distance = np.sqrt((cX - cfg.center[0])**2 + (cY - cfg.center[1])**2)
                     if distance < min_distance:
                         min_distance = distance

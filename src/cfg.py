@@ -6,7 +6,6 @@ import os
 
 configFile = configparser.ConfigParser()
 runtime = 0
-recoil_offset = 0
 
 # Network
 ip = None
@@ -15,21 +14,6 @@ client = None
 com_type = None
 com_port = None
 board = None
-
-# Aim
-aim_type = None
-offset = None
-smooth = None
-speed = None
-xMultiplier = None
-head_height = None
-
-# Recoil
-recoil_mode = None
-max_offset = None
-recoilX = None
-recoilY = None
-recoil_recover = None
 
 # Screen
 cam = None
@@ -45,6 +29,22 @@ region_top = None
 region_right = None
 region_bottom = None
 
+# Aim
+aim_type = None
+offset = None
+smooth = None
+speed = None
+xMultiplier = None
+head_height = None
+
+# Recoil
+recoil_mode = None
+max_offset = None
+recoilX = None
+recoilY = None
+recoil_recover = None
+recoil_offset = 0
+
 # Debug
 debug = False
 display_mode = None
@@ -57,22 +57,15 @@ toggleRecoil = False
 
 def read_config():
     global configFile
+
+    # Network
     global ip
     global port
     global client
     global com_type
     global com_port
-    global aim_type
-    global offset
-    global smooth
-    global speed
-    global xMultiplier
-    global head_height
-    global recoil_mode
-    global max_offset
-    global recoilX
-    global recoilY
-    global recoil_recover
+
+    # Screen
     global cam
     global center
     global fov
@@ -85,21 +78,53 @@ def read_config():
     global region_top
     global region_right
     global region_bottom
-    global toggleAim
-    global toggleRecoil
+
+    # Aim
+    global aim_type
+    global offset
+    global smooth
+    global speed
+    global xMultiplier
+    global head_height
+
+    # Recoil
+    global recoil_mode
+    global max_offset
+    global recoilX
+    global recoilY
+    global recoil_recover
+
+    # Debug
     global debug
     global display_mode
 
+    # Booleans
+    global toggleAim
+    global toggleRecoil
+
+    # Set all cheats off everytime config is read
     toggleAim = False
     toggleRecoil = False
 
+    # Get config path and read it
     path = os.path.join(os.path.dirname(__file__), '../config.ini')
     configFile.read(path)
+
+    # Get communication settings
     ip = configFile.get('communication', 'ip')
     port = int(configFile.get('communication', 'port'))
-    com_type = configFile.get('communication', 'type')
+
+    value = configFile.get('communication', 'type').lower()
+    com_type_list = ['none', 'driver', 'serial', 'socket']
+    if value in com_type_list:
+        com_type = value
+    else:
+        print('Invalid com_type value')
+        exit(1)
+
     com_port = configFile.get('communication', 'com_port')
 
+    # Get screen settings
     upper_color = configFile.get('screen', 'upper_color').split(',')
     lower_color = configFile.get('screen', 'lower_color').split(',')
     for i in range(0, 3):
@@ -116,77 +141,89 @@ def read_config():
     fps_value = int(configFile.get('screen', 'fps'))
     fps = int(np.floor(1000 / fps_value + 1))
 
-    aim_type = configFile.get('aim', 'type')
+    # Get aim settings
+    value = configFile.get('aim', 'type').lower()
+    aim_type_list = ['pixel', 'shape']
+    if value in aim_type_list:
+        aim_type = value
+    else:
+        print('Invalid aim_type value')
+        exit(1)
+
     offset = int(configFile.get('aim', 'offset'))
-    smooth = float(configFile.get('aim', 'smooth'))
+
+    value = float(configFile.get('aim', 'smooth'))
+    if 0 < value <= 1:
+        smooth = value
+    else:
+        print('Invalid smooth value')
+        exit(1)
+
     speed = float(configFile.get('aim', 'speed'))
     xMultiplier = float(configFile.get('aim', 'xMultiplier'))
-    head_height = 1 / (1.0 - float(configFile.get('aim', 'head_height')))
 
-    recoil_mode = configFile.get('recoil', 'mode')
+    value = float(configFile.get('aim', 'head_height'))
+    if 0 <= value <= 1:
+        head_height = value
+    else:
+        print('Invalid head_height value')
+        exit(1)
+
+    # Get recoil settings
+    value = configFile.get('recoil', 'mode').lower()
+    recoil_mode_list = ['move', 'offset']
+    if value in recoil_mode_list:
+        recoil_mode = value
+    else:
+        print('Invalid recoil_mode value')
+        exit(1)
+
     max_offset = int(configFile.get('recoil', 'max_offset'))
     recoilX = float(configFile.get('recoil', 'recoilX'))
     recoilY = float(configFile.get('recoil', 'recoilY'))
-    recoil_recover = int(configFile.get('recoil', 'recover'))
+    recoil_recover = float(configFile.get('recoil', 'recover'))
     
+    # Get debug settings
     if configFile.get('debug', 'enabled').lower() == 'true':
         debug = True
-    display_mode = configFile.get('debug', 'display_mode')
+        value = configFile.get('debug', 'display_mode').lower()
+        display_mode_list = ['game', 'mask']
+        if value in display_mode_list:
+            display_mode = value
+        else:
+            print('Invalid display_mode value')
+            exit(1)
 
+    # Setup dxcam
     if not cam:
         cam = dxcam.create(output_color="BGR")
     region_left = (resolution[0] - fov) // 2
     region_top = (resolution[1] - fov) // 2
     center = (fov // 2, fov // 2)
 
-    str_communication = f'''
-Type: {com_type}'''
+    str_communication = f'\n- Type: {com_type}'
 
     if type == 'serial':
-        str_communication += f'''
-COM port: {com_port}'''
+        str_communication += f'\n- COM port: {com_port}'
     elif type == 'socket':
-        str_communication += f'''
-Network: {ip}:{port}'''
+        str_communication += f'\n- Network: {ip}:{port}'
 
-    str_screen = f'''
-Upper color: {upper_color}
-Lower color: {lower_color}
-FOV: {fov}
-Resolution: {resolution}
-FPS: {fps_value}'''
+    str_screen = f'\n- Color: {lower_color}-{upper_color} \n- FOV: {fov} \n- Resolution: {resolution[0]}x{resolution[1]} \n- FPS: {fps_value}'
 
-    str_aim = f'''
-Offset: {offset}
-Smooth: {smooth}
-Speed: {speed}
-xMultiplier: {xMultiplier}'''
+    str_aim = f'\n- Offset: {offset} \n- Smooth: {smooth} \n- Speed: {speed} \n- xMultiplier: {xMultiplier}'''
 
-    str_recoil = f'''
-Mode: {recoil_mode}'''
+    str_recoil = f'\n- Mode: {recoil_mode}'
 
     if recoil_mode == 'move':
-        str_recoil += f'''
-Recoil: ({recoilX}, {recoilY})'''
+        str_recoil += f'\n- Recoil: ({recoilX}, {recoilY})'
     elif recoil_mode == 'offset':
-        str_recoil += f'''
-RecoilY: {recoilY}
-Max Offset: {max_offset}
-Recover: {recoil_recover}'''
+        str_recoil += f'\n- RecoilY: {recoilY} \n- Max Offset: {max_offset} \n- Recover: {recoil_recover}'
 
-    str_misc = f'''\nDebug: {debug}'''
+    str_debug = f'\n- Enabled: {debug}'
+    
+    if debug:
+        str_debug += f'\n- Display mode: {display_mode}'
 
-    print(f'''Config: 
-COMMUNICATION {str_communication}
-
-SCREEN {str_screen}
-
-AIM {str_aim}
-
-RECOIL {str_recoil}
-
-MISC {str_misc}
-
-Config read, all cheats defaulted to off.''')
+    print(f'Config: \nCOMMUNICATION {str_communication} \nSCREEN {str_screen} \nAIM {str_aim} \nRECOIL {str_recoil} \nDEBUG {str_debug} \nConfig read, all cheats defaulted to off.')
 
 read_config()

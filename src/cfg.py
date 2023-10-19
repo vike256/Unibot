@@ -45,6 +45,11 @@ recoilY = None
 recoil_recover = None
 recoil_offset = 0
 
+# Keybinds
+key_reload_config = None
+key_toggle_aim = None
+key_toggle_recoil = None
+
 # Debug
 debug = False
 display_mode = None
@@ -94,6 +99,11 @@ def read_config():
     global recoilY
     global recoil_recover
 
+    # Keybinds
+    global key_reload_config
+    global key_toggle_aim
+    global key_toggle_recoil
+
     # Debug
     global debug
     global display_mode
@@ -110,6 +120,7 @@ def read_config():
     path = os.path.join(os.path.dirname(__file__), '../config.ini')
     configFile.read(path)
 
+
     # Get communication settings
     ip = configFile.get('communication', 'ip')
     port = int(configFile.get('communication', 'port'))
@@ -119,10 +130,11 @@ def read_config():
     if value in com_type_list:
         com_type = value
     else:
-        print('Invalid com_type value')
+        print('ERROR: Invalid com_type value')
         exit(1)
 
     com_port = configFile.get('communication', 'com_port')
+
 
     # Get screen settings
     upper_color = configFile.get('screen', 'upper_color').split(',')
@@ -141,13 +153,14 @@ def read_config():
     fps_value = int(configFile.get('screen', 'fps'))
     fps = int(np.floor(1000 / fps_value + 1))
 
+
     # Get aim settings
     value = configFile.get('aim', 'type').lower()
     aim_type_list = ['pixel', 'shape']
     if value in aim_type_list:
         aim_type = value
     else:
-        print('Invalid aim_type value')
+        print('ERROR: Invalid aim_type value')
         exit(1)
 
     offset = int(configFile.get('aim', 'offset'))
@@ -156,7 +169,7 @@ def read_config():
     if 0 < value <= 1:
         smooth = value
     else:
-        print('Invalid smooth value')
+        print('ERROR: Invalid smooth value')
         exit(1)
 
     speed = float(configFile.get('aim', 'speed'))
@@ -166,8 +179,9 @@ def read_config():
     if 0 <= value <= 1:
         head_height = value
     else:
-        print('Invalid head_height value')
+        print('ERROR: Invalid head_height value')
         exit(1)
+
 
     # Get recoil settings
     value = configFile.get('recoil', 'mode').lower()
@@ -175,7 +189,7 @@ def read_config():
     if value in recoil_mode_list:
         recoil_mode = value
     else:
-        print('Invalid recoil_mode value')
+        print('ERROR: Invalid recoil_mode value')
         exit(1)
 
     max_offset = int(configFile.get('recoil', 'max_offset'))
@@ -183,6 +197,13 @@ def read_config():
     recoilY = float(configFile.get('recoil', 'recoilY'))
     recoil_recover = float(configFile.get('recoil', 'recover'))
     
+
+    # Get keybind settings
+    key_reload_config = configFile.get('keybinds', 'key_reload_config')
+    key_toggle_aim = configFile.get('keybinds', 'key_toggle_aim')
+    key_toggle_recoil = configFile.get('keybinds', 'key_toggle_recoil')
+
+
     # Get debug settings
     if configFile.get('debug', 'enabled').lower() == 'true':
         debug = True
@@ -191,8 +212,9 @@ def read_config():
         if value in display_mode_list:
             display_mode = value
         else:
-            print('Invalid display_mode value')
+            print('ERROR: Invalid display_mode value')
             exit(1)
+
 
     # Setup dxcam
     if not cam:

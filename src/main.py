@@ -75,7 +75,7 @@ def main():
 
 
             # TRIGGER
-            if wapi.GetAsyncKeyState(0x06) < 0 and trigger:
+            if wapi.GetAsyncKeyState(cfg.key_trigger) < 0 and trigger:
                 mouse.click()
 
             mouse.move(x, y)

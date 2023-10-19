@@ -49,6 +49,7 @@ recoil_offset = 0
 key_reload_config = None
 key_toggle_aim = None
 key_toggle_recoil = None
+key_trigger = None
 
 # Debug
 debug = False
@@ -103,6 +104,7 @@ def read_config():
     global key_reload_config
     global key_toggle_aim
     global key_toggle_recoil
+    global key_trigger
 
     # Debug
     global debug
@@ -202,6 +204,7 @@ def read_config():
     key_reload_config = configFile.get('keybinds', 'key_reload_config')
     key_toggle_aim = configFile.get('keybinds', 'key_toggle_aim')
     key_toggle_recoil = configFile.get('keybinds', 'key_toggle_recoil')
+    key_trigger = int(configFile.get('keybinds', 'key_trigger'))
 
 
     # Get debug settings

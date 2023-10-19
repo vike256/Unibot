@@ -45,12 +45,14 @@ region_top = None
 region_right = None
 region_bottom = None
 
+# Debug
+debug = False
+display_mode = None
+
 # Booleans
 toggleAim = False
 toggleRecoil = False
 
-# Misc
-debug = False
 
 
 def read_config():
@@ -86,6 +88,7 @@ def read_config():
     global toggleAim
     global toggleRecoil
     global debug
+    global display_mode
 
     toggleAim = False
     toggleRecoil = False
@@ -112,20 +115,23 @@ def read_config():
     fov = int(configFile.get('screen', 'fov'))
     fps_value = int(configFile.get('screen', 'fps'))
     fps = int(np.floor(1000 / fps_value + 1))
+
     aim_type = configFile.get('aim', 'type')
     offset = int(configFile.get('aim', 'offset'))
     smooth = float(configFile.get('aim', 'smooth'))
     speed = float(configFile.get('aim', 'speed'))
     xMultiplier = float(configFile.get('aim', 'xMultiplier'))
     head_height = 1 / (1.0 - float(configFile.get('aim', 'head_height')))
+
     recoil_mode = configFile.get('recoil', 'mode')
     max_offset = int(configFile.get('recoil', 'max_offset'))
     recoilX = float(configFile.get('recoil', 'recoilX'))
     recoilY = float(configFile.get('recoil', 'recoilY'))
     recoil_recover = int(configFile.get('recoil', 'recover'))
     
-    if configFile.get('misc', 'debug').lower() == 'true':
+    if configFile.get('debug', 'enabled').lower() == 'true':
         debug = True
+    display_mode = configFile.get('debug', 'display_mode')
 
     if not cam:
         cam = dxcam.create(output_color="BGR")

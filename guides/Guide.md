@@ -65,10 +65,12 @@ DO THIS STEP ONLY IF YOU ARE USING EXTERNAL HARDWARE TO SEND MOUSE INPUT
         - `max_offset` is the maximum offset the recoil can have
         - `recover` sets how fast the recoil recovers when left button is not pressed
 
-### Misc
-- `debug`
-    - `true` creates a window and displays the filtered image
-        - Slows down the program. Only use for testing
+### Debug
+- `enabled`
+    - `true` enables debug mode
+- `display_mode` sets the FOV area image used for debugging
+    - `game` displays the normal image
+    - `mask` displays targets in white on a black background
 
 
 ## Run Unibot

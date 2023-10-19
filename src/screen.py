@@ -71,6 +71,16 @@ def get_target():
                 trigger = True
 
         if cfg.debug:
+            if cfg.display_mode == 'game':
+                debug_img = img
+            elif cfg.display_mode == 'mask':
+                if cfg.aim_type == 'pixel':
+                    debug_img = mask
+                    debug_img = cv2.cvtColor(debug_img, cv2.COLOR_GRAY2BGR)
+                elif cfg.aim_type == 'shape':
+                    debug_img = thresh
+                    debug_img = cv2.cvtColor(debug_img, cv2.COLOR_GRAY2BGR)
+
             full_img = cfg.cam.grab(region=(
                 0, 
                 0, 
@@ -80,18 +90,18 @@ def get_target():
             if full_img is not None:
                 # Draw line to closest target
                 if target is not None:
-                    img = cv2.line(
-                        img,
+                    debug_img = cv2.line(
+                        debug_img,
                         cfg.center,
                         target,
-                        (255, 255, 255),
+                        (0, 255, 0),
                         2
                     )
 
                 if cfg.aim_type == 'pixel':
                     # Draw FOV circle
-                    img = cv2.circle(
-                        img,
+                    debug_img = cv2.circle(
+                        debug_img,
                         cfg.center,
                         cfg.fov // 2,
                         (0, 255, 0),
@@ -101,16 +111,16 @@ def get_target():
                     # Draw rectangle around closest target
                     if closest_contour is not None:
                         x, y, w, h = cv2.boundingRect(closest_contour)
-                        img = cv2.rectangle(
-                            img,
+                        debug_img = cv2.rectangle(
+                            debug_img,
                             (x, y),
                             (x + w, y + h),
                             (0, 0, 255),
                             2
                         )
                     # Draw FOV
-                    img = cv2.rectangle(
-                        img,
+                    debug_img = cv2.rectangle(
+                        debug_img,
                         (0, 0),
                         (cfg.fov, cfg.fov),
                         (0, 255, 0),
@@ -119,7 +129,7 @@ def get_target():
                 
                 offset_x = (cfg.resolution[0] - cfg.fov) // 2
                 offset_y = (cfg.resolution[1] - cfg.fov) // 2
-                full_img[offset_y:offset_y+img.shape[1], offset_x:offset_x+img.shape[0]] = img
+                full_img[offset_y:offset_y+debug_img.shape[1], offset_x:offset_x+debug_img.shape[0]] = debug_img
                 full_img = cv2.resize(full_img, window_resolution)
                 cv2.imshow(window_name, full_img)
                 cv2.waitKey(1)

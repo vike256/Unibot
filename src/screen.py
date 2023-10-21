@@ -3,7 +3,7 @@ import numpy as np
 
 import cfg
 
-
+# Setup debug display
 if cfg.debug:
     window_name = 'Unibot Display'
     window_resolution = (1280, 720)

@@ -10,7 +10,7 @@ Features:
 Showcase: https://youtube.com/watch?v=kHSEqLzd-O0  
 
 ## How to setup
-[Guide](/guides/Guide.md)
+[Guide](https://github.com/vike256/Unibot/wiki/Guide)
 
 ## Input communication methods supported
 - WinApi (No hardware needed)

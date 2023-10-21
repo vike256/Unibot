@@ -49,7 +49,7 @@ def main():
                     y = distanceY * cfg.speed / cfg.xMultiplier
                     y += cfg.offset
 
-                    #Smoothing
+                    # Smoothing
                     x = previousX + cfg.smooth * (x - previousX)
                     y = previousY + cfg.smooth * (y - previousY)
                     previousX = x

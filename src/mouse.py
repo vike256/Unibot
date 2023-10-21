@@ -11,6 +11,22 @@ elif cfg.com_type == 'driver':
 remainderX = 0
 remainderY = 0
 
+symbols = '-,0123456789'
+code    = 'UNIBOTCYPHER'
+
+def encrypt_command(command):
+    if cfg.encrypt:
+        encrypted_command = ""
+        for char in command:
+            if char in symbols:
+                index = symbols.index(char)
+                encrypted_command += code[index]
+            else:
+                encrypted_command += char  # Keep non-symbol characters unchanged
+        return encrypted_command
+    else:
+        return command
+
 def move(x, y):
     global remainderX
     global remainderY
@@ -28,19 +44,21 @@ def move(x, y):
 
     if x != 0 or y != 0:
         if cfg.com_type == 'socket':
-            cfg.client.sendall(f'M{x},{y}\r'.encode())
+            command = encrypt_command(f'M{x},{y}\r')
+            cfg.client.sendall(command.encode())
         elif cfg.com_type == 'serial':
-            cfg.board.write(f'M{x},{y}\r'.encode())
+            command = encrypt_command(f'M{x},{y}\r')
+            cfg.board.write(command.encode())
         elif cfg.com_type == 'driver':
             interception.move_relative(x, y)
         elif cfg.com_type == 'none':
             ctypes.windll.user32.mouse_event(0x0001, x, y, 0, 0)
 
-        print(f"{np.floor(cfg.runtime + 0.5):g} Move({x}, {y})", end='')
-        if cfg.com_type == 'socket':
-            waitForResponse()
+        if cfg.com_type == 'socket' or cfg.com_type == 'serial':
+            print(f'Sent: {command}')
+            print(getResponse())
         else:
-            print('')
+            print(f'M({x}, {y})')
 
 
 def click():
@@ -59,53 +77,20 @@ def click():
         time.sleep(randomDelay)
         ctypes.windll.user32.mouse_event(0x0004, 0, 0, 0, 0)
 
-    print(f"{np.floor(cfg.runtime + 0.5):g} Click", end='')
-    if cfg.com_type == 'socket':
-        waitForResponse()
-    elif cfg.com_type == 'driver' or cfg.com_type == 'none':
-        print(f' ({randomDelay * 1000:g} ms)')
+    if cfg.com_type == 'socket' or cfg.com_type == 'serial':
+            print(getResponse())
     else:
-        print('')
+        print(f'Click ({randomDelay * 1000:g} ms)')
 
 
-''' Functions not currently in use
-
-def press():
-    command = "B1\r"
-
+def getResponse():
+    receive = ''
     if cfg.com_type == 'socket':
-        cfg.client.sendall(command.encode())
+        receive = f'Socket: {cfg.client.recv(4).decode()}'
     elif cfg.com_type == 'serial':
-        cfg.board.write(command.encode())
-    elif cfg.com_type == 'none':
-        ctypes.windll.user32.mouse_event(0x0002, 0, 0, 0, 0)
-
-    print(f"{np.floor(cfg.runtime + 0.5):g} LButton down", end='')
-    if cfg.com_type == 'socket':
-            waitForResponse()
-    else:
-        print('')
-
-
-def release():
-    command = "B0\r"
-    if cfg.comtype == 'socket':
-        cfg.client.sendall(command.encode())
-    elif cfg.com_type == 'serial':
-        cfg.board.write(command.encode())
-    elif cfg.com_type == 'none':
-        ctypes.windll.user32.mouse_event(0x0004, 0, 0, 0, 0)
-
-
-    print(f"{np.floor(cfg.runtime + 0.5):g} LButton up", end='')
-    if cfg.com_type == 'socket':
-            waitForResponse()
-    else:
-        print('')
-'''
-
-def waitForResponse():
-    start = time.time()
-    ack = cfg.client.recv(4).decode()
-    if ack == "a\r":
-        print(f" (ACK {np.floor((time.time() - start) * 1000 + 0.5):g} ms)") # Print latency in milliseconds
+        while True:
+            receive = cfg.board.readline().decode('utf-8').strip()
+            if len(receive) > 0:
+                receive = f'Serial: {receive}'
+                break
+    return receive

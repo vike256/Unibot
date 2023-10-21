@@ -22,3 +22,7 @@ def check():
         cfg.recoil_offset = 0
         print("RECOIL: " + str(cfg.toggleRecoil))
         sleep(delay)
+    
+    if keyboard.is_pressed(cfg.key_exit):
+        print("Exiting")
+        exit(1)

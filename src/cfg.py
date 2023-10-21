@@ -8,6 +8,7 @@ configFile = configparser.ConfigParser()
 runtime = 0
 
 # Network
+encrypt = False
 ip = None
 port = None
 client = None
@@ -49,6 +50,7 @@ recoil_offset = 0
 key_reload_config = None
 key_toggle_aim = None
 key_toggle_recoil = None
+key_exit = None
 key_trigger = None
 
 # Debug
@@ -65,6 +67,7 @@ def read_config():
     global configFile
 
     # Network
+    global encrypt
     global ip
     global port
     global client
@@ -104,6 +107,7 @@ def read_config():
     global key_reload_config
     global key_toggle_aim
     global key_toggle_recoil
+    global key_exit
     global key_trigger
 
     # Debug
@@ -124,6 +128,9 @@ def read_config():
 
 
     # Get communication settings
+    value = configFile.get('communication', 'encrypt').lower()
+    if value == 'true':
+        encrypt = True
     ip = configFile.get('communication', 'ip')
     port = int(configFile.get('communication', 'port'))
 
@@ -204,6 +211,7 @@ def read_config():
     key_reload_config = configFile.get('keybinds', 'key_reload_config')
     key_toggle_aim = configFile.get('keybinds', 'key_toggle_aim')
     key_toggle_recoil = configFile.get('keybinds', 'key_toggle_recoil')
+    key_exit = configFile.get('keybinds', 'key_exit')
     key_trigger = int(configFile.get('keybinds', 'key_trigger'))
 
 
@@ -231,7 +239,7 @@ def read_config():
     if type == 'serial':
         str_communication += f'\n- COM port: {com_port}'
     elif type == 'socket':
-        str_communication += f'\n- Network: {ip}:{port}'
+        str_communication += f'\nEncrypt: {encrypt}\n- Network: {ip}:{port}'
 
     str_screen = f'\n- Color: {lower_color}-{upper_color} \n- FOV: {fov} \n- Resolution: {resolution[0]}x{resolution[1]} \n- FPS: {fps_value}'
 

@@ -13,6 +13,7 @@ if cfg.debug:
 def get_target():
     target = None
     trigger = False
+    closest_contour = None
     
     img = cfg.cam.grab(region=(
         cfg.region_left, 
@@ -48,7 +49,6 @@ def get_target():
             contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
 
             if len(contours) != 0:
-                closest_contour = None
                 min_distance = float('inf')
                 for contour in contours:
                     x, y, w, h = cv2.boundingRect(contour)

@@ -77,8 +77,7 @@ void loop() {
           Mouse.release(MOUSE_LEFT);
         }
       }
-      client.print(cmd);
-      client.print("\r\n");
+      client.print("a\r\n");
       client.flush();
     }
   }

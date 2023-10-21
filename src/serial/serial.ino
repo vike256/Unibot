@@ -59,7 +59,6 @@ void loop() {
         Mouse.release(MOUSE_LEFT);
       }
     }
-    Serial.print(cmd);
-    Serial.print("\r\n");
+    Serial.print("a\r\n");
   }
 }

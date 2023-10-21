@@ -237,7 +237,7 @@ def read_config():
     str_communication = f'\n- Type: {com_type}'
 
     if type == 'serial':
-        str_communication += f'\n- COM port: {com_port}'
+        str_communication += f'\nEncrypt: {encrypt}\n- COM port: {com_port}'
     elif type == 'socket':
         str_communication += f'\nEncrypt: {encrypt}\n- Network: {ip}:{port}'
 

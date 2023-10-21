@@ -1,4 +1,5 @@
 # Guide for Unibot
+For early access and personalized assistance with setup and problem-solving, feel free to explore my Patreon page. (Link available in my profile)  
 
 ## Sections  
 [Setup specific guides](#setup-specific-guides)  

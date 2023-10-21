@@ -27,12 +27,10 @@ def move(x, y):
     remainderY -= y
 
     if x != 0 or y != 0:
-        command = f"M{x},{y}\r"
-
         if cfg.com_type == 'socket':
-            cfg.client.sendall(command.encode())
+            cfg.client.sendall(f'M{x},{y}\r'.encode())
         elif cfg.com_type == 'serial':
-            cfg.board.write(command.encode())
+            cfg.board.write(f'M{x},{y}\r'.encode())
         elif cfg.com_type == 'driver':
             interception.move_relative(x, y)
         elif cfg.com_type == 'none':
@@ -46,12 +44,10 @@ def move(x, y):
 
 
 def click():
-    command = "C\r"
-    
     if cfg.com_type == 'socket':
-        cfg.client.sendall(command.encode())
+        cfg.client.sendall('C\r'.encode())
     elif cfg.com_type == 'serial':
-        cfg.board.write(command.encode())
+        cfg.board.write('C\r'.encode())
     elif cfg.com_type == 'driver':
         randomDelay = (np.random.randint(40) + 40) / 1000
         interception.mouse_down('left')

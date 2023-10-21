@@ -13,38 +13,33 @@ if cfg.debug:
 def get_target():
     target = None
     trigger = False
-    closest_contour = None
-    min_distance = float('inf')
+    
     img = cfg.cam.grab(region=(
         cfg.region_left, 
         int(cfg.region_top - cfg.recoil_offset), 
         cfg.region_left + cfg.fov, 
         int(cfg.region_top - cfg.recoil_offset + cfg.fov)
         ))
+
     if img is not None:
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         mask = cv2.inRange(hsv, cfg.lower_color, cfg.upper_color)
 
         if cfg.aim_type == 'pixel':
-            for y in range(cfg.fov):
-                for x in range(cfg.fov):
-                    pixel = hsv[y, x]
-                    h, s, v = pixel
-                    img_rel_x = x - cfg.center[0]
-                    img_rel_y = y - cfg.center[1]
-                    distance = np.sqrt(img_rel_x**2 + img_rel_y**2)
-                    if  distance <= cfg.fov // 2 and \
-                        cfg.lower_color[0] <= h <= cfg.upper_color[0] and \
-                        cfg.lower_color[1] <= s <= cfg.upper_color[1] and \
-                        cfg.lower_color[2] <= v <= cfg.upper_color[2]:
-                        if distance < min_distance:
-                            min_distance = distance
-                            target = (img_rel_x + cfg.center[0], img_rel_y + cfg.center[1])
-                            if distance == 0:
-                                trigger = True
-                                break
-                if min_distance == 0:
-                    break
+            lit_pixels = np.where(mask == 255)
+            if len(lit_pixels[0]) > 0:
+                min_distance = float('inf')
+                closest_lit_pixel = None
+
+                for x, y in zip(lit_pixels[1], lit_pixels[0]):
+                    distance = np.sqrt((x - cfg.center[0])**2 + (y - cfg.center[1])**2)
+                    
+                    if distance < min_distance:
+                        min_distance = distance
+                        target = (x, y)
+                        if min_distance == 0:
+                            trigger = True
+                            break
 
         elif cfg.aim_type == 'shape':
             kernel = np.ones((3,3), np.uint8)
@@ -53,6 +48,8 @@ def get_target():
             contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
 
             if len(contours) != 0:
+                closest_contour = None
+                min_distance = float('inf')
                 for contour in contours:
                     x, y, w, h = cv2.boundingRect(contour)
                     cX = x + w // 2

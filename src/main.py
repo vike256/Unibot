@@ -50,8 +50,8 @@ def main():
             if utils.recoil_state:
                 if delta_time != 0:
                     if config.recoil_mode == 'move' and wapi.GetAsyncKeyState(0x01) < 0:
-                        x += config.recoilX / delta_time
-                        y += config.recoilY / delta_time
+                        x += config.recoil_x / delta_time
+                        y += config.recoil_y / delta_time
                     elif config.recoil_mode == 'offset':
                         if wapi.GetAsyncKeyState(0x01) < 0:
                             if config.recoil_offset < config.max_offset:

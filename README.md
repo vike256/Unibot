@@ -12,7 +12,7 @@ Showcase: https://youtube.com/watch?v=kHSEqLzd-O0
 ## Installation guide
 [Guide](https://github.com/vike256/Unibot/wiki/Guide)
 
-## Input methods
+## Supported communication and input methods
 - WinApi
 - Interception driver
 - Serial

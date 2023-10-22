@@ -12,7 +12,7 @@ class Mouse:
             case 'socket':
                 import socket
                 self.symbols = '-,0123456789'
-                self.code    = 'UNIBOTCYPHER'
+                self.code = 'UNIBOTCYPHER'
                 self.encrypt = config.encrypt
                 self.ip = config.ip
                 self.port = config.port
@@ -27,7 +27,7 @@ class Mouse:
             case 'serial':
                 import serial
                 self.symbols = '-,0123456789'
-                self.code    = 'UNIBOTCYPHER'
+                self.code = 'UNIBOTCYPHER'
                 self.encrypt = config.encrypt
                 self.com_port = config.com_port
                 self.board = serial.Serial(self.com_port, 115200)
@@ -48,9 +48,9 @@ class Mouse:
         if self.encrypt:
             encrypted_command = ""
             for char in command:
-                if char in symbols:
-                    index = symbols.index(char)
-                    encrypted_command += code[index]
+                if char in self.symbols:
+                    index = self.symbols.index(char)
+                    encrypted_command += self.code[index]
                 else:
                     encrypted_command += char  # Keep non-symbol characters unchanged
             return encrypted_command
@@ -64,13 +64,13 @@ class Mouse:
         if x != 0 or y != 0:
             match self.com_type:
                 case 'socket':
-                    command = encrypt_command(f'M{x},{y}\r')
+                    command = self.encrypt_command(f'M{x},{y}\r')
                     self.client.sendall(command.encode())
-                    print(f'Sent: {command}\nReceived: {getResponse()}')
+                    print(f'Sent: {command}\nReceived: {self.get_response()}')
                 case 'serial':
-                    command = encrypt_command(f'M{x},{y}\r')
+                    command = self.encrypt_command(f'M{x},{y}\r')
                     self.board.write(command.encode())
-                    print(f'Sent: {command}\nReceived: {getResponse()}')
+                    print(f'Sent: {command}\nReceived: {self.get_response()}')
                 case 'driver':
                     interception.move_relative(x, y)
                     print(f'M({x}, {y})')
@@ -78,30 +78,28 @@ class Mouse:
                     ctypes.windll.user32.mouse_event(0x0001, x, y, 0, 0)
                     print(f'M({x}, {y})')
 
-
     def click(self):
         match self.com_type:
             case 'socket':
                 self.client.sendall('C\r'.encode())
-                print(f'Sent: Click\nReceived: {getResponse()}')
+                print(f'Sent: Click\nReceived: {self.get_response()}')
             case 'serial':
                 self.board.write('C\r'.encode())
-                print(f'Sent: Click\nReceived: {getResponse()}')
+                print(f'Sent: Click\nReceived: {self.get_response()}')
             case 'driver':
-                randomDelay = (np.random.randint(40) + 40) / 1000
+                random_delay = (np.random.randint(40) + 40) / 1000
                 interception.mouse_down('left')
-                time.sleep(randomDelay)
+                time.sleep(random_delay)
                 interception.mouse_up('left')
-                print(f'C({randomDelay * 1000:g})')
+                print(f'C({random_delay * 1000:g})')
             case 'none':
-                randomDelay = (np.random.randint(40) + 40) / 1000
+                random_delay = (np.random.randint(40) + 40) / 1000
                 ctypes.windll.user32.mouse_event(0x0002, 0, 0, 0, 0)
-                time.sleep(randomDelay)
+                time.sleep(random_delay)
                 ctypes.windll.user32.mouse_event(0x0004, 0, 0, 0, 0)
-                print(f'C({randomDelay * 1000:g})')
+                print(f'C({random_delay * 1000:g})')
 
-
-    def getResponse(self):
+    def get_response(self):
         match self.com_type:
             case 'socket':
                 return f'Socket: {self.client.recv(4).decode()}'

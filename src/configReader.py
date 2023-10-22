@@ -6,11 +6,38 @@ import os
 class ConfigReader:
     def __init__(self):
         self.parser = ConfigParser()
+        self.com_type = None
+        self.encrypt = False
+        self.ip = None
+        self.port = None
+        self.com_port = None
+        self.detection_type = None
+        self.upper_color = None
+        self.lower_color = None
+        self.fov = None
+        self.fps = None
+        self.offset = None
+        self.smooth = None
+        self.speed = None
+        self.x_multiplier = None
+        self.head_height = None
+        self.recoil_mode = None
+        self.recoil_x = None
+        self.recoil_y = None
+        self.max_offset = None
+        self.recoil_recover = None
+        self.key_reload_config = None
+        self.key_toggle_aim = None
+        self.key_toggle_recoil = None
+        self.key_trigger = None
+        self.key_exit = None
+        self.debug = None
+        self.display_mode = None
 
         # Get config path and read it
         self.path = os.path.join(os.path.dirname(__file__), '../config.ini')
         self.parser.read(self.path)
-
+        self.read_config()
 
     def read_config(self):
         # Get communication settings
@@ -35,8 +62,7 @@ class ConfigReader:
             case 'serial':
                 self.com_port = self.parser.get('communication', 'com_port')
 
-
-        # Get screen settings  
+        # Get screen settings
         value = self.parser.get('screen', 'detection_type').lower()
         detection_type_list = ['pixel', 'shape']
         if value in detection_type_list:
@@ -58,7 +84,6 @@ class ConfigReader:
         fps_value = int(self.parser.get('screen', 'fps'))
         self.fps = int(np.floor(1000 / fps_value + 1))
 
-
         # Get aim settings
         self.offset = int(self.parser.get('aim', 'offset'))
 
@@ -79,7 +104,6 @@ class ConfigReader:
             print('ERROR: Invalid head_height value')
             exit(1)
 
-
         # Get recoil settings
         value = self.parser.get('recoil', 'mode').lower()
         recoil_mode_list = ['move', 'offset']
@@ -97,15 +121,13 @@ class ConfigReader:
                 self.recoil_y = float(self.parser.get('recoil', 'recoil_y'))
                 self.max_offset = int(self.parser.get('recoil', 'max_offset'))
                 self.recoil_recover = float(self.parser.get('recoil', 'recover'))
-        
 
         # Get keybind settings
-        self.key_reload_config = self.parser.get('keybinds', 'key_reload_config')
-        self.key_toggle_aim = self.parser.get('keybinds', 'key_toggle_aim')
-        self.key_toggle_recoil = self.parser.get('keybinds', 'key_toggle_recoil')
-        self.key_trigger = int(self.parser.get('keybinds', 'key_trigger'))
-        self.key_exit = self.parser.get('keybinds', 'key_exit')
-
+        self.key_reload_config = self.parser.get('key_binds', 'key_reload_config')
+        self.key_toggle_aim = self.parser.get('key_binds', 'key_toggle_aim')
+        self.key_toggle_recoil = self.parser.get('key_binds', 'key_toggle_recoil')
+        self.key_trigger = int(self.parser.get('key_binds', 'key_trigger'))
+        self.key_exit = self.parser.get('key_binds', 'key_exit')
 
         # Get debug settings
         value = self.parser.get('debug', 'enabled').lower()

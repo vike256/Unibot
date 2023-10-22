@@ -34,6 +34,7 @@ class Screen:
         self.thresh = None
         self.target = None
         self.closest_contour = None
+        self.img = None
 
         # Setup debug display
         if self.debug:
@@ -45,10 +46,8 @@ class Screen:
             )
             cv2.namedWindow(self.window_name)
 
-
     def __del__(self):
         del self.cam
-
 
     def screenshot(self, region):
         while True:
@@ -56,21 +55,19 @@ class Screen:
             if image is not None:
                 return np.array(image)
 
-
     def get_target(self):
         self.target = None
         trigger = False
         self.closest_contour = None
         
-        img = self.screenshot(self.fov_region)
-        hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+        self.img = self.screenshot(self.fov_region)
+        hsv = cv2.cvtColor(self.img, cv2.COLOR_BGR2HSV)
         self.mask = cv2.inRange(hsv, self.lower_color, self.upper_color)
 
         if self.detection_type == 'pixel':
             lit_pixels = np.where(self.mask == 255)
             if len(lit_pixels[0]) > 0:
                 min_distance = float('inf')
-                closest_lit_pixel = None
 
                 for x, y in zip(lit_pixels[1], lit_pixels[0]):
                     distance = np.sqrt((x - self.fov_center[0])**2 + (y - self.fov_center[1])**2)
@@ -83,7 +80,7 @@ class Screen:
                             break
 
         elif self.detection_type == 'shape':
-            kernel = np.ones((3,3), np.uint8)
+            kernel = np.ones((3, 3), np.uint8)
             dilated = cv2.dilate(self.mask, kernel, iterations=5)
             self.thresh = cv2.threshold(dilated, 60, 255, cv2.THRESH_BINARY)[1]
             contours, _ = cv2.findContours(self.thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
@@ -92,19 +89,21 @@ class Screen:
                 min_distance = float('inf')
                 for contour in contours:
                     x, y, w, h = cv2.boundingRect(contour)
-                    cX = x + w // 2
-                    cY = int(y + h * (1 - self.head_height))
-                    distance = np.sqrt((cX - self.fov_center[0])**2 + (cY - self.fov_center[1])**2)
+                    center_x = x + w // 2
+                    center_y = int(y + h * (1 - self.head_height))
+                    distance = np.sqrt((center_x - self.fov_center[0])**2 + (center_y - self.fov_center[1])**2)
                     if distance < min_distance:
                         min_distance = distance
                         self.closest_contour = contour
-                        self.target = (cX, cY)
+                        self.target = (center_x, center_y)
             
             value = 8
-            if  self.thresh[self.fov_center[0] + value, self.fov_center[1]] == 255 and \
-                self.thresh[self.fov_center[0] - value, self.fov_center[1]] == 255 and \
-                self.thresh[self.fov_center[0], self.fov_center[1] - value] == 255 and \
-                self.thresh[self.fov_center[0], self.fov_center[1] + value] == 255:
+            if (
+                self.thresh[self.fov_center[0] + value, self.fov_center[1]] == 255 and
+                self.thresh[self.fov_center[0] - value, self.fov_center[1]] == 255 and
+                self.thresh[self.fov_center[0], self.fov_center[1] - value] == 255 and
+                self.thresh[self.fov_center[0], self.fov_center[1] + value] == 255
+            ):
                 trigger = True
 
         if self.debug:
@@ -112,21 +111,20 @@ class Screen:
  
         return self.target, trigger
 
-
     def debug_display(self):
         if self.display_mode == 'game':
-            debug_img = img
-        elif self.display_mode == 'mask':
+            debug_img = self.img
+        else:
             if self.detection_type == 'pixel':
                 debug_img = self.mask
                 debug_img = cv2.cvtColor(debug_img, cv2.COLOR_GRAY2BGR)
-            elif self.detection_type == 'shape':
+            else:
                 debug_img = self.thresh
                 debug_img = cv2.cvtColor(debug_img, cv2.COLOR_GRAY2BGR)
 
         full_img = self.screenshot(self.screen_region)
 
-        # Draw line to closest target
+        # Draw line to the closest target
         if self.target is not None:
             debug_img = cv2.line(
                 debug_img,

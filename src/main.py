@@ -1,6 +1,4 @@
-import cv2
 import time
-import numpy as np
 import win32api as wapi
 
 from mouse import Mouse
@@ -11,8 +9,8 @@ from utils import Utils
 def main():
     while True:
         start_time = time.time()
-        previousX = 0
-        previousY = 0
+        previous_x = 0
+        previous_y = 0
 
         utils = Utils()
         config = utils.config
@@ -27,7 +25,7 @@ def main():
             x = 0
             y = 0
             
-            reload = utils.check_keybinds()
+            reload = utils.check_key_binds()
             if reload:
                 break
 
@@ -43,10 +41,10 @@ def main():
                     y *= config.speed / config.x_multiplier
 
                     # Smoothing
-                    x = previousX + config.smooth * (x - previousX)
-                    y = previousY + config.smooth * (y - previousY)
-                    previousX = x
-                    previousY = y
+                    x = previous_x + config.smooth * (x - previous_x)
+                    y = previous_y + config.smooth * (y - previous_y)
+                    previous_x = x
+                    previous_y = y
 
             # RECOIL
             if utils.recoil_state:
@@ -66,7 +64,6 @@ def main():
                                 if config.recoil_offset < 0:
                                     config.recoil_offset = 0
 
-
             # TRIGGER
             if utils.get_trigger_state() and trigger:
                 mouse.click()
@@ -84,5 +81,5 @@ def main():
         print('Reloading')
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     main()

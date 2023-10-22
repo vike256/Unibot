@@ -12,14 +12,15 @@ Showcase: https://youtube.com/watch?v=kHSEqLzd-O0
 ## Installation guide
 [Guide](https://github.com/vike256/Unibot/wiki/Guide)
 
-## Input communication methods supported
-- WinApi (No hardware needed)
-- Interception driver (No hardware needed)
-- Ethernet
+## Input methods
+- WinApi
+- Interception driver
 - Serial
+- Ethernet
 - Wi-Fi
 
-## Hardware tested:  
-- Arduino Leonardo R3
-- Arduino Leonardo R3 + Ethernet Shield W5100 + USB to ethernet adapter 
+Unibot should work with any Arduino IDE compatible board that can act as a HID.  
+Unibot has been tested with these setups:  
 - Raspberry Pi Pico W
+- Arduino Leonardo R3
+- Arduino Leonardo R3 + Ethernet Shield W5100 + USB to ethernet adapter

@@ -3,30 +3,21 @@ import time
 import numpy as np
 import win32api as wapi
 
-import cfg
-import keybinds
-import mouse
-import screen
+from mouse import Mouse
+from screen import Screen
+from utils import Utils
 
 
 def main():
-    if cfg.com_type == 'socket':
-        import socket
-        cfg.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    elif cfg.com_type == 'serial':
-        import serial
-        cfg.board = serial.Serial(cfg.com_port, 115200)
+    while True:
+        start_time = time.time()
+        previousX = 0
+        previousY = 0
 
-    start_time = time.time()
-    previousX = 0
-    previousY = 0
-
-    print("Connecting...")
-
-    try:
-        if cfg.com_type == 'socket':
-            cfg.client.connect((cfg.ip, cfg.port))
-        print("Connected")
+        utils = Utils()
+        config = utils.config
+        mouse = Mouse(config)
+        screen = Screen(config)
 
         while True:
             delta_time = (time.time() - start_time) * 1000
@@ -34,68 +25,63 @@ def main():
             x = 0
             y = 0
             
-            keybinds.check()
+            reload = utils.check_keybinds()
+            if reload:
+                break
 
             target, trigger = screen.get_target()
 
             # AIM if mouse left or right down
-            if cfg.toggleAim and (wapi.GetAsyncKeyState(0x01) < 0 or wapi.GetAsyncKeyState(0x02) < 0):
+            if utils.get_aim_state():
                 if target is not None:
                     cX, cY = target
 
-                    distanceX = cX - cfg.center[0]
-                    distanceY = cY - cfg.center[1]
-                    x = distanceX * cfg.speed
-                    y = distanceY * cfg.speed / cfg.xMultiplier
-                    y += cfg.offset
+                    distanceX = cX - screen.fov_center[0]
+                    distanceY = cY - screen.fov_center[1]
+                    x = distanceX * config.speed
+                    y = distanceY * config.speed / config.x_multiplier
+                    y += config.offset
 
                     # Smoothing
-                    x = previousX + cfg.smooth * (x - previousX)
-                    y = previousY + cfg.smooth * (y - previousY)
+                    x = previousX + config.smooth * (x - previousX)
+                    y = previousY + config.smooth * (y - previousY)
                     previousX = x
                     previousY = y
 
             # RECOIL
-            if cfg.toggleRecoil:
+            if utils.recoil_state:
                 if delta_time != 0:
-                    if cfg.recoil_mode == 'move' and wapi.GetAsyncKeyState(0x01) < 0:
-                        x += cfg.recoilX / delta_time
-                        y += cfg.recoilY / delta_time
-                    elif cfg.recoil_mode == 'offset':
+                    if config.recoil_mode == 'move' and wapi.GetAsyncKeyState(0x01) < 0:
+                        x += config.recoilX / delta_time
+                        y += config.recoilY / delta_time
+                    elif config.recoil_mode == 'offset':
                         if wapi.GetAsyncKeyState(0x01) < 0:
-                            if cfg.recoil_offset < cfg.max_offset:
-                                cfg.recoil_offset += cfg.recoilY / delta_time
-                                if cfg.recoil_offset > cfg.max_offset:
-                                    cfg.recoil_offset = cfg.max_offset
+                            if config.recoil_offset < config.max_offset:
+                                config.recoil_offset += config.recoilY / delta_time
+                                if config.recoil_offset > config.max_offset:
+                                    config.recoil_offset = config.max_offset
                         else:
-                            if cfg.recoil_offset > 0:
-                                cfg.recoil_offset -= cfg.recoil_recover / delta_time
-                                if cfg.recoil_offset < 0:
-                                    cfg.recoil_offset = 0
+                            if config.recoil_offset > 0:
+                                config.recoil_offset -= config.recoil_recover / delta_time
+                                if config.recoil_offset < 0:
+                                    config.recoil_offset = 0
 
 
             # TRIGGER
-            if wapi.GetAsyncKeyState(cfg.key_trigger) < 0 and trigger:
+            if utils.get_trigger_state() and trigger:
                 mouse.click()
 
             mouse.move(x, y)
             
             time_spent = (time.time() - start_time) * 1000
-            if time_spent < cfg.fps:
-                time.sleep((cfg.fps - time_spent) / 1000)
-            
-            cfg.runtime += delta_time
-
-    except KeyboardInterrupt:
-        pass
-
-    except TimeoutError:
-        print("Connection attempt failed")
-
-    finally:
-        if cfg.com_type == 'socket':
-            cfg.client.close()
-        print("Closed")
+            if time_spent < screen.fps:
+                time.sleep((screen.fps - time_spent) / 1000)
+        
+        del utils
+        del config
+        del mouse
+        del screen
+        print('Reloading...')
 
 
 if __name__=="__main__":

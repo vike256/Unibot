@@ -2,6 +2,8 @@ import time
 import numpy as np
 import ctypes
 import interception
+import serial
+import socket
 
 
 class Mouse:
@@ -10,7 +12,6 @@ class Mouse:
         
         match self.com_type:
             case 'socket':
-                import socket
                 self.symbols = '-,0123456789'
                 self.code = 'UNIBOTCYPHER'
                 self.encrypt = config.encrypt
@@ -25,7 +26,6 @@ class Mouse:
                     self.close_socket()
                     exit(1)
             case 'serial':
-                import serial
                 self.symbols = '-,0123456789'
                 self.code = 'UNIBOTCYPHER'
                 self.encrypt = config.encrypt

@@ -7,6 +7,8 @@ from utils import Utils
 
 
 def main():
+    mouseheld = False
+
     while True:
         start_time = time.time()
         previous_x = 0
@@ -65,8 +67,14 @@ def main():
                                     config.recoil_offset = 0
 
             # TRIGGER
-            if utils.get_trigger_state() and trigger:
-                mouse.click()
+            if trigger and wapi.GetAsyncKeyState(config.key_trigger) < 0:
+                if not mouseheld:
+                    mouseheld = True
+                    mouse.press()
+                    
+            elif mouseheld: 
+                mouseheld = False
+                mouse.release()
 
             mouse.move(x, y)
             

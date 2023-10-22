@@ -34,13 +34,11 @@ def main():
             # AIM if mouse left or right down
             if utils.get_aim_state():
                 if target is not None:
-                    cX, cY = target
+                    x = target[0] - screen.fov_center[0]
+                    y = target[1] - screen.fov_center[1]
 
-                    distanceX = cX - screen.fov_center[0]
-                    distanceY = cY - screen.fov_center[1]
-                    x = distanceX * config.speed
-                    y = distanceY * config.speed / config.x_multiplier
-                    y += config.offset
+                    x *= config.speed
+                    y *= config.speed / config.x_multiplier
 
                     # Smoothing
                     x = previousX + config.smooth * (x - previousX)

@@ -7,6 +7,7 @@ from pyautogui import size
 class Screen:
     def __init__(self, config):
         self.cam = dxcam.create(output_color="BGR")
+        self.offset = config.offset
         self.screen = size()
         self.screen_center = (self.screen.width // 2, self.screen.height // 2)
         self.screen_region = (
@@ -19,9 +20,9 @@ class Screen:
         self.fov_center = (self.fov // 2, self.fov // 2)
         self.fov_region = (
             self.screen_center[0] - self.fov // 2,
-            self.screen_center[1] - self.fov // 2,
+            self.screen_center[1] - self.fov // 2 - self.offset,
             self.screen_center[0] + self.fov // 2,
-            self.screen_center[1] + self.fov // 2
+            self.screen_center[1] + self.fov // 2 - self.offset
         )
         self.detection_type = config.detection_type
         self.upper_color = config.upper_color
@@ -165,8 +166,16 @@ class Screen:
             )
         
         offset_x = (self.screen.width - self.fov) // 2
-        offset_y = (self.screen.height - self.fov) // 2
+        offset_y = (self.screen.height - self.fov) // 2 - self.offset
         full_img[offset_y:offset_y+debug_img.shape[1], offset_x:offset_x+debug_img.shape[0]] = debug_img
+        # Draw a rectangle crosshair
+        full_img = cv2.rectangle( 
+            full_img, 
+            (self.screen_center[0] - 5, self.screen_center[1] - 5),
+            (self.screen_center[0] + 5, self.screen_center[1] + 5),
+            (255, 255, 255),
+            1
+        ) 
         full_img = cv2.resize(full_img, self.window_resolution)
         cv2.imshow(self.window_name, full_img)
         cv2.waitKey(1)

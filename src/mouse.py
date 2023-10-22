@@ -20,7 +20,7 @@ class Mouse:
                 print(f'Connecting to {self.ip}:{self.port}...')
                 try:
                     self.client.connect((self.ip, self.port))
-                except Exception as e:
+                except TimeoutError as e:
                     print(f'ERROR: Could not connect. {e}')
                     self.close_socket()
                     exit(1)

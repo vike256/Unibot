@@ -19,7 +19,7 @@ class Mouse:
                 self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 print(f'Connecting to {self.ip}:{self.port}...')
                 try:
-                    self.client.connect(self.ip, self.port)
+                    self.client.connect((self.ip, self.port))
                 except Exception as e:
                     print(f'ERROR: Could not connect. {e}')
                     self.close_socket()

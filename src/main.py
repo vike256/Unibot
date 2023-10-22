@@ -19,6 +19,8 @@ def main():
         mouse = Mouse(config)
         screen = Screen(config)
 
+        print('ON')
+
         while True:
             delta_time = (time.time() - start_time) * 1000
             start_time = time.time()
@@ -79,7 +81,7 @@ def main():
         del config
         del mouse
         del screen
-        print('Reloading...')
+        print('Reloading')
 
 
 if __name__=="__main__":

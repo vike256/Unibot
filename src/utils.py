@@ -18,6 +18,8 @@ class Utils:
         self.aim_state = False
         self.recoil_state = False
         self.recoil_offset = 0
+        self.M1 = self.config.M1
+        self.M2 = self.config.M2
 
     def check_key_binds(self):
         if keyboard.is_pressed(self.key_reload_config):
@@ -37,20 +39,17 @@ class Utils:
         if keyboard.is_pressed(self.key_exit):
             print("Exiting")
             exit(1)
+            
         return False
 
     def reload_config(self):
         self.config.read_config()
 
     def get_aim_state(self):
-        if self.aim_state and (wapi.GetAsyncKeyState(0x01) < 0 or wapi.GetAsyncKeyState(0x02) < 0):
-            return True
-        return False
+        return self.aim_state and ((self.M1 and wapi.GetAsyncKeyState(0x01) < 0) or (self.M2 and wapi.GetAsyncKeyState(0x02) < 0))
 
     def get_trigger_state(self):
-        if wapi.GetAsyncKeyState(self.key_trigger) < 0:
-            return True
-        return False
+        return wapi.GetAsyncKeyState(self.key_trigger) < 0
 
     @staticmethod
     def print_attributes(obj):

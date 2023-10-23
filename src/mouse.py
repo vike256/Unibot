@@ -99,6 +99,18 @@ class Mouse:
                 ctypes.windll.user32.mouse_event(0x0004, 0, 0, 0, 0)
                 print(f'C({random_delay * 1000:g})')
 
+    def press(self):
+        match self.com_type:
+            case 'socket':
+                self.client.sendall('B1\r'.encode())
+                print(f'Sent: LButton Down\nReceived: {self.get_response()}')
+
+    def release(self):
+        match self.com_type:
+            case 'socket':
+                self.client.sendall('B0\r'.encode())
+                print(f'Sent: LButton Up\nReceived: {self.get_response()}')
+
     def get_response(self):
         match self.com_type:
             case 'socket':

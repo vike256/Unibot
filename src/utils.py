@@ -46,10 +46,10 @@ class Utils:
         self.config.read_config()
 
     def get_aim_state(self):
-        return self.aim_state and ((self.M1 and wapi.GetAsyncKeyState(0x01) < 0) or (self.M2 and wapi.GetAsyncKeyState(0x02) < 0))
+        return self.aim_state and ((self.M1 and wapi.GetAsyncKeyState(0x01) < 0) or (self.M2 and wapi.GetAsyncKeyState(0x02) < 0)) and True or False
 
     def get_trigger_state(self):
-        return wapi.GetAsyncKeyState(self.key_trigger) < 0
+        return wapi.GetAsyncKeyState(self.key_trigger) < 0 and True or False
 
     @staticmethod
     def print_attributes(obj):

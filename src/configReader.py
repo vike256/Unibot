@@ -2,7 +2,6 @@ from configparser import ConfigParser
 import numpy as np
 import os
 
-
 class ConfigReader:
     def __init__(self):
         self.parser = ConfigParser()
@@ -17,6 +16,8 @@ class ConfigReader:
         self.fov = None
         self.fps = None
         self.offset = None
+        self.M1 = None
+        self.M2 = None
         self.smooth = None
         self.speed = None
         self.x_multiplier = None
@@ -86,6 +87,8 @@ class ConfigReader:
 
         # Get aim settings
         self.offset = int(self.parser.get('aim', 'offset'))
+        self.M1 = self.parser.get('aim_binds', 'M1').lower() == 'true'
+        self.M2 = self.parser.get('aim_binds', 'M2').lower() == 'true'
 
         value = float(self.parser.get('aim', 'smooth'))
         if 0 <= value < 1:

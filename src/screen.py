@@ -97,13 +97,7 @@ class Screen:
                         self.closest_contour = contour
                         self.target = (center_x, center_y)
             
-            value = 8
-            if (
-                self.thresh[self.fov_center[0] + value, self.fov_center[1]] == 255 and
-                self.thresh[self.fov_center[0] - value, self.fov_center[1]] == 255 and
-                self.thresh[self.fov_center[0], self.fov_center[1] - value] == 255 and
-                self.thresh[self.fov_center[0], self.fov_center[1] + value] == 255
-            ):
+            if self.closest_contour is not None and cv2.pointPolygonTest(self.closest_contour, (self.fov_center[0], self.fov_center[1]), False) >= 0:
                 trigger = True
 
         if self.debug:

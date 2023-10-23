@@ -87,8 +87,8 @@ class ConfigReader:
 
         # Get aim settings
         self.offset = int(self.parser.get('aim', 'offset'))
-        self.M1 = self.parser.get('aim_binds', 'M1').lower() == 'true'
-        self.M2 = self.parser.get('aim_binds', 'M2').lower() == 'true'
+        self.M1 = self.parser.get('aim_binds', 'M1').lower() == 'true' and True or False
+        self.M2 = self.parser.get('aim_binds', 'M2').lower() == 'true' and True or False
 
         value = float(self.parser.get('aim', 'smooth'))
         if 0 <= value < 1:

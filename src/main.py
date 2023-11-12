@@ -35,6 +35,9 @@ This is free software, and you are welcome to redistribute it under certain cond
 For details see <LICENSE.txt>.
     ''')
 
+    # Print donation info
+    print('Consider donating: https://github.com/vike256#donations \n')
+
     # Program loop
     while True:
         # Track delta time

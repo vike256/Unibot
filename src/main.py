@@ -27,6 +27,14 @@ from utils import Utils
 
 
 def main():
+    # Print licensing info
+    print('''
+Unibot  Copyright (C) 2023  vike256
+This program comes with ABSOLUTELY NO WARRANTY.
+This is free software, and you are welcome to redistribute it under certain conditions.
+For details see <LICENSE.txt>.
+    ''')
+
     # Program loop
     while True:
         # Track delta time

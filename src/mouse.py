@@ -45,6 +45,9 @@ class Mouse:
 
         self.com_port = config.com_port
         self.board = None
+
+        self.remainder_x = 0
+        self.remainder_y = 0
         
         match self.com_type:
             case 'socket':
@@ -90,8 +93,17 @@ class Mouse:
             return command
 
     def move(self, x, y):
-        x = int(np.floor(x + 0.5))
-        y = int(np.floor(y + 0.5))
+        # Add the remainder from the previous calculation
+        x += self.remainder_x
+        y += self.remainder_y
+
+        # Round x and y, and calculate the new remainder
+        self.remainder_x = x
+        self.remainder_y = y
+        x = int(x)
+        y = int(y)
+        self.remainder_x -= x
+        self.remainder_y -= y
 
         if x != 0 or y != 0:
             match self.com_type:

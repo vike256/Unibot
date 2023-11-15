@@ -25,7 +25,6 @@ class Cheats:
         # Aim
         self.move_x, self.move_y = (0, 0)
         self.previous_x, self.previous_y = (0, 0)
-        self.remainder_x, self.remainder_y = (0, 0)
         self.smooth = config.smooth
         self.speed = config.speed
         self.x_multiplier = config.x_multiplier
@@ -50,24 +49,13 @@ class Cheats:
             x = self.previous_x + self.smooth * (x - self.previous_x)
             y = self.previous_y + self.smooth * (y - self.previous_y)
 
-            # Add the remainder from the previous calculation
-            x += self.remainder_x
-            y += self.remainder_y
-
-            # Round x and y, and calculate the new remainder
-            self.remainder_x = x
-            self.remainder_y = y
-            x = int(x)
-            y = int(y)
-            self.remainder_x -= x
-            self.remainder_y -= y
-
             # Store the calculated values for next calculation
             self.previous_x, self.previous_y = (x, y)
             # Apply x and y to the move variables
             self.move_x, self.move_y = (x, y)
 
     def apply_recoil(self, state, delta_time):
+        delta_time /= 1000 # Convert to ms
         if state and delta_time != 0:
             # Mode move just applies configured movement to the move values
             if self.recoil_mode == 'move' and win32api.GetAsyncKeyState(0x01) < 0:

@@ -68,26 +68,25 @@ class Cheats:
             self.move_x, self.move_y = (x, y)
 
     def apply_recoil(self, state, delta_time):
-        if state:
-            if delta_time != 0:
-                # Mode move just applies configured movement to the move values
-                if self.recoil_mode == 'move' and win32api.GetAsyncKeyState(0x01) < 0:
-                    self.move_x += self.recoil_x / delta_time
-                    self.move_y += self.recoil_y / delta_time
-                # Mode offset moves the camera upward, so it aims below target
-                elif self.recoil_mode == 'offset':
-                    # Add recoil_y to the offset when mouse1 is down
-                    if win32api.GetAsyncKeyState(0x01) < 0:
-                        if self.recoil_offset < self.max_offset:
-                            self.recoil_offset += self.recoil_y / delta_time
-                            if self.recoil_offset > self.max_offset:
-                                self.recoil_offset = self.max_offset
-                    # Start resetting the offset bit by bit if mouse1 is not down
-                    else:
-                        if self.recoil_offset > 0:
-                            self.recoil_offset -= self.recoil_recover / delta_time
-                            if self.recoil_offset < 0:
-                                self.recoil_offset = 0
+        if state and delta_time != 0:
+            # Mode move just applies configured movement to the move values
+            if self.recoil_mode == 'move' and win32api.GetAsyncKeyState(0x01) < 0:
+                self.move_x += self.recoil_x * delta_time
+                self.move_y += self.recoil_y * delta_time
+            # Mode offset moves the camera upward, so it aims below target
+            elif self.recoil_mode == 'offset':
+                # Add recoil_y to the offset when mouse1 is down
+                if win32api.GetAsyncKeyState(0x01) < 0:
+                    if self.recoil_offset < self.max_offset:
+                        self.recoil_offset += self.recoil_y * delta_time
+                        if self.recoil_offset > self.max_offset:
+                            self.recoil_offset = self.max_offset
+                # Start resetting the offset bit by bit if mouse1 is not down
+                else:
+                    if self.recoil_offset > 0:
+                        self.recoil_offset -= self.recoil_recover * delta_time
+                        if self.recoil_offset < 0:
+                            self.recoil_offset = 0
         else:
             # Reset recoil offset if recoil is off
             self.recoil_offset = 0

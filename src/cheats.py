@@ -46,8 +46,8 @@ class Cheats:
             y *= self.speed / self.x_multiplier
 
             # Apply smoothing with the previous x and y value
-            x = self.previous_x + self.smooth * (x - self.previous_x)
-            y = self.previous_y + self.smooth * (y - self.previous_y)
+            x = (1 - self.smooth) * self.previous_x + self.smooth * x
+            y = (1 - self.smooth) * self.previous_y + self.smooth * y
 
             # Store the calculated values for next calculation
             self.previous_x, self.previous_y = (x, y)

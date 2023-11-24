@@ -3,10 +3,24 @@
 **⭐ Give a star**  
   
 [![](https://dcbadge.vercel.app/api/server/uF2KESAU2J)](https://discord.gg/uF2KESAU2J)  
+
+---
+
+### Disclaimer
   
+Cheating in video games often stems from deeper psychological needs, such as low self-esteem and a desire for control. If you find yourself resorting to cheats, it's worth taking a moment to reflect on why.  
+
+Cheating can provide a temporary sense of control and accomplishment, but it ultimately undermines your genuine self-worth. True satisfaction comes from overcoming challenges and developing skills through honest effort.  
+
+Overcoming cheating habits may require addressing underlying psychological issues. Talking to a therapist or counselor can help you develop healthier coping mechanisms and cultivate a more positive gaming experience.  
+
+This was written with the help of Google Bard. Thank you Bard :)  
+
+---
+
 # Unibot
 
-Unibot is a program made for 3D games that detects targets on the screen based on a specified range of color.  
+Unibot is an open-source cheat program developed for PC shooter games. Unibot has the ability to look at your screen and detect enemies by looking at a specific color range.
   
 Features:
 - Aim: Moves mouse towards the target.  
@@ -16,21 +30,17 @@ Features:
   
 Showcase: https://youtube.com/watch?v=-wMSt16IAQY
 
-## Installation guide
+### Installation guide
 [Guide](https://github.com/vike256/Unibot/wiki/Guide)
 
-## Supported communication and input methods
+### Supported mouse input methods
 - WinApi
+  - Uses Windows API to move the mouse. Does not need any external hardware or drivers.
 - Interception driver
-- Serial
-- Ethernet
-- Wi-Fi
-
-Unibot should work with any Arduino IDE compatible board that can act as a HID.  
-Unibot has been tested with these setups:  
-- Raspberry Pi Pico W
-- Arduino Leonardo R3
-- Arduino Leonardo R3 + Ethernet Shield W5100 + USB to ethernet adapter
+  - Uses a driver designed to handle input device events. See https://github.com/oblitum/Interception
+- Any Arduino IDE compatible microcontroller board that has HID emulation capabilities
+  - Such as: Arduino Micro, Arduino Leonardo, Raspberry Pi Pico.
+  - Unibot can send mouse move instructions to the board through a COM port or a socket connection.
 
 ---
 

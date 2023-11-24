@@ -20,7 +20,7 @@ This was written with the help of Google Bard. Thank you Bard :)
 
 # Unibot
 
-Unibot is an open-source cheat program developed for PC shooter games. Unibot has the ability to look at your screen and detect enemies by looking at a specific color range.
+Unibot is an open-source cheat program developed for PC shooter games. Unibot has the ability to look at your screen and detect enemies by looking at a specified color range.
   
 Features:
 - Aim: Moves mouse towards the target.  

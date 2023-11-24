@@ -72,7 +72,7 @@ class Screen:
         # Setup debug display
         if self.debug:
             self.display_mode = config.display_mode
-            self.window_name = 'Unibot Display'
+            self.window_name = 'Python'
             self.window_resolution = (
                 self.screen[0] // 2,
                 self.screen[1] // 2

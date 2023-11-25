@@ -51,7 +51,7 @@ class ConfigReader:
         self.offset = None
         self.smooth = None
         self.speed = None
-        self.x_multiplier = None
+        self.y_speed = None
         self.aim_height = None
 
         # Recoil
@@ -155,7 +155,7 @@ class ConfigReader:
             print('WARNING: Invalid smooth value')
 
         self.speed = float(self.parser.get('aim', 'speed'))
-        self.x_multiplier = float(self.parser.get('aim', 'x_multiplier'))
+        self.y_speed = float(self.parser.get('aim', 'y_speed'))
 
         value = float(self.parser.get('aim', 'aim_height'))
         if 0 <= value <= 1:

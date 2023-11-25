@@ -27,7 +27,7 @@ class Cheats:
         self.previous_x, self.previous_y = (0, 0)
         self.smooth = config.smooth
         self.speed = config.speed
-        self.x_multiplier = config.x_multiplier
+        self.y_speed = config.y_speed
 
         # Recoil
         self.recoil_offset = 0
@@ -43,7 +43,7 @@ class Cheats:
 
             # Calculate x and y speed
             x *= self.speed
-            y *= self.speed / self.x_multiplier
+            y *= self.speed * self.y_speed
 
             # Apply smoothing with the previous x and y value
             x = (1 - self.smooth) * self.previous_x + self.smooth * x

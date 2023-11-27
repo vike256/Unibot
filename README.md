@@ -30,8 +30,6 @@ Features:
   
 Showcase: https://youtube.com/watch?v=-wMSt16IAQY
 
-If you'd like to learn how to create your own colorbot, consider checking out my [simple colorbot tutorial](https://github.com/vike256/simple-colorbot-tutorial).
-
 ### Installation guide
 [Guide](https://github.com/vike256/Unibot/wiki/Guide)
 

@@ -1,8 +1,8 @@
 **This project is free and open-source. I am a student who spends their free time on this project so please if you like the project and want it's development to continue:**  
 **🎁 Consider donating:** [Ways to donate](https://github.com/vike256#donations)   
 **⭐ Give a star**  
-  
-[![](https://dcbadge.vercel.app/api/server/uF2KESAU2J)](https://discord.gg/uF2KESAU2J)  
+
+[![Discord](https://discordapp.com/api/guilds/1165759799410053140/widget.png?style=banner2)](https://discord.gg/uF2KESAU2J)  
 
 ---
 

@@ -6,18 +6,6 @@
 
 ---
 
-### Disclaimer
-  
-Cheating in video games often stems from deeper psychological needs, such as low self-esteem and a desire for control. If you find yourself resorting to cheats, it's worth taking a moment to reflect on why.  
-
-Cheating can provide a temporary sense of control and accomplishment, but it ultimately undermines your genuine self-worth. True satisfaction comes from overcoming challenges and developing skills through honest effort.  
-
-Overcoming cheating habits may require addressing underlying psychological issues. Talking to a therapist or counselor can help you develop healthier coping mechanisms and cultivate a more positive gaming experience.  
-
-This was written with the help of Google Bard. Thank you Bard :)  
-
----
-
 # Unibot
 
 Unibot is an open-source cheat program developed for PC shooter games. Unibot has the ability to look at your screen and detect enemies by looking at a specified color range.
@@ -29,6 +17,20 @@ Features:
 - Recoil: Negates recoil in some FPS games.   
   
 Showcase: https://youtube.com/watch?v=-wMSt16IAQY
+
+---
+
+### Disclaimer
+  
+Cheating in video games often stems from deeper psychological needs, such as low self-esteem and a desire for control. If you find yourself resorting to cheats, it's worth taking a moment to reflect on why.  
+
+Cheating can provide a temporary sense of control and accomplishment, but it ultimately undermines your genuine self-worth. True satisfaction comes from overcoming challenges and developing skills through honest effort.  
+
+Overcoming cheating habits may require addressing underlying psychological issues. Talking to a therapist or counselor can help you develop healthier coping mechanisms and cultivate a more positive gaming experience.  
+
+This was written with the help of Google Bard. Thank you Bard :)  
+
+---
 
 ### Installation guide
 [Guide](https://github.com/vike256/Unibot/wiki/Guide)

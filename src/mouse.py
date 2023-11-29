@@ -33,6 +33,8 @@ class Mouse:
         self.click_thread = threading.Thread(target=self.send_click)
         self.last_click_time = time.time()
         self.target_cps = config.target_cps
+
+        # Create a lock, so we can use it to not send multiple mouse clicks at the same time
         self.lock = threading.Lock()
 
         self.symbols = '-,0123456789'
@@ -46,6 +48,7 @@ class Mouse:
         self.com_port = config.com_port
         self.board = None
 
+        # Create variables to store the remainder decimal points for our mouse move function
         self.remainder_x = 0
         self.remainder_y = 0
         

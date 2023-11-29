@@ -55,7 +55,6 @@ class Cheats:
             self.move_x, self.move_y = (x, y)
 
     def apply_recoil(self, state, delta_time):
-        delta_time /= 1000 # Convert to ms
         if state and delta_time != 0:
             # Mode move just applies configured movement to the move values
             if self.recoil_mode == 'move' and win32api.GetAsyncKeyState(0x01) < 0:

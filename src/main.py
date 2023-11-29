@@ -53,7 +53,7 @@ For details see <LICENSE.txt>.
 
         # Cheat loop
         while True:
-            delta_time = (time.time() - start_time) * 1000
+            delta_time = time.time() - start_time
             start_time = time.time()
             
             reload_config = utils.check_key_binds()

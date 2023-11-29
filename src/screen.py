@@ -89,25 +89,45 @@ class Screen:
                 return np.array(image)
 
     def get_target(self, recoil_offset):
+        # Convert the offset to an integer, since it is used to define the capture region
         recoil_offset = int(recoil_offset)
+
+        # Reset variables
         self.target = None
         trigger = False
         self.closest_contour = None
 
+        # Capture a screenshot
         self.img = self.screenshot(self.get_region(self.fov_region, recoil_offset))
+
+        # Convert the screenshot to HSV color space for color detection
         hsv = cv2.cvtColor(self.img, cv2.COLOR_BGR2HSV)
+
+        # Create a mask to identify pixels within the specified color range
         mask = cv2.inRange(hsv, self.lower_color, self.upper_color)
+
+        # Apply morphological dilation to increase the size of the detected color blobs
         kernel = np.ones((self.detection_threshold[0], self.detection_threshold[1]), np.uint8)
         dilated = cv2.dilate(mask, kernel, iterations=5)
+
+        # Apply thresholding to convert the mask into a binary image
         self.thresh = cv2.threshold(dilated, 60, 255, cv2.THRESH_BINARY)[1]
+
+        # Find contours of the detected color blobs
         contours, _ = cv2.findContours(self.thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
 
+        # Identify the closest target contour
         if len(contours) != 0:
             min_distance = float('inf')
             for contour in contours:
+                # Make a bounding rectangle for the target
                 rect_x, rect_y, rect_w, rect_h = cv2.boundingRect(contour)
+
+                # Calculate the coordinates of the center of the target
                 x = rect_x + rect_w // 2 - self.fov_center[0]
                 y = int(rect_y + rect_h * (1 - self.aim_height)) - self.fov_center[1]
+
+                # Update the closest target if the current target is closer
                 distance = np.sqrt(x**2 + y**2)
                 if distance < min_distance:
                     min_distance = distance

@@ -2,8 +2,6 @@
 **🎁 Consider donating:** [Ways to donate](https://github.com/vike256#donations)   
 **⭐ Give a star**  
 
-[![Discord](https://discordapp.com/api/guilds/1165759799410053140/widget.png?style=banner2)](https://discord.gg/uF2KESAU2J)  
-
 ---
 
 # Unibot

@@ -37,8 +37,8 @@ Overcoming cheating habits may require addressing underlying psychological issue
 
 ---
 
-### Installation guide
-[Guide](https://github.com/vike256/Unibot/wiki/Guide)  
+### Guide
+[Wiki | Guide](https://github.com/vike256/Unibot/wiki/Guide)  
 
 ---
 

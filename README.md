@@ -8,13 +8,18 @@
 
 # Unibot
 
-Unibot is an open-source cheat program developed for PC shooter games. Unibot has the ability to look at your screen and detect enemies by looking at a specified color range.
-  
-Features:
-- Aim: Moves mouse towards the target.  
-- Trigger: Clicks when a target is at the center of the screen.  
-- Rapid fire: Spams left click when rapid fire button is down
-- Recoil: Negates recoil in some FPS games.   
+Unibot is a multi-functional assistant tool developed for PC shooter games. Unibot works by simulating mouse input, which works with the following methods:
+- Calling Windows mouse_event functions through Python  
+- Using the Interception driver to simulate mouse input  
+- Using external hardware capable of simulating a human interface device, such as an Arduino Leonardo, or any Raspberry Pi Pico variant. Unibot can communicate with these boards by either using a COM port or a socket connection (ethernet or Wi-Fi).  
+
+Unibot's most notable feature, **aim assist**, detects targets by looking for pixels within a specified color range on your screen, and then automatically moves the aim towards the target. The target detection utilizes OpenCV to merge color dots into a valid target blob.  
+
+**Triggerbot** (/autoshoot) works in sync with the same target detection function and automatically shoots when the player is looking directly at a target.  
+
+The **rapid-fire** feature clicks rapidly. This can be used to automatically shoot semi-automatic weapons.  
+
+The **recoil** feature counters weapon recoil. It can be set to work with multiple recoil system types: point-and-shoot, and offset type recoil. Point-and-shoot is the most common recoil system used in FPS games and is used in games such as Call of Duty & Rainbow Six Siege. Offset type recoil is used in some tactical shooters such as Counter-Strike and VALORANT.  
   
 Showcase: https://youtube.com/watch?v=-wMSt16IAQY
 
@@ -22,27 +27,18 @@ Showcase: https://youtube.com/watch?v=-wMSt16IAQY
 
 ### Disclaimer
   
+Unibot is a hobby project and should be treated as such. This project is intended for learning purposes only, but I acknowledge the possibility that this project can be used for malicious purposes such as cheating in multiplayer shooter games. I do not condone video game cheating in any regard. With thay said, if you are using Unibot to cheat, consider reading the following disclaimer.  
+  
 Cheating in video games often stems from deeper psychological needs, such as low self-esteem and a desire for control. If you find yourself resorting to cheats, it's worth taking a moment to reflect on why.  
 
 Cheating can provide a temporary sense of control and accomplishment, but it ultimately undermines your genuine self-worth. True satisfaction comes from overcoming challenges and developing skills through honest effort.  
 
 Overcoming cheating habits may require addressing underlying psychological issues. Talking to a therapist or counselor can help you develop healthier coping mechanisms and cultivate a more positive gaming experience.  
 
-This was written with the help of Google Bard. Thank you Bard :)  
-
 ---
 
 ### Installation guide
-[Guide](https://github.com/vike256/Unibot/wiki/Guide)
-
-### Supported mouse input methods
-- WinApi
-  - Uses Windows API to move the mouse. Does not need any external hardware or drivers.
-- Interception driver
-  - Uses a driver designed to handle input device events. See https://github.com/oblitum/Interception
-- Any Arduino IDE compatible microcontroller board that has HID emulation capabilities
-  - Such as: Arduino Micro, Arduino Leonardo, Raspberry Pi Pico.
-  - Unibot can send mouse move instructions to the board through a COM port or a socket connection.
+[Guide](https://github.com/vike256/Unibot/wiki/Guide)  
 
 ---
 

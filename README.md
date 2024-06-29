@@ -19,7 +19,10 @@ The **rapid-fire** feature clicks rapidly. This can be used to automatically sho
 
 The **recoil** feature counters weapon recoil. It can be set to work with multiple recoil system types: point-and-shoot, and offset type recoil. Point-and-shoot is the most common recoil system used in FPS games and is used in games such as Call of Duty & Rainbow Six Siege. Offset type recoil is used in some tactical shooters such as Counter-Strike and VALORANT.  
   
-Showcase: https://youtube.com/watch?v=-wMSt16IAQY
+Showcase videos:  
+- [Python colorbot hits world record 220k+ score with 100% accuracy on Aim Lab](https://youtube.com/watch?v=8LUBfXCIu6I)  
+- [Unibot showcase 2023-11-29](https://youtube.com/watch?v=-wMSt16IAQY)  
+
 
 ---
 

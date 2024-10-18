@@ -28,7 +28,6 @@ class ConfigReader:
 
         # Communication
         self.com_type = None
-        self.encrypt = None
         self.ip = None
         self.port = None
         self.com_port = None
@@ -42,7 +41,6 @@ class ConfigReader:
         self.aim_fov_x = None
         self.aim_fov_y = None
         self.fps = None
-        self.capture_method = None
         self.auto_detect_resolution = None
         self.resolution_x = None
         self.resolution_y = None
@@ -95,12 +93,6 @@ class ConfigReader:
             self.com_type = value
         else:
             print('WARNING: Invalid com_type value')
-
-        value = self.parser.get('communication', 'encrypt').lower()
-        if value == 'true':
-            self.encrypt = True
-        else:
-            self.encrypt = False
         
         match self.com_type:
             case 'socket':
@@ -128,13 +120,6 @@ class ConfigReader:
         self.aim_fov_y = int(self.parser.get('screen', 'aim_fov_y'))
         fps_value = int(self.parser.get('screen', 'fps'))
         self.fps = int(np.floor(1000 / fps_value + 1))
-
-        value = self.parser.get('screen', 'capture_method').lower()
-        capture_method_list = ['dxcam', 'mss']
-        if value in capture_method_list:
-            self.capture_method = value
-        else:
-            print('WARNING: Invalid capture method')
 
         value = self.parser.get('screen', 'auto_detect_resolution').lower()
         if value == 'true':

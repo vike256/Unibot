@@ -21,7 +21,6 @@ import time
 import numpy as np
 import win32api
 import win32con
-import interception
 import serial
 import socket
 import threading
@@ -36,10 +35,6 @@ class Mouse:
 
         # Create a lock, so we can use it to not send multiple mouse clicks at the same time
         self.lock = threading.Lock()
-
-        self.symbols = '-,0123456789'
-        self.code = 'UNIBOTCYPHER'
-        self.encrypt = config.encrypt
 
         self.ip = config.ip
         self.port = config.port
@@ -69,6 +64,7 @@ class Mouse:
                     print(f'ERROR: Could not connect (Serial). {e}')
                     self.close_connection()
             case 'driver':
+                import interception
                 interception.auto_capture_devices(mouse=True)
 
     def __del__(self):
@@ -81,19 +77,6 @@ class Mouse:
         elif self.com_type == 'serial':
             if self.board is not None:
                 self.board.close()
-
-    def encrypt_command(self, command):
-        if self.encrypt:
-            encrypted_command = ""
-            for char in command:
-                if char in self.symbols:
-                    index = self.symbols.index(char)
-                    encrypted_command += self.code[index]
-                else:
-                    encrypted_command += char  # Keep non-symbol characters unchanged
-            return encrypted_command
-        else:
-            return command
 
     def move(self, x, y):
         # Add the remainder from the previous calculation
@@ -148,7 +131,6 @@ class Mouse:
         time.sleep((np.random.randint(10) + 25) / 1000)  # Sleep to avoid sending another click instantly after mouseup
 
     def send_command(self, command):
-        command = self.encrypt_command(command)
         with self.lock:
             match self.com_type:
                 case 'socket':

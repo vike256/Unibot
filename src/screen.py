@@ -19,19 +19,13 @@
 """
 import cv2
 import numpy as np
-import dxcam
-from mss import mss
+import bettercam
 from pyautogui import size
 
 
 class Screen:
     def __init__(self, config):
-        self.capture_method = config.capture_method
-
-        if self.capture_method == 'dxcam':
-            self.cam = dxcam.create(output_color="BGR")
-        else:
-            self.cam = mss()
+        self.cam = bettercam.create(output_color="BGR")
 
         self.offset = config.offset
 

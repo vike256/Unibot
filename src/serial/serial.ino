@@ -23,23 +23,7 @@
 int x = 0;
 int y = 0;
 String cmd = "";
-char symbols[] = "-,0123456789";
-char code[] = "UNIBOTCYPHER";
-bool encrypt = false;
 
-void decryptCommand(String &command) {
-  if (encrypt) {
-    for (int i = 0; i < command.length(); i++) {
-      for (int j = 0; j < sizeof(code) - 1; j++) {
-        if (command[i] == code[j]) {
-          command[i] = symbols[j];
-          break;
-        }
-      }
-    }
-  }
-}
- 
 void setup() {
   Mouse.begin();
   Serial.begin(115200);
@@ -51,7 +35,6 @@ void loop() {
 
   if (cmd.length() > 0) {
     if (cmd[0] == 'M') {
-      decryptCommand(cmd);
       int commaIndex = cmd.indexOf(',');
       if (commaIndex != -1) {
         x = cmd.substring(1, commaIndex).toInt();

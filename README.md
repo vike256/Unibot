@@ -21,10 +21,8 @@ Unibot can communicate with these boards through a COM port or a socket connecti
 **1. Aim Assist**
 - Detects targets by analyzing pixels within a specified color range on your screen
 - Automatically moves the aim towards the detected target
-- Uses OpenCV to merge color dots into a valid target blob
 
 **2. Triggerbot**
-- Works in sync with aim assist
 - Automatically shoots when the player is aiming at a target
 
 **3. Rapid-fire**

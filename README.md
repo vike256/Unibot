@@ -4,7 +4,8 @@
 
 ---
 
-![Unibot Logo](https://i.imgur.com/c55L14T.png | width=250)  
+
+<img src=https://i.imgur.com/c55L14T.png alt="Unibot logo" width="250"> 
 
 # Unibot
 

@@ -4,6 +4,8 @@
 
 ---
 
+![Unibot Logo](https://i.imgur.com/c55L14T.png)  
+
 # Unibot
 
 Unibot is a multi-functional assistant tool developed for PC shooter games. Unibot works by simulating mouse input, which works with the following methods:

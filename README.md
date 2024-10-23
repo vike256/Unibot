@@ -35,8 +35,8 @@ Unibot can communicate with these boards through a COM port or a socket connecti
   - **Offset type recoil**: Used in tactical shooters like Counter-Strike and VALORANT
   
 Showcase videos:  
-- [Python colorbot hits world record 220k+ score with 100% accuracy on Aim Lab](https://youtube.com/watch?v=8LUBfXCIu6I)  
-- [Unibot showcase 2023-11-29](https://youtube.com/watch?v=-wMSt16IAQY)  
+[![Youtube video thumbnail](https://i.imgur.com/tNO8ZMF.png)](https://youtube.com/watch?v=8LUBfXCIu6I)
+[Python colorbot hits world record 220k+ score with 100% accuracy on Aim Lab](https://youtube.com/watch?v=8LUBfXCIu6I)  
 
 
 ---

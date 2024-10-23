@@ -1,4 +1,4 @@
-**This project is free and open-source. I am a student who spends their free time on this project so please if you like the project and want it's development to continue:**  
+**This project is free and open-source. I am a student who spends their free time on this project. If you like the project and want its development to continue:**  
 **🎁 Consider donating:** [Ways to donate](https://github.com/vike256#donations)   
 **⭐ Give a star**  
 

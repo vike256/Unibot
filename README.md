@@ -57,7 +57,7 @@ If you are using Unibot to cheat, please take a moment to reflect on why. Cheati
 ### Copyright
 ```
 Unibot, an open-source colorbot.
-Copyright (C) 2023 vike256
+Copyright (C) 2024 vike256
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

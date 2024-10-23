@@ -34,9 +34,9 @@ Unibot can communicate with these boards through a COM port or a socket connecti
   - **Point-and-shoot**: Commonly used in games like Call of Duty & Rainbow Six Siege
   - **Offset type recoil**: Used in tactical shooters like Counter-Strike and VALORANT
   
-Showcase videos:  
-[![Youtube video thumbnail](https://i.imgur.com/tNO8ZMF.png)](https://youtube.com/watch?v=8LUBfXCIu6I)
-[Python colorbot hits world record 220k+ score with 100% accuracy on Aim Lab](https://youtube.com/watch?v=8LUBfXCIu6I)  
+Showcase video:  
+<a href="https://youtube.com/watch?v=8LUBfXCIu6I" target=_blank><img src="https://i.imgur.com/tNO8ZMF.png" alt="Showcase video thumbnail"></a>    
+[*Python colorbot hits world record 220k+ score with 100% accuracy on Aim Lab*](https://youtube.com/watch?v=8LUBfXCIu6I)
 
 
 ---

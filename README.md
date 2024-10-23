@@ -9,18 +9,32 @@
 
 # Unibot
 
-Unibot is a multi-functional assistant tool developed for PC shooter games. Unibot works by simulating mouse input, which works with the following methods:
-- Calling Windows mouse_event functions through Python  
-- Using the Interception driver to simulate mouse input  
-- Using external hardware capable of simulating a human interface device, such as an Arduino Leonardo, or any Raspberry Pi Pico variant. Unibot can communicate with these boards either through a COM port or a socket connection (ethernet or Wi-Fi).  
+Unibot is a multi-functional assistant tool developed for PC shooter games. It simulates mouse input using various methods:  
+- **Windows mouse_event functions**
+- **Interception driver**
+- **External hardware** capable of simulating a human interface device, such as an Arduino Leonardo or any Raspberry Pi Pico variant
 
-Unibot's most notable feature, **aim assist**, detects targets by looking for pixels within a specified color range on your screen, and then automatically moves the aim towards the target. The target detection utilizes OpenCV to merge color dots into a valid target blob.  
+Unibot can communicate with these boards through a COM port or a socket connection (Ethernet or Wi-Fi).
 
-**Triggerbot** (/autoshoot) works in sync with the same target detection function and automatically shoots when the player is looking directly at a target.  
+## Key Features  
 
-The **rapid-fire** feature clicks rapidly. This can be used to automatically shoot semi-automatic weapons.  
+**1. Aim Assist**
+- Detects targets by analyzing pixels within a specified color range on your screen
+- Automatically moves the aim towards the detected target
+- Uses OpenCV to merge color dots into a valid target blob
 
-The **recoil** feature counters weapon recoil. It can be set to work with multiple recoil system types: point-and-shoot, and offset type recoil. Point-and-shoot is the most common recoil system used in FPS games and is used in games such as Call of Duty & Rainbow Six Siege. Offset type recoil is used in some tactical shooters such as Counter-Strike and VALORANT.  
+**2. Triggerbot**
+- Works in sync with aim assist
+- Automatically shoots when the player is aiming at a target
+
+**3. Rapid-fire**
+- Clicks rapidly to automatically shoot semi-automatic weapons
+
+**4. Recoil Mitigation**
+- Counters weapon recoil
+- Supports multiple recoil systems:
+  - **Point-and-shoot**: Commonly used in games like Call of Duty & Rainbow Six Siege
+  - **Offset type recoil**: Used in tactical shooters like Counter-Strike and VALORANT
   
 Showcase videos:  
 - [Python colorbot hits world record 220k+ score with 100% accuracy on Aim Lab](https://youtube.com/watch?v=8LUBfXCIu6I)  
@@ -31,13 +45,9 @@ Showcase videos:
 
 ### Disclaimer
   
-Unibot is a hobby project and should be treated as such. This project is intended for learning purposes only, but I acknowledge the possibility that this project can be used for malicious purposes such as to gain an unfair advantage in multiplayer shooter games. I do not condone video game cheating in any regard. If you are using Unibot to cheat, consider reading the following disclaimer.  
-  
-Cheating in video games often stems from deeper psychological needs, such as low self-esteem and a desire for control. If you find yourself resorting to cheats, it's worth taking a moment to reflect on why.  
+This is a hobby project and intended for learning purposes only. I do not condone cheating in any regard. 
 
-Cheating can provide a temporary sense of control and accomplishment, but it ultimately undermines your genuine self-worth. True satisfaction comes from overcoming challenges and developing skills through honest effort.  
-
-Overcoming cheating habits may require addressing underlying psychological issues. Talking to a therapist or counselor can help you develop healthier coping mechanisms and cultivate a more positive gaming experience.  
+If you are using Unibot to cheat, please take a moment to reflect on why. Cheating ruins competitive integrity, undermines genuine achievement, and leaves you feeling just as empty as before.
 
 ---
 

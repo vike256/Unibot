@@ -18,17 +18,17 @@ Unibot can communicate with these boards through a COM port or a socket connecti
 
 ## Key Features  
 
-**1. Aim Assist**
+### Aim assist
 - Detects targets by analyzing pixels within a specified color range on your screen
 - Automatically moves the aim towards the detected target
 
-**2. Triggerbot**
+### Triggerbot
 - Automatically shoots when the player is aiming at a target
 
-**3. Rapid-fire**
+### Rapid-fire
 - Clicks rapidly to automatically shoot semi-automatic weapons
 
-**4. Recoil Mitigation**
+### Recoil Mitigation
 - Counters weapon recoil
 - Supports multiple recoil systems:
   - **Point-and-shoot**: Bullets go where your crosshair looks
@@ -38,23 +38,18 @@ Unibot can communicate with these boards through a COM port or a socket connecti
 <a href="https://youtube.com/watch?v=8LUBfXCIu6I" target=_blank><img src="https://i.imgur.com/tNO8ZMF.png" alt="Showcase video thumbnail" width="600"></a>    
 [*Python colorbot hits world record 220k+ score with 100% accuracy on Aim Lab*](https://youtube.com/watch?v=8LUBfXCIu6I)
 
-
----
-
-### Disclaimer
+## Disclaimer
   
 This is a hobby project and intended for learning purposes only. I do not condone cheating in any regard. 
 
 If you are using Unibot to cheat, please take a moment to reflect on why. Cheating ruins competitive integrity, undermines genuine achievement, and leaves you feeling just as empty as before.
 
----
-
-### Installation and usage guide
+## Installation and usage
 [Wiki](https://github.com/vike256/Unibot/wiki/Guide)  
 
 ---
 
-### Copyright
+## Copyright
 ```
 Unibot, an open-source colorbot.
 Copyright (C) 2024 vike256

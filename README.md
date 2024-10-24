@@ -35,7 +35,7 @@ Unibot can communicate with these boards through a COM port or a socket connecti
   - **Offset type recoil**: Bullets go above crosshair
   
 **Showcase video:**  
-<a href="https://youtube.com/watch?v=8LUBfXCIu6I" target=_blank><img src="https://i.imgur.com/tNO8ZMF.png" alt="Showcase video thumbnail" width="800"></a>    
+<a href="https://youtube.com/watch?v=8LUBfXCIu6I" target=_blank><img src="https://i.imgur.com/tNO8ZMF.png" alt="Showcase video thumbnail" width="600"></a>    
 [*Python colorbot hits world record 220k+ score with 100% accuracy on Aim Lab*](https://youtube.com/watch?v=8LUBfXCIu6I)
 
 

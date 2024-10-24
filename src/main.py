@@ -1,5 +1,5 @@
 """
-    Consider donating: https://github.com/vike256#donations
+    Consider donating: https://github.com/vike256#donate
 
     Unibot, an open-source colorbot.
     Copyright (C) 2023 vike256
@@ -36,7 +36,7 @@ For details see <LICENSE.txt>.
     ''')
 
     # Print donation info
-    print('Consider donating: https://github.com/vike256#donations \n')
+    print('Consider donating: https://github.com/vike256#donate \n')
 
     # Program loop
     while True:

@@ -1,5 +1,5 @@
 **This project is free and open-source. I am a student who spends their free time on this project. If you like the project and want its development to continue:**  
-**🎁 [Donate](https://github.com/vike256#donations)**   
+**🎁 [Donate](https://github.com/vike256#donate)**   
 **⭐ Give a star**  
 
 ---

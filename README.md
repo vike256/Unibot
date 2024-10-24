@@ -31,8 +31,8 @@ Unibot can communicate with these boards through a COM port or a socket connecti
 **4. Recoil Mitigation**
 - Counters weapon recoil
 - Supports multiple recoil systems:
-  - **Point-and-shoot**: Commonly used in games like Call of Duty & Rainbow Six Siege
-  - **Offset type recoil**: Used in tactical shooters like Counter-Strike and VALORANT
+  - **Point-and-shoot**: Bullets go where your crosshair looks
+  - **Offset type recoil**: Bullets go above crosshair
   
 Showcase video:  
 <a href="https://youtube.com/watch?v=8LUBfXCIu6I" target=_blank><img src="https://i.imgur.com/tNO8ZMF.png" alt="Showcase video thumbnail" width="800"></a>    

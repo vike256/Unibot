@@ -1,6 +1,6 @@
 """
     Unibot, an open-source colorbot.
-    Copyright (C) 2023 vike256
+    Copyright (C) 2025 vike256
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ from utils import Utils
 def main():
     # Print licensing info
     print('''
-Unibot  Copyright (C) 2023  vike256
+Unibot  Copyright (C) 2025  vike256
 This program comes with ABSOLUTELY NO WARRANTY.
 This is free software, and you are welcome to redistribute it under certain conditions.
 For details see <LICENSE.txt>.

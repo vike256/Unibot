@@ -89,7 +89,7 @@ class Mouse:
         self.remainder_x -= x
         self.remainder_y -= y
 
-        if x != 0 or y != 0:
+        if x != 0 or y != 0:  # Don't send anything if there's no movement
             match self.com_type:
                 case 'socket' | 'serial':
                     self.send_command(f'M{x},{y}\r')

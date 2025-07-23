@@ -202,5 +202,6 @@ class ConfigReader:
         else:
             print('WARNING: Invalid display_mode value')
 
-    def read_hex(self, string):
+    @staticmethod
+    def read_hex(string):
         return int(string, 16)

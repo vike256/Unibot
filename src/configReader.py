@@ -34,8 +34,8 @@ class ConfigReader:
         self.group_close_target_blobs_threshold = None
         self.upper_color = None
         self.lower_color = None
-        self.fov_x = None
-        self.fov_y = None
+        self.capture_fov_x = None
+        self.capture_fov_y = None
         self.aim_fov_x = None
         self.aim_fov_y = None
         self.fps = None
@@ -130,8 +130,8 @@ class ConfigReader:
         self.upper_color = np.array(upper_color)
         self.lower_color = np.array(lower_color)
 
-        self.fov_x = int(self.parser.get('screen', 'fov_x'))
-        self.fov_y = int(self.parser.get('screen', 'fov_y'))
+        self.capture_fov_x = int(self.parser.get('screen', 'capture_fov_x'))
+        self.capture_fov_y = int(self.parser.get('screen', 'capture_fov_y'))
         self.aim_fov_x = int(self.parser.get('screen', 'aim_fov_x'))
         self.aim_fov_y = int(self.parser.get('screen', 'aim_fov_y'))
         fps_value = int(self.parser.get('screen', 'fps'))

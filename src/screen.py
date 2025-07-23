@@ -40,7 +40,7 @@ class Screen:
             self.screen[0],
             self.screen[1]
         )
-        self.fov = (config.fov_x, config.fov_y)
+        self.fov = (config.capture_fov_x, config.capture_fov_y)
         self.fov_center = (self.fov[0] // 2, self.fov[1] // 2)
         self.fov_region = (
             self.screen_center[0] - self.fov[0] // 2,

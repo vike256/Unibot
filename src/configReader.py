@@ -47,7 +47,7 @@ class ConfigReader:
         self.screen_center_offset = None
         self.aim_smoothing_factor = None
         self.speed = None
-        self.y_speed = None
+        self.y_speed_multiplier = None
         self.aim_height = None
 
         # Recoil
@@ -101,7 +101,7 @@ class ConfigReader:
             print('WARNING: Invalid aim_smoothing_factor value')
 
         self.speed = float(self.parser.get('aim', 'speed'))
-        self.y_speed = float(self.parser.get('aim', 'y_speed'))
+        self.y_speed_multiplier = float(self.parser.get('aim', 'y_speed_multiplier'))
 
         value = float(self.parser.get('aim', 'aim_height'))
         if 0 <= value <= 1:

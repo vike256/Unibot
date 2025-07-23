@@ -45,7 +45,7 @@ class ConfigReader:
 
         # Aim
         self.screen_center_offset = None
-        self.smooth = None
+        self.aim_smoothing_factor = None
         self.speed = None
         self.y_speed = None
         self.aim_height = None
@@ -94,11 +94,11 @@ class ConfigReader:
         
         self.screen_center_offset = int(self.parser.get('aim', 'screen_center_offset'))
 
-        value = float(self.parser.get('aim', 'smooth'))
+        value = float(self.parser.get('aim', 'aim_smoothing_factor'))
         if 0 <= value <= 1:
-            self.smooth = 1 - value / 1.25
+            self.aim_smoothing_factor = 1 - value / 1.25
         else:
-            print('WARNING: Invalid smooth value')
+            print('WARNING: Invalid aim_smoothing_factor value')
 
         self.speed = float(self.parser.get('aim', 'speed'))
         self.y_speed = float(self.parser.get('aim', 'y_speed'))

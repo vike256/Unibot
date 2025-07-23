@@ -23,7 +23,7 @@ class Cheats:
         # Aim
         self.move_x, self.move_y = (0, 0)
         self.previous_x, self.previous_y = (0, 0)
-        self.smooth = config.smooth
+        self.aim_smoothing_factor = config.aim_smoothing_factor
         self.speed = config.speed
         self.y_speed = config.y_speed
 
@@ -44,8 +44,8 @@ class Cheats:
             y *= self.speed * self.y_speed
 
             # Apply smoothing with the previous x and y value
-            x = (1 - self.smooth) * self.previous_x + self.smooth * x
-            y = (1 - self.smooth) * self.previous_y + self.smooth * y
+            x = (1 - self.aim_smoothing_factor) * self.previous_x + self.aim_smoothing_factor * x
+            y = (1 - self.aim_smoothing_factor) * self.previous_y + self.aim_smoothing_factor * y
 
             # Store the calculated values for next calculation
             self.previous_x, self.previous_y = (x, y)

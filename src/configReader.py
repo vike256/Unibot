@@ -168,17 +168,17 @@ class ConfigReader:
         self.target_cps = int(self.parser.get('rapid_fire', 'target_cps'))
 
         # Get keybind settings
-        self.key_reload_config = read_hex(self.parser.get('key_binds', 'key_reload_config'))
-        self.key_toggle_aim = read_hex(self.parser.get('key_binds', 'key_toggle_aim'))
-        self.key_toggle_recoil = read_hex(self.parser.get('key_binds', 'key_toggle_recoil'))
-        self.key_exit = read_hex(self.parser.get('key_binds', 'key_exit'))
-        self.key_trigger = read_hex(self.parser.get('key_binds', 'key_trigger'))
-        self.key_rapid_fire = read_hex(self.parser.get('key_binds', 'key_rapid_fire'))
+        self.key_reload_config = self.read_hex(self.parser.get('key_binds', 'key_reload_config'))
+        self.key_toggle_aim = self.read_hex(self.parser.get('key_binds', 'key_toggle_aim'))
+        self.key_toggle_recoil = self.read_hex(self.parser.get('key_binds', 'key_toggle_recoil'))
+        self.key_exit = self.read_hex(self.parser.get('key_binds', 'key_exit'))
+        self.key_trigger = self.read_hex(self.parser.get('key_binds', 'key_trigger'))
+        self.key_rapid_fire = self.read_hex(self.parser.get('key_binds', 'key_rapid_fire'))
         aim_keys_str = self.parser.get('key_binds', 'aim_keys')
         if not aim_keys_str == 'off':
             aim_keys_str = aim_keys_str.split(',')
             for key in aim_keys_str:
-                self.aim_keys.append(read_hex(key))
+                self.aim_keys.append(self.read_hex(key))
         else:
             self.aim_keys = ['off']
 
@@ -202,6 +202,5 @@ class ConfigReader:
         else:
             print('WARNING: Invalid display_mode value')
 
-
-def read_hex(string):
-    return int(string, 16)
+    def read_hex(string):
+        return int(string, 16)

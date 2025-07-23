@@ -25,9 +25,6 @@ from utils import Utils
 
 
 class Unibot:
-    def __init__(self):
-        pass
-
     def run(self):
         self.print_license()
         while True:
@@ -80,8 +77,8 @@ class Unibot:
 
                 # Do not loop above the set refresh rate
                 time_spent = (time.time() - start_time) * 1000
-                if time_spent < screen.min_loop_time:
-                    time.sleep((screen.min_loop_time - time_spent) / 1000)
+                if time_spent < config.min_loop_time:
+                    time.sleep((config.min_loop_time - time_spent) / 1000)
 
             del utils
             del cheats

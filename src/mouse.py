@@ -26,37 +26,27 @@ import threading
 
 class Mouse:
     def __init__(self, config):
-        self.bot_input_type = config.bot_input_type
+        self.cfg = config
         self.click_thread = threading.Thread(target=self.send_click)
         self.last_click_time = time.time()
-        self.target_cps = config.target_cps
-
-        # Create a lock, so we can use it to not send multiple mouse clicks at the same time
-        self.lock = threading.Lock()
-
-        self.microcontroller_ip = config.microcontroller_ip
-        self.microcontroller_port = config.microcontroller_port
+        self.lock = threading.Lock()  # used to not send multiple mouse clicks at the same time
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-        self.com_port = config.com_port
         self.board = None
-
-        # Create variables to store the remainder decimal points for our mouse move function
         self.remainder_x = 0
         self.remainder_y = 0
         
-        match self.bot_input_type:
+        match self.cfg.bot_input_type:
             case 'microcontroller_socket':
-                print(f'Connecting to {self.microcontroller_ip}:{self.microcontroller_port}...')
+                print(f'Connecting to {self.cfg.microcontroller_ip}:{self.cfg.microcontroller_port}...')
                 try:
-                    self.client.connect((self.microcontroller_ip, self.microcontroller_port))
+                    self.client.connect((self.cfg.microcontroller_ip, self.cfg.microcontroller_port))
                     print('Socket connected')
                 except Exception as e:
                     print(f'ERROR: Could not connect (Socket). {e}')
                     self.close_connection()
             case 'microcontroller_serial':
                 try:
-                    self.board = serial.Serial(self.com_port, 115200)
+                    self.board = serial.Serial(self.cfg.com_port, 115200)
                     print('Serial connected')
                 except Exception as e:
                     print(f'ERROR: Could not connect (Serial). {e}')
@@ -69,10 +59,10 @@ class Mouse:
         self.close_connection()
 
     def close_connection(self):
-        if self.bot_input_type == 'microcontroller_socket':
+        if self.cfg.bot_input_type == 'microcontroller_socket':
             if self.client is not None:
                 self.client.close()
-        elif self.bot_input_type == 'microcontroller_serial':
+        elif self.cfg.bot_input_type == 'microcontroller_serial':
             if self.board is not None:
                 self.board.close()
 
@@ -90,7 +80,7 @@ class Mouse:
         self.remainder_y -= y
 
         if x != 0 or y != 0:  # Don't send anything if there's no movement
-            match self.bot_input_type:
+            match self.cfg.bot_input_type:
                 case 'microcontroller_socket' | 'microcontroller_serial':
                     self.send_command(f'M{x},{y}\r')
                 case 'interception_driver':
@@ -103,7 +93,7 @@ class Mouse:
     def click(self, delay_before_click=0):
         if (
                 not self.click_thread.is_alive() and
-                time.time() - self.last_click_time >= 1 / self.target_cps
+                time.time() - self.last_click_time >= 1 / self.cfg.target_cps
         ):
             self.click_thread = threading.Thread(target=self.send_click, args=(delay_before_click,))
             self.click_thread.start()
@@ -111,7 +101,7 @@ class Mouse:
     def send_click(self, delay_before_click=0):
         time.sleep(delay_before_click)
         self.last_click_time = time.time()
-        match self.bot_input_type:
+        match self.cfg.bot_input_type:
             case 'microcontroller_socket' | 'microcontroller_serial':
                 self.send_command('C\r')
             case 'interception_driver':
@@ -130,16 +120,16 @@ class Mouse:
 
     def send_command(self, command):
         with self.lock:
-            match self.bot_input_type:
+            match self.cfg.bot_input_type:
                 case 'microcontroller_socket':
                     self.client.sendall(command.encode())
                 case 'microcontroller_serial':
                     self.board.write(command.encode())
             print(f'Sent: {command}')
-            print(f'Response from {self.bot_input_type}: {self.get_response()}')
+            print(f'Response from {self.cfg.bot_input_type}: {self.get_response()}')
 
     def get_response(self):  # Waits for a response before sending a new instruction
-        match self.bot_input_type:
+        match self.cfg.bot_input_type:
             case 'microcontroller_socket':
                 return self.client.recv(4).decode()
             case 'microcontroller_serial':

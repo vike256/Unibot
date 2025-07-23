@@ -23,15 +23,14 @@ from pyautogui import size
 
 class Screen:
     def __init__(self, config):
+        self.cfg = config
         self.cam = bettercam.create(output_color="BGR")
 
-        self.screen_center_offset = config.screen_center_offset
-
-        if config.auto_detect_resolution:
+        if self.cfg.auto_detect_resolution:
             screen_size = size()
             self.screen = (screen_size.width, screen_size.height)
         else:
-            self.screen = (config.resolution_x, config.resolution_y)
+            self.screen = (self.cfg.resolution_x, self.cfg.resolution_y)
 
         self.screen_center = (self.screen[0] // 2, self.screen[1] // 2)
         self.screen_region = (
@@ -40,30 +39,23 @@ class Screen:
             self.screen[0],
             self.screen[1]
         )
-        self.fov = (config.capture_fov_x, config.capture_fov_y)
+        self.fov = (self.cfg.capture_fov_x, self.cfg.capture_fov_y)
         self.fov_center = (self.fov[0] // 2, self.fov[1] // 2)
         self.fov_region = (
             self.screen_center[0] - self.fov[0] // 2,
-            self.screen_center[1] - self.fov[1] // 2 - self.screen_center_offset,
+            self.screen_center[1] - self.fov[1] // 2 - self.cfg.screen_center_offset,
             self.screen_center[0] + self.fov[0] // 2,
-            self.screen_center[1] + self.fov[1] // 2 - self.screen_center_offset
+            self.screen_center[1] + self.fov[1] // 2 - self.cfg.screen_center_offset
         )
-        self.group_close_target_blobs_threshold = config.group_close_target_blobs_threshold
-        self.upper_color = config.upper_color
-        self.lower_color = config.lower_color
-        self.min_loop_time = config.min_loop_time
-        self.aim_height = config.aim_height
-        self.debug = config.debug
         self.thresh = None
         self.target = None
         self.closest_contour = None
         self.img = None
-        self.trigger_threshold = config.trigger_threshold
-        self.aim_fov = (config.aim_fov_x, config.aim_fov_y)
+        self.aim_fov = (self.cfg.aim_fov_x, self.cfg.aim_fov_y)
 
         # Setup debug display
-        if self.debug:
-            self.display_mode = config.display_mode
+        if self.cfg.debug:
+            self.display_mode = self.cfg.display_mode
             self.window_name = 'Python'
             self.window_resolution = (
                 self.screen[0] // 2,
@@ -96,10 +88,10 @@ class Screen:
         hsv = cv2.cvtColor(self.img, cv2.COLOR_BGR2HSV)
 
         # Create a mask to identify pixels within the specified color range
-        mask = cv2.inRange(hsv, self.lower_color, self.upper_color)
+        mask = cv2.inRange(hsv, self.cfg.lower_color, self.cfg.upper_color)
 
         # Apply morphological dilation to increase the size of the detected color blobs
-        kernel = np.ones((self.group_close_target_blobs_threshold[0], self.group_close_target_blobs_threshold[1]), np.uint8)
+        kernel = np.ones((self.cfg.group_close_target_blobs_threshold[0], self.cfg.group_close_target_blobs_threshold[1]), np.uint8)
         dilated = cv2.dilate(mask, kernel, iterations=5)
 
         # Apply thresholding to convert the mask into a binary image
@@ -117,7 +109,7 @@ class Screen:
 
                 # Calculate the coordinates of the center of the target
                 x = rect_x + rect_w // 2 - self.fov_center[0]
-                y = int(rect_y + rect_h * (1 - self.aim_height)) - self.fov_center[1]
+                y = int(rect_y + rect_h * (1 - self.cfg.aim_height)) - self.fov_center[1]
 
                 # Update the closest target if the current target is closer
                 distance = np.sqrt(x**2 + y**2)
@@ -137,18 +129,18 @@ class Screen:
 
                 # Eliminate a lot of false positives by also checking pixels near the crosshair.
                 cv2.pointPolygonTest(
-                    self.closest_contour, (self.fov_center[0] + self.trigger_threshold, self.fov_center[1]), False) >= 0 and
+                    self.closest_contour, (self.fov_center[0] + self.cfg.trigger_threshold, self.fov_center[1]), False) >= 0 and
                 cv2.pointPolygonTest(
-                    self.closest_contour, (self.fov_center[0] - self.trigger_threshold, self.fov_center[1]), False) >= 0 and
+                    self.closest_contour, (self.fov_center[0] - self.cfg.trigger_threshold, self.fov_center[1]), False) >= 0 and
                 cv2.pointPolygonTest(
-                    self.closest_contour, (self.fov_center[0], self.fov_center[1] + self.trigger_threshold), False) >= 0 and
+                    self.closest_contour, (self.fov_center[0], self.fov_center[1] + self.cfg.trigger_threshold), False) >= 0 and
                 cv2.pointPolygonTest(
-                    self.closest_contour, (self.fov_center[0], self.fov_center[1] - self.trigger_threshold), False) >= 0
+                    self.closest_contour, (self.fov_center[0], self.fov_center[1] - self.cfg.trigger_threshold), False) >= 0
             ):
                 trigger = True
 
-        if self.debug:
-            self.debug_display(recoil_offset)
+        if self.cfg.debug:
+            self.runDebugWindow(recoil_offset)
 
         return self.target, trigger
 
@@ -162,7 +154,7 @@ class Screen:
         )
         return region
 
-    def debug_display(self, recoil_offset):
+    def runDebugWindow(self, recoil_offset):
         if self.display_mode == 'game':
             debug_img = self.img
         else:
@@ -217,7 +209,7 @@ class Screen:
         )
 
         offset_x = (self.screen[0] - self.fov[0]) // 2
-        offset_y = (self.screen[1] - self.fov[1]) // 2 - self.screen_center_offset - recoil_offset
+        offset_y = (self.screen[1] - self.fov[1]) // 2 - self.cfg.screen_center_offset - recoil_offset
         full_img[offset_y:offset_y+debug_img.shape[0], offset_x:offset_x+debug_img.shape[1]] = debug_img
         # Draw a rectangle crosshair
         full_img = cv2.rectangle(

@@ -38,7 +38,7 @@ class ConfigReader:
         self.capture_fov_y = None
         self.aim_fov_x = None
         self.aim_fov_y = None
-        self.fps = None
+        self.min_loop_time = None
         self.auto_detect_resolution = None
         self.resolution_x = None
         self.resolution_y = None
@@ -134,8 +134,8 @@ class ConfigReader:
         self.capture_fov_y = int(self.parser.get('screen', 'capture_fov_y'))
         self.aim_fov_x = int(self.parser.get('screen', 'aim_fov_x'))
         self.aim_fov_y = int(self.parser.get('screen', 'aim_fov_y'))
-        fps_value = int(self.parser.get('screen', 'fps'))
-        self.fps = int(np.floor(1000 / fps_value + 1))
+        max_loops_per_sec = int(self.parser.get('screen', 'max_loops_per_sec'))
+        self.min_loop_time = int(np.floor(1000 / max_loops_per_sec + 1))
 
         value = self.parser.get('screen', 'auto_detect_resolution').lower()
         if value == 'true':

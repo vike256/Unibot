@@ -51,7 +51,7 @@ class Screen:
         self.group_close_target_blobs_threshold = config.group_close_target_blobs_threshold
         self.upper_color = config.upper_color
         self.lower_color = config.lower_color
-        self.fps = config.fps
+        self.min_loop_time = config.min_loop_time
         self.aim_height = config.aim_height
         self.debug = config.debug
         self.thresh = None

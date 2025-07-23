@@ -84,8 +84,8 @@ For details see <LICENSE.txt>.
 
             # Do not loop above the set refresh rate
             time_spent = (time.time() - start_time) * 1000
-            if time_spent < screen.fps:
-                time.sleep((screen.fps - time_spent) / 1000)
+            if time_spent < screen.min_loop_time:
+                time.sleep((screen.min_loop_time - time_spent) / 1000)
 
         del utils
         del cheats

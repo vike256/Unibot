@@ -140,7 +140,7 @@ class Screen:
                 trigger = True
 
         if self.cfg.debug:
-            self.runDebugWindow(recoil_offset)
+            self.run_debug_window(recoil_offset)
 
         return self.target, trigger
 
@@ -154,7 +154,7 @@ class Screen:
         )
         return region
 
-    def runDebugWindow(self, recoil_offset):
+    def run_debug_window(self, recoil_offset):
         if self.display_mode == 'game':
             debug_img = self.img
         else:

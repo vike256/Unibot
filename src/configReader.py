@@ -25,7 +25,7 @@ class ConfigReader:
         self.parser = ConfigParser()
 
         # Communication
-        self.com_type = None
+        self.bot_input_type = None
         self.microcontroller_ip = None
         self.port = None
         self.com_port = None
@@ -84,19 +84,37 @@ class ConfigReader:
         self.parser.read(self.path)
 
     def read_config(self):
-        # Get communication settings
-        value = self.parser.get('communication', 'type').lower()
-        com_type_list = ['none', 'driver', 'serial', 'socket']
-        if value in com_type_list:
-            self.com_type = value
+        # Get aim settings
+        value = self.parser.get('aim', 'bot_input_type').lower()
+        bot_input_type_list = ['winapi', 'interception_driver', 'microcontroller_serial', 'microcontroller_socket']
+        if value in bot_input_type_list:
+            self.bot_input_type = value
         else:
-            print('WARNING: Invalid com_type value')
+            print('WARNING: Invalid bot_input_type value')
         
-        match self.com_type:
-            case 'socket':
+        self.offset = int(self.parser.get('aim', 'offset'))
+
+        value = float(self.parser.get('aim', 'smooth'))
+        if 0 <= value <= 1:
+            self.smooth = 1 - value / 1.25
+        else:
+            print('WARNING: Invalid smooth value')
+
+        self.speed = float(self.parser.get('aim', 'speed'))
+        self.y_speed = float(self.parser.get('aim', 'y_speed'))
+
+        value = float(self.parser.get('aim', 'aim_height'))
+        if 0 <= value <= 1:
+            self.aim_height = value
+        else:
+            print('WARNING: Invalid aim_height value')
+
+        # Get communication settings
+        match self.bot_input_type:
+            case 'microcontroller_socket':
                 self.microcontroller_ip = self.parser.get('communication', 'microcontroller_ip')
                 self.port = int(self.parser.get('communication', 'port'))
-            case 'serial':
+            case 'microcontroller_serial':
                 self.com_port = self.parser.get('communication', 'com_port')
 
         # Get screen settings
@@ -127,24 +145,6 @@ class ConfigReader:
 
         self.resolution_x = int(self.parser.get('screen', 'resolution_x'))
         self.resolution_y = int(self.parser.get('screen', 'resolution_y'))
-
-        # Get aim settings
-        self.offset = int(self.parser.get('aim', 'offset'))
-
-        value = float(self.parser.get('aim', 'smooth'))
-        if 0 <= value <= 1:
-            self.smooth = 1 - value / 1.25
-        else:
-            print('WARNING: Invalid smooth value')
-
-        self.speed = float(self.parser.get('aim', 'speed'))
-        self.y_speed = float(self.parser.get('aim', 'y_speed'))
-
-        value = float(self.parser.get('aim', 'aim_height'))
-        if 0 <= value <= 1:
-            self.aim_height = value
-        else:
-            print('WARNING: Invalid aim_height value')
 
         # Get recoil settings
         value = self.parser.get('recoil', 'mode').lower()

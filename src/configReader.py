@@ -44,7 +44,7 @@ class ConfigReader:
         self.resolution_y = None
 
         # Aim
-        self.offset = None
+        self.screen_center_offset = None
         self.smooth = None
         self.speed = None
         self.y_speed = None
@@ -92,7 +92,7 @@ class ConfigReader:
         else:
             print('WARNING: Invalid bot_input_type value')
         
-        self.offset = int(self.parser.get('aim', 'offset'))
+        self.screen_center_offset = int(self.parser.get('aim', 'screen_center_offset'))
 
         value = float(self.parser.get('aim', 'smooth'))
         if 0 <= value <= 1:

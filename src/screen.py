@@ -25,7 +25,7 @@ class Screen:
     def __init__(self, config):
         self.cam = bettercam.create(output_color="BGR")
 
-        self.offset = config.offset
+        self.screen_center_offset = config.screen_center_offset
 
         if config.auto_detect_resolution:
             screen_size = size()
@@ -44,9 +44,9 @@ class Screen:
         self.fov_center = (self.fov[0] // 2, self.fov[1] // 2)
         self.fov_region = (
             self.screen_center[0] - self.fov[0] // 2,
-            self.screen_center[1] - self.fov[1] // 2 - self.offset,
+            self.screen_center[1] - self.fov[1] // 2 - self.screen_center_offset,
             self.screen_center[0] + self.fov[0] // 2,
-            self.screen_center[1] + self.fov[1] // 2 - self.offset
+            self.screen_center[1] + self.fov[1] // 2 - self.screen_center_offset
         )
         self.group_close_target_blobs_threshold = config.group_close_target_blobs_threshold
         self.upper_color = config.upper_color
@@ -217,7 +217,7 @@ class Screen:
         )
 
         offset_x = (self.screen[0] - self.fov[0]) // 2
-        offset_y = (self.screen[1] - self.fov[1]) // 2 - self.offset - recoil_offset
+        offset_y = (self.screen[1] - self.fov[1]) // 2 - self.screen_center_offset - recoil_offset
         full_img[offset_y:offset_y+debug_img.shape[0], offset_x:offset_x+debug_img.shape[1]] = debug_img
         # Draw a rectangle crosshair
         full_img = cv2.rectangle(

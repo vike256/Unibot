@@ -34,7 +34,7 @@ class Mouse:
         # Create a lock, so we can use it to not send multiple mouse clicks at the same time
         self.lock = threading.Lock()
 
-        self.ip = config.ip
+        self.microcontroller_ip = config.microcontroller_ip
         self.port = config.port
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -47,9 +47,9 @@ class Mouse:
         
         match self.com_type:
             case 'socket':
-                print(f'Connecting to {self.ip}:{self.port}...')
+                print(f'Connecting to {self.microcontroller_ip}:{self.port}...')
                 try:
-                    self.client.connect((self.ip, self.port))
+                    self.client.connect((self.microcontroller_ip, self.port))
                     print('Socket connected')
                 except Exception as e:
                     print(f'ERROR: Could not connect (Socket). {e}')

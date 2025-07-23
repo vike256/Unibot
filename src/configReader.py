@@ -26,7 +26,7 @@ class ConfigReader:
 
         # Communication
         self.com_type = None
-        self.ip = None
+        self.microcontroller_ip = None
         self.port = None
         self.com_port = None
 
@@ -94,7 +94,7 @@ class ConfigReader:
         
         match self.com_type:
             case 'socket':
-                self.ip = self.parser.get('communication', 'ip')
+                self.microcontroller_ip = self.parser.get('communication', 'microcontroller_ip')
                 self.port = int(self.parser.get('communication', 'port'))
             case 'serial':
                 self.com_port = self.parser.get('communication', 'com_port')

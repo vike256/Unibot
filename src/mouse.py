@@ -35,7 +35,7 @@ class Mouse:
         self.lock = threading.Lock()
 
         self.microcontroller_ip = config.microcontroller_ip
-        self.port = config.port
+        self.microcontroller_port = config.microcontroller_port
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         self.com_port = config.com_port
@@ -47,9 +47,9 @@ class Mouse:
         
         match self.bot_input_type:
             case 'microcontroller_socket':
-                print(f'Connecting to {self.microcontroller_ip}:{self.port}...')
+                print(f'Connecting to {self.microcontroller_ip}:{self.microcontroller_port}...')
                 try:
-                    self.client.connect((self.microcontroller_ip, self.port))
+                    self.client.connect((self.microcontroller_ip, self.microcontroller_port))
                     print('Socket connected')
                 except Exception as e:
                     print(f'ERROR: Could not connect (Socket). {e}')

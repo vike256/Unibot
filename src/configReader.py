@@ -27,7 +27,7 @@ class ConfigReader:
         # Communication
         self.bot_input_type = None
         self.microcontroller_ip = None
-        self.port = None
+        self.microcontroller_port = None
         self.com_port = None
 
         # Screen
@@ -113,7 +113,7 @@ class ConfigReader:
         match self.bot_input_type:
             case 'microcontroller_socket':
                 self.microcontroller_ip = self.parser.get('communication', 'microcontroller_ip')
-                self.port = int(self.parser.get('communication', 'port'))
+                self.microcontroller_port = int(self.parser.get('communication', 'microcontroller_port'))
             case 'microcontroller_serial':
                 self.com_port = self.parser.get('communication', 'com_port')
 

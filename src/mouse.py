@@ -27,7 +27,7 @@ import threading
 class Mouse:
     def __init__(self, config):
         self.cfg = config
-        self.click_thread = threading.Thread(target=self.send_click)
+        self.click_thread = threading.Thread(target=self._send_click)
         self.last_click_time = time.time()
         self.lock = threading.Lock()  # used to not send multiple mouse clicks at the same time
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -95,10 +95,10 @@ class Mouse:
                 not self.click_thread.is_alive() and
                 time.time() - self.last_click_time >= 1 / self.cfg.target_cps
         ):
-            self.click_thread = threading.Thread(target=self.send_click, args=(delay_before_click,))
+            self.click_thread = threading.Thread(target=self._send_click, args=(delay_before_click,))
             self.click_thread.start()
 
-    def send_click(self, delay_before_click=0):
+    def _send_click(self, delay_before_click=0):
         time.sleep(delay_before_click)
         self.last_click_time = time.time()
         match self.cfg.bot_input_type:

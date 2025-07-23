@@ -43,22 +43,22 @@ class Mouse:
                     print('Socket connected')
                 except Exception as e:
                     print(f'ERROR: Could not connect (Socket). {e}')
-                    self.close_connection()
+                    self._close_connection()
             case 'microcontroller_serial':
                 try:
                     self.board = serial.Serial(self.cfg.com_port, 115200)
                     print('Serial connected')
                 except Exception as e:
                     print(f'ERROR: Could not connect (Serial). {e}')
-                    self.close_connection()
+                    self._close_connection()
             case 'interception_driver':
                 import interception
                 interception.auto_capture_devices(mouse=True)
 
     def __del__(self):
-        self.close_connection()
+        self._close_connection()
 
-    def close_connection(self):
+    def _close_connection(self):
         if self.cfg.bot_input_type == 'microcontroller_socket':
             if self.client is not None:
                 self.client.close()
@@ -82,7 +82,7 @@ class Mouse:
         if x != 0 or y != 0:  # Don't send anything if there's no movement
             match self.cfg.bot_input_type:
                 case 'microcontroller_socket' | 'microcontroller_serial':
-                    self.send_command(f'M{x},{y}\r')
+                    self._send_command(f'M{x},{y}\r')
                 case 'interception_driver':
                     interception.move_relative(x, y)
                     print(f'M({x}, {y})')
@@ -103,7 +103,7 @@ class Mouse:
         self.last_click_time = time.time()
         match self.cfg.bot_input_type:
             case 'microcontroller_socket' | 'microcontroller_serial':
-                self.send_command('C\r')
+                self._send_command('C\r')
             case 'interception_driver':
                 random_delay = (np.random.randint(40) + 40) / 1000
                 interception.mouse_down('left')
@@ -118,7 +118,7 @@ class Mouse:
                 print(f'C({random_delay * 1000:g})')
         time.sleep((np.random.randint(10) + 25) / 1000)  # Sleep to avoid sending another click instantly after mouseup
 
-    def send_command(self, command):
+    def _send_command(self, command):
         with self.lock:
             match self.cfg.bot_input_type:
                 case 'microcontroller_socket':
@@ -126,9 +126,9 @@ class Mouse:
                 case 'microcontroller_serial':
                     self.board.write(command.encode())
             print(f'Sent: {command}')
-            print(f'Response from {self.cfg.bot_input_type}: {self.get_response()}')
+            print(f'Response from {self.cfg.bot_input_type}: {self._get_response()}')
 
-    def get_response(self):  # Waits for a response before sending a new instruction
+    def _get_response(self):  # Waits for a response before sending a new instruction
         match self.cfg.bot_input_type:
             case 'microcontroller_socket':
                 return self.client.recv(4).decode()

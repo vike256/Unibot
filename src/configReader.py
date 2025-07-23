@@ -31,7 +31,7 @@ class ConfigReader:
         self.com_port = None
 
         # Screen
-        self.detection_threshold = None
+        self.group_close_target_blobs_threshold = None
         self.upper_color = None
         self.lower_color = None
         self.fov_x = None
@@ -100,8 +100,8 @@ class ConfigReader:
                 self.com_port = self.parser.get('communication', 'com_port')
 
         # Get screen settings
-        values_str = self.parser.get('screen', 'detection_threshold').split(',')
-        self.detection_threshold = (int(values_str[0].strip()), int(values_str[1].strip()))
+        values_str = self.parser.get('screen', 'group_close_target_blobs_threshold').split(',')
+        self.group_close_target_blobs_threshold = (int(values_str[0].strip()), int(values_str[1].strip()))
 
         upper_color = self.parser.get('screen', 'upper_color').split(',')
         lower_color = self.parser.get('screen', 'lower_color').split(',')

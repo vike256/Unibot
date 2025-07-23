@@ -48,7 +48,7 @@ class Screen:
             self.screen_center[0] + self.fov[0] // 2,
             self.screen_center[1] + self.fov[1] // 2 - self.offset
         )
-        self.detection_threshold = config.detection_threshold
+        self.group_close_target_blobs_threshold = config.group_close_target_blobs_threshold
         self.upper_color = config.upper_color
         self.lower_color = config.lower_color
         self.fps = config.fps
@@ -99,7 +99,7 @@ class Screen:
         mask = cv2.inRange(hsv, self.lower_color, self.upper_color)
 
         # Apply morphological dilation to increase the size of the detected color blobs
-        kernel = np.ones((self.detection_threshold[0], self.detection_threshold[1]), np.uint8)
+        kernel = np.ones((self.group_close_target_blobs_threshold[0], self.group_close_target_blobs_threshold[1]), np.uint8)
         dilated = cv2.dilate(mask, kernel, iterations=5)
 
         # Apply thresholding to convert the mask into a binary image

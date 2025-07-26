@@ -19,7 +19,7 @@ import time
 import numpy as np
 
 from cheats import Cheats
-from mouse import Mouse
+from mouse import get_mouse_implementation
 from screen import Screen
 from utils import Utils
 
@@ -34,7 +34,7 @@ class Unibot:
             utils = Utils()
             config = utils.config
             cheats = Cheats(config)
-            mouse = Mouse(config)
+            mouse = get_mouse_implementation(config)
             screen = Screen(config)
 
             print('Unibot ON')
@@ -70,7 +70,8 @@ class Unibot:
                 cheats.apply_recoil(utils.recoil_state, delta_time)
 
                 # Move the mouse based on the previous calculations
-                mouse.move(cheats.move_x, cheats.move_y)
+                if cheats.move_x != 0 or cheats.move_y != 0:
+                    mouse.move(cheats.move_x, cheats.move_y)
 
                 # Reset move values so the aim doesn't keep drifting when no targets are on the screen
                 cheats.move_x, cheats.move_y = (0, 0)

@@ -16,9 +16,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 from .base_microcontroller_mouse import BaseMicrocontrollerMouse
-import numpy as np
 import serial
-import time
 
 
 class MicrocontrollerSerialMouse(BaseMicrocontrollerMouse):
@@ -55,16 +53,3 @@ class MicrocontrollerSerialMouse(BaseMicrocontrollerMouse):
             receive = self.board.readline().decode('utf-8').strip()
             if len(receive) > 0:
                 return receive
-
-
-    def send_click(self, delay_before_click: int = 0):
-        time.sleep(delay_before_click)
-        self.last_click_time = time.time()
-
-        self.send_command('C\r')
-        
-        time.sleep((np.random.randint(10) + 25) / 1000)  # Sleep to avoid sending another click instantly after mouseup
-
-
-    def send_move(self, x: int, y: int):
-        self.send_command(f'M{x},{y}\r')

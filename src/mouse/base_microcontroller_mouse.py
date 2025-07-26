@@ -17,7 +17,9 @@
 """
 from .base_mouse import BaseMouse
 import abc
+import numpy as np
 import threading
+import time
 
 
 class BaseMicrocontrollerMouse(BaseMouse, abc.ABC):
@@ -38,3 +40,15 @@ class BaseMicrocontrollerMouse(BaseMouse, abc.ABC):
     @abc.abstractmethod
     def send_command(self, command):
         pass
+    
+    def send_move(self, x: int, y: int):
+        self.send_command(f'M{x},{y}\r')
+    
+
+    def send_click(self, delay_before_click: int = 0):
+        time.sleep(delay_before_click)
+        self.last_click_time = time.time()
+
+        self.send_command('C\r')
+        
+        time.sleep((np.random.randint(10) + 25) / 1000)  # Sleep to avoid sending another click instantly after mouseup

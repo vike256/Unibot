@@ -16,9 +16,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 from .base_microcontroller_mouse import BaseMicrocontrollerMouse
-import numpy as np
 import socket
-import time
 
 
 class MicrocontrollerSocketMouse(BaseMicrocontrollerMouse):
@@ -53,15 +51,3 @@ class MicrocontrollerSocketMouse(BaseMicrocontrollerMouse):
     def _get_response(self):  # Waits for a response before sending a new instruction
         return self.client.recv(4).decode()
     
-    
-    def send_click(self, delay_before_click: int = 0):
-        time.sleep(delay_before_click)
-        self.last_click_time = time.time()
-
-        self.send_command('C\r')
-        
-        time.sleep((np.random.randint(10) + 25) / 1000)  # Sleep to avoid sending another click instantly after mouseup
-
-
-    def send_move(self, x: int, y: int):
-        self.send_command(f'M{x},{y}\r')

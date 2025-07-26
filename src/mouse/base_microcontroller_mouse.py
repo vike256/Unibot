@@ -38,8 +38,3 @@ class BaseMicrocontrollerMouse(BaseMouse, abc.ABC):
     @abc.abstractmethod
     def send_command(self, command):
         pass
-
-
-    def move(self, x, y):
-        move_x, move_y = self.calculate_move_amount(x, y)
-        self.send_command(f'M{move_x},{move_y}\r')

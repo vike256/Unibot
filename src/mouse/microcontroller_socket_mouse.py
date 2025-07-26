@@ -22,32 +22,27 @@ import socket
 class MicrocontrollerSocketMouse(BaseMicrocontrollerMouse):
     def __init__(self, config):
         super().__init__(config)
-        self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.board = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.connect_to_board()
         
 
     def connect_to_board(self):
         print(f'Connecting to {self.cfg.microcontroller_ip}:{self.cfg.microcontroller_port}...')
         try:
-            self.client.connect((self.cfg.microcontroller_ip, self.cfg.microcontroller_port))
+            self.board.connect((self.cfg.microcontroller_ip, self.cfg.microcontroller_port))
             print('Socket connected')
         except Exception as e:
             print(f'ERROR: Could not connect (Socket). {e}')
             self.close_connection()
 
 
-    def close_connection(self):
-        if self.client is not None:
-            self.client.close()
-
-
     def send_command(self, command: str):
         with self.send_command_lock:
-            self.client.sendall(command.encode())
+            self.board.sendall(command.encode())
             print(f'(Socket) Sent: {command}')
-            print(f'(Socket) Response: {self._get_response()}')
+            print(f'(Socket) Response: {self.get_response()}')
 
 
-    def _get_response(self):  # Waits for a response before sending a new instruction
-        return self.client.recv(4).decode()
+    def get_response(self):  # Waits for a response before sending a new instruction
+        return self.board.recv(4).decode()
     

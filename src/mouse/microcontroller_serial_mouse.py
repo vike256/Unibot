@@ -34,21 +34,16 @@ class MicrocontrollerSerialMouse(BaseMicrocontrollerMouse):
             print(f'ERROR: Could not connect (Serial). {e}')
             self.close_connection()
             raise ConnectionError()
-        
-
-    def close_connection(self):
-        if self.board is not None:
-            self.board.close()
 
 
     def send_command(self, command: str):
         with self.send_command_lock:
             self.board.write(command.encode())
             print(f'(Serial) Sent: {command}')
-            print(f'(Serial) Response: {self._get_response()}')
+            print(f'(Serial) Response: {self.get_response()}')
 
 
-    def _get_response(self):  # Waits for a response before sending a new instruction
+    def get_response(self):  # Waits for a response before sending a new instruction
         while True:
             receive = self.board.readline().decode('utf-8').strip()
             if len(receive) > 0:

@@ -26,6 +26,12 @@ class BaseMicrocontrollerMouse(BaseMouse, abc.ABC):
     def __init__(self, config):
         super().__init__(config)
         self.send_command_lock = threading.Lock()  # used to not send multiple mouse clicks at the same time
+        self.click_cmd = 'C\r'
+
+
+    @staticmethod
+    def get_move_cmd(x, y):
+        return f'M{x},{y}\r'
 
 
     def __del__(self):
@@ -33,22 +39,33 @@ class BaseMicrocontrollerMouse(BaseMouse, abc.ABC):
 
 
     @abc.abstractmethod
-    def close_connection(self):
+    def connect_to_board(self):
         pass
 
 
     @abc.abstractmethod
     def send_command(self, command):
         pass
+
+
+    @abc.abstractmethod
+    def get_response(self):
+        pass
+
+
+    def close_connection(self):
+        if self.board is not None:
+            self.board.close()
+
     
     def send_move(self, x: int, y: int):
-        self.send_command(f'M{x},{y}\r')
+        self.send_command(self.get_move_cmd(x, y))
     
 
     def send_click(self, delay_before_click: int = 0):
         time.sleep(delay_before_click)
         self.last_click_time = time.time()
 
-        self.send_command('C\r')
+        self.send_command(self.click_cmd)
         
         time.sleep((np.random.randint(10) + 25) / 1000)  # Sleep to avoid sending another click instantly after mouseup

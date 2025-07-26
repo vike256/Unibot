@@ -16,25 +16,24 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 from .base_mouse import BaseMouse
-from .winapi_mouse import WinApiMouse
-from .interception_mouse import InterceptionMouse
-from .microcontroller_serial_mouse import MicrocontrollerSerialMouse
-from .microcontroller_socket_mouse import MicrocontrollerSocketMouse
-
 
 def get_mouse_implementation(config):
     name = config.bot_input_type
 
     if name == 'winapi':
         print('Using WinApiMouse')
+        from .winapi_mouse import WinApiMouse
         return WinApiMouse(config)
     elif name == 'interception_driver':
         print('Using InterceptionMouse')
+        from .interception_mouse import InterceptionMouse
         return InterceptionMouse(config)
     elif name == 'microcontroller_serial':
         print('Using MicrocontrollerSerialMouse')
+        from .microcontroller_serial_mouse import MicrocontrollerSerialMouse
         return MicrocontrollerSerialMouse(config)
     elif name == 'microcontroller_socket':
+        from .microcontroller_socket_mouse import MicrocontrollerSocketMouse
         print('Using MicrocontrollerSocketMouse')
         return MicrocontrollerSocketMouse(config)
     else:

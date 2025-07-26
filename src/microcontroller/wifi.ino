@@ -22,7 +22,7 @@
 const char* ssid = "WIFI_NAME";
 const char* password = "WIFI_PASSWORD";
 
-int port = 50123;
+int port = 50256;
 int x = 0;
 int y = 0;
 String cmd = "";

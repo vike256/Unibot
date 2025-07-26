@@ -46,8 +46,8 @@ class MicrocontrollerSocketMouse(BaseMicrocontrollerMouse):
     def send_command(self, command: str):
         with self.send_command_lock:
             self.client.sendall(command.encode())
-            print(f'(Socket) sent: {command}')
-            print(f'Response from {self.cfg.bot_input_type}: {self._get_response()}')
+            print(f'(Socket) Sent: {command}')
+            print(f'(Socket) Response: {self._get_response()}')
 
 
     def _get_response(self):  # Waits for a response before sending a new instruction

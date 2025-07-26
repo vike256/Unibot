@@ -30,7 +30,7 @@ class MicrocontrollerSerialMouse(BaseMicrocontrollerMouse):
     
     def connect_to_board(self):
         try:
-            self.board = serial.Serial(self.cfg.com_port, 115200)
+            self.board = serial.Serial(f'COM{self.cfg.com_port}', 115200)
             print('Serial connected')
         except Exception as e:
             print(f'ERROR: Could not connect (Serial). {e}')
@@ -47,7 +47,7 @@ class MicrocontrollerSerialMouse(BaseMicrocontrollerMouse):
         with self.send_command_lock:
             self.board.write(command.encode())
             print(f'(Serial) Sent: {command}')
-            print(f'Response from {self.cfg.bot_input_type}: {self._get_response()}')
+            print(f'(Serial) Response: {self._get_response()}')
 
 
     def _get_response(self):  # Waits for a response before sending a new instruction

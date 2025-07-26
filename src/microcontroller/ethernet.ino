@@ -20,7 +20,7 @@
 #include <Ethernet.h>
 #include <SPI.h>
  
-int port = 50124;
+int port = 50256;
 int x = 0;
 int y = 0;
 String cmd = "";

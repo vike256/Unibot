@@ -1,6 +1,6 @@
 """
     Unibot, an open-source colorbot.
-    Copyright (C) 2025 vike256
+    Copyright (C) 2026 vike256
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,9 +17,9 @@
 """
 from .base_mouse import BaseMouse
 import abc
-import numpy as np
 import threading
 import time
+import random
 
 
 class BaseMicrocontrollerMouse(BaseMouse, abc.ABC):
@@ -28,39 +28,12 @@ class BaseMicrocontrollerMouse(BaseMouse, abc.ABC):
         self.send_command_lock = threading.Lock()  # used to not send multiple mouse clicks at the same time
         self.click_cmd = 'C\r'
 
-
     @staticmethod
     def get_move_cmd(x, y):
         return f'M{x},{y}\r'
 
-
     def __del__(self):
         self.close_connection()
-
-
-    @abc.abstractmethod
-    def connect_to_board(self):
-        pass
-
-
-    @abc.abstractmethod
-    def send_command(self, command):
-        pass
-
-
-    @abc.abstractmethod
-    def get_response(self):
-        pass
-
-
-    def close_connection(self):
-        if self.board is not None:
-            self.board.close()
-
-    
-    def send_move(self, x: int, y: int):
-        self.send_command(self.get_move_cmd(x, y))
-    
 
     def send_click(self, delay_before_click: int = 0):
         time.sleep(delay_before_click)
@@ -68,4 +41,27 @@ class BaseMicrocontrollerMouse(BaseMouse, abc.ABC):
 
         self.send_command(self.click_cmd)
         
-        time.sleep((np.random.randint(10) + 25) / 1000)  # Sleep to avoid sending another click instantly after mouseup
+        time.sleep(random.randint(25, 34) / 1000)  # Sleep to avoid sending another click instantly after mouseup
+
+    def send_move(self, x: int, y: int):
+        self.send_command(self.get_move_cmd(x, y))
+
+    @abc.abstractmethod
+    def connect_to_board(self):
+        pass
+
+    @abc.abstractmethod
+    def send_command(self, command):
+        pass
+
+    @abc.abstractmethod
+    def get_response(self):
+        pass
+
+    def close_connection(self):
+        if self.board is not None:
+            self.board.close()
+
+    def close(self):
+        self.close_connection()
+        super().close()

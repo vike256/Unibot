@@ -1,6 +1,6 @@
 """
     Unibot, an open-source colorbot.
-    Copyright (C) 2025 vike256
+    Copyright (C) 2026 vike256
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,12 +16,13 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 import time
-import numpy as np
+import random
 
 from cheats import Cheats
+from configReader import ConfigReader
+from keybinds import KeybindManager
 from mouse import get_mouse_implementation
 from screen import Screen
-from utils import Utils
 
 
 class Unibot:
@@ -29,10 +30,12 @@ class Unibot:
         self.print_license()
         while True:
             # Track delta time
-            start_time = time.time()
+            start_time = time.perf_counter()
 
-            utils = Utils()
-            config = utils.config
+            config = ConfigReader()
+            config.read_config()
+
+            keybinds = KeybindManager(config)
             cheats = Cheats(config)
             mouse = get_mouse_implementation(config)
             screen = Screen(config)
@@ -41,33 +44,27 @@ class Unibot:
 
             # Cheat loop
             while True:
-                delta_time = time.time() - start_time
-                start_time = time.time()
-                
-                reload_config = utils.check_key_binds()
+                delta_time = time.perf_counter() - start_time
+                start_time = time.perf_counter()
+
+                reload_config = keybinds.check_key_binds(cheats)
                 if reload_config:
                     break
 
-                if (utils.get_aim_state() or utils.get_trigger_state()) or (config.debug and config.debug_always_on):
-                    # Get target position and check if there is a target in the center of the screen
+                if self._should_process_frame(keybinds, cheats, config):
                     target, trigger = screen.get_target(cheats.recoil_offset)
 
-                    # Shoot if target in the center of the screen
-                    if utils.get_trigger_state() and trigger:
-                        if config.trigger_delay != 0:
-                            delay_before_click = (np.random.randint(config.trigger_randomization) + config.trigger_delay) / 1000
-                        else:
-                            delay_before_click = 0
+                    if keybinds.get_trigger_state() and trigger:
+                        delay_before_click = self._calculate_trigger_delay(config)
                         mouse.click(delay_before_click)
 
-                    # Calculate movement based on target position
-                    cheats.calculate_aim(utils.get_aim_state(), target)
+                    cheats.calculate_aim(cheats.get_aim_state(), target)
 
-                if utils.get_rapid_fire_state():
+                if keybinds.get_rapid_fire_state():
                     mouse.click()
 
                 # Apply recoil
-                cheats.apply_recoil(utils.recoil_state, delta_time)
+                cheats.apply_recoil(cheats.recoil_state, delta_time)
 
                 # Move the mouse based on the previous calculations
                 if cheats.move_x != 0 or cheats.move_y != 0:
@@ -77,18 +74,35 @@ class Unibot:
                 cheats.move_x, cheats.move_y = (0, 0)
 
                 # Do not loop above the set refresh rate
-                time_spent = (time.time() - start_time) * 1000
+                time_spent = (time.perf_counter() - start_time) * 1000
                 if time_spent < config.min_loop_time:
                     time.sleep((config.min_loop_time - time_spent) / 1000)
 
-            del utils
+            screen.close()
+            mouse.close()
+            del keybinds
             del cheats
             del mouse
             del screen
+            del config
             print('Reloading')
-        
+
+    def _should_process_frame(self, keybinds, cheats, config):
+        """Returns True if the frame should be processed for target detection."""
+        if keybinds.get_trigger_state() or cheats.get_aim_state():
+            return True
+        if config.debug and config.debug_always_on:
+            return True
+        return False
+
+    def _calculate_trigger_delay(self, config):
+        """Calculate the randomized delay before a triggerbot click."""
+        if config.trigger_delay == 0:
+            return 0
+        return (random.randint(0, config.trigger_randomization - 1) + config.trigger_delay) / 1000
+
     def print_license(self):
-        print('Unibot  Copyright (C) 2025  vike256 \n'
+        print('Unibot  Copyright (C) 2026  vike256 \n'
               'This program comes with ABSOLUTELY NO WARRANTY. \n'
               'This is free software, and you are welcome to redistribute it under certain conditions. \n'
               'For details see <LICENSE.txt>.')

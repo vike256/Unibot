@@ -1,6 +1,6 @@
 """
     Unibot, an open-source colorbot.
-    Copyright (C) 2025 vike256
+    Copyright (C) 2026 vike256
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,30 +15,20 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
-from mouse import BaseMouse
-import numpy as np
-import time
+from .base_mouse import DriverMouse
 import win32api
 import win32con
 
 
-class WinApiMouse(BaseMouse):
+class WinApiMouse(DriverMouse):
     def __init__(self, config):
         super().__init__(config)
 
-
-    def send_click(self, delay_before_click=0):
-        time.sleep(delay_before_click)
-        self.last_click_time = time.time()
-
-        random_delay = (np.random.randint(40) + 40) / 1000
+    def mouse_down(self):
         win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0)
-        time.sleep(random_delay)
+
+    def mouse_up(self):
         win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)
-        print(f'(WinApi) Sent: Click(random_delay={random_delay * 1000:g})')
-
-        time.sleep((np.random.randint(10) + 25) / 1000)  # Sleep to avoid sending another click instantly after mouseup
-
 
     def send_move(self, x, y):
         win32api.mouse_event(win32con.MOUSEEVENTF_MOVE, x, y, 0, 0)

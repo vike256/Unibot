@@ -1,6 +1,6 @@
 """
     Unibot, an open-source colorbot.
-    Copyright (C) 2025 vike256
+    Copyright (C) 2026 vike256
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -45,4 +45,4 @@ class MicrocontrollerSocketMouse(BaseMicrocontrollerMouse):
 
     def get_response(self):  # Waits for a response before sending a new instruction
         return self.board.recv(4).decode()
-    
+     

@@ -1,6 +1,6 @@
 """
     Unibot, an open-source colorbot.
-    Copyright (C) 2025 vike256
+    Copyright (C) 2026 vike256
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,16 +15,9 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
-import time
-import numpy as np
-
 from unibot import Unibot
 
 
-def main():
+if __name__ == "__main__":
     unibot = Unibot()
     unibot.run()
-
-
-if __name__ == "__main__":
-    main()

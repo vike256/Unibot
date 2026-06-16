@@ -1,6 +1,6 @@
 """
     Unibot, an open-source colorbot.
-    Copyright (C) 2025 vike256
+    Copyright (C) 2026 vike256
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ class ConfigReader:
         self.parser = ConfigParser()
 
         # Communication
-        self.bot_input_type = None
+        self.communication_type = None
         self.microcontroller_ip = None
         self.microcontroller_port = None
         self.com_port = None
@@ -78,73 +78,67 @@ class ConfigReader:
         self.debug = None
         self.debug_always_on = None
         self.display_mode = None
+        self.debug_fullscreen_capture = None
 
         # Get config path and read it
         self.path = os.path.join(os.path.dirname(__file__), '../config.ini')
         self.parser.read(self.path)
 
     def read_config(self):
-        # Get aim settings
-        value = self.parser.get('aim', 'bot_input_type').lower()
-        bot_input_type_list = ['winapi', 'interception_driver', 'microcontroller_serial', 'microcontroller_socket']
-        if value in bot_input_type_list:
-            self.bot_input_type = value
-        else:
-            print('WARNING: Invalid bot_input_type value')
-        
-        self.screen_center_offset = int(self.parser.get('aim', 'screen_center_offset'))
+        # Reset mutable collections to prevent accumulation on reload
+        self.aim_keys = []
 
-        value = float(self.parser.get('aim', 'aim_smoothing_factor'))
+        # Get communication settings
+        value = self.parser.get('communication', 'type').lower()
+        communication_type_list = ['winapi', 'interception_driver', 'serial', 'socket']
+        if value in communication_type_list:
+            self.communication_type = value
+        else:
+            print('WARNING: Invalid communication_type value')
+        
+        self.screen_center_offset = self.parser.getint('aim', 'screen_center_offset')
+
+        value = self.parser.getfloat('aim', 'aim_smoothing_factor')
         if 0 <= value <= 1:
             self.aim_smoothing_factor = 1 - value / 1.25
         else:
             print('WARNING: Invalid aim_smoothing_factor value')
 
-        self.speed = float(self.parser.get('aim', 'speed'))
-        self.y_speed_multiplier = float(self.parser.get('aim', 'y_speed_multiplier'))
+        self.speed = self.parser.getfloat('aim', 'speed')
+        self.y_speed_multiplier = self.parser.getfloat('aim', 'y_speed_multiplier')
 
-        value = float(self.parser.get('aim', 'aim_height'))
+        value = self.parser.getfloat('aim', 'aim_height')
         if 0 <= value <= 1:
             self.aim_height = value
         else:
             print('WARNING: Invalid aim_height value')
 
         # Get communication settings
-        match self.bot_input_type:
-            case 'microcontroller_socket':
+        match self.communication_type:
+            case 'socket':
                 self.microcontroller_ip = self.parser.get('communication', 'microcontroller_ip')
-                self.microcontroller_port = int(self.parser.get('communication', 'microcontroller_port'))
-            case 'microcontroller_serial':
+                self.microcontroller_port = self.parser.getint('communication', 'microcontroller_port')
+            case 'serial':
                 self.com_port = self.parser.get('communication', 'com_port')
 
         # Get screen settings
         values_str = self.parser.get('screen', 'group_close_target_blobs_threshold').split(',')
         self.group_close_target_blobs_threshold = (int(values_str[0].strip()), int(values_str[1].strip()))
 
-        upper_color = self.parser.get('screen', 'upper_color').split(',')
-        lower_color = self.parser.get('screen', 'lower_color').split(',')
-        for i in range(0, 3):
-            upper_color[i] = int(upper_color[i].strip())
-        for i in range(0, 3):
-            lower_color[i] = int(lower_color[i].strip())
-        self.upper_color = np.array(upper_color)
-        self.lower_color = np.array(lower_color)
+        self.upper_color = self._parse_color_array('screen', 'upper_color')
+        self.lower_color = self._parse_color_array('screen', 'lower_color')
 
-        self.capture_fov_x = int(self.parser.get('screen', 'capture_fov_x'))
-        self.capture_fov_y = int(self.parser.get('screen', 'capture_fov_y'))
-        self.aim_fov_x = int(self.parser.get('screen', 'aim_fov_x'))
-        self.aim_fov_y = int(self.parser.get('screen', 'aim_fov_y'))
-        max_loops_per_sec = int(self.parser.get('screen', 'max_loops_per_sec'))
+        self.capture_fov_x = self.parser.getint('screen', 'capture_fov_x')
+        self.capture_fov_y = self.parser.getint('screen', 'capture_fov_y')
+        self.aim_fov_x = self.parser.getint('screen', 'aim_fov_x')
+        self.aim_fov_y = self.parser.getint('screen', 'aim_fov_y')
+        max_loops_per_sec = self.parser.getint('screen', 'max_loops_per_sec')
         self.min_loop_time = int(np.floor(1000 / max_loops_per_sec + 1))
 
-        value = self.parser.get('screen', 'auto_detect_resolution').lower()
-        if value == 'true':
-            self.auto_detect_resolution = True
-        else:
-            self.auto_detect_resolution = False
+        self.auto_detect_resolution = self.parser.getboolean('screen', 'auto_detect_resolution')
 
-        self.resolution_x = int(self.parser.get('screen', 'resolution_x'))
-        self.resolution_y = int(self.parser.get('screen', 'resolution_y'))
+        self.resolution_x = self.parser.getint('screen', 'resolution_x')
+        self.resolution_y = self.parser.getint('screen', 'resolution_y')
 
         # Get recoil settings
         value = self.parser.get('recoil', 'mode').lower()
@@ -154,18 +148,18 @@ class ConfigReader:
         else:
             print('WARNING: Invalid recoil_mode value')
 
-        self.recoil_x = float(self.parser.get('recoil', 'recoil_x'))
-        self.recoil_y = float(self.parser.get('recoil', 'recoil_y'))
-        self.max_offset = int(self.parser.get('recoil', 'max_offset'))
-        self.recoil_recover = float(self.parser.get('recoil', 'recover'))
+        self.recoil_x = self.parser.getfloat('recoil', 'recoil_x')
+        self.recoil_y = self.parser.getfloat('recoil', 'recoil_y')
+        self.max_offset = self.parser.getint('recoil', 'max_offset')
+        self.recoil_recover = self.parser.getfloat('recoil', 'recover')
 
         # Get trigger settings
-        self.trigger_delay = int(self.parser.get('trigger', 'trigger_delay'))
-        self.trigger_randomization = int(self.parser.get('trigger', 'trigger_randomization'))
-        self.trigger_threshold = int(self.parser.get('trigger', 'trigger_threshold'))
+        self.trigger_delay = self.parser.getint('trigger', 'trigger_delay')
+        self.trigger_randomization = self.parser.getint('trigger', 'trigger_randomization')
+        self.trigger_threshold = self.parser.getint('trigger', 'trigger_threshold')
 
         # Get rapid fire settings
-        self.target_cps = int(self.parser.get('rapid_fire', 'target_cps'))
+        self.target_cps = self.parser.getint('rapid_fire', 'target_cps')
 
         # Get keybind settings
         self.key_reload_config = self.read_hex(self.parser.get('key_binds', 'key_reload_config'))
@@ -183,17 +177,8 @@ class ConfigReader:
             self.aim_keys = ['off']
 
         # Get debug settings
-        value = self.parser.get('debug', 'enabled').lower()
-        if value == 'true':
-            self.debug = True
-        else:
-            self.debug = False
-
-        value = self.parser.get('debug', 'always_on').lower()
-        if value == 'true':
-            self.debug_always_on = True
-        else:
-            self.debug_always_on = False
+        self.debug = self.parser.getboolean('debug', 'enabled')
+        self.debug_always_on = self.parser.getboolean('debug', 'always_on')
 
         value = self.parser.get('debug', 'display_mode').lower()
         display_mode_list = ['game', 'mask']
@@ -201,6 +186,13 @@ class ConfigReader:
             self.display_mode = value
         else:
             print('WARNING: Invalid display_mode value')
+
+        self.debug_fullscreen_capture = self.parser.getboolean('debug', 'debug_fullscreen_capture', fallback=False)
+
+    def _parse_color_array(self, section, option):
+        """Parse a comma-separated color string into a numpy integer array."""
+        values = self.parser.get(section, option).split(',')
+        return np.array([int(v.strip()) for v in values])
 
     @staticmethod
     def read_hex(string):

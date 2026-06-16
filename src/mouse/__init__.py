@@ -1,6 +1,6 @@
 """
     Unibot, an open-source colorbot.
-    Copyright (C) 2025 vike256
+    Copyright (C) 2026 vike256
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,10 +15,8 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
-from .base_mouse import BaseMouse
-
 def get_mouse_implementation(config):
-    name = config.bot_input_type
+    name = config.communication_type
 
     if name == 'winapi':
         print('Using WinApiMouse')
@@ -28,11 +26,11 @@ def get_mouse_implementation(config):
         print('Using InterceptionMouse')
         from .interception_mouse import InterceptionMouse
         return InterceptionMouse(config)
-    elif name == 'microcontroller_serial':
+    elif name == 'serial':
         print('Using MicrocontrollerSerialMouse')
         from .microcontroller_serial_mouse import MicrocontrollerSerialMouse
         return MicrocontrollerSerialMouse(config)
-    elif name == 'microcontroller_socket':
+    elif name == 'socket':
         from .microcontroller_socket_mouse import MicrocontrollerSocketMouse
         print('Using MicrocontrollerSocketMouse')
         return MicrocontrollerSocketMouse(config)

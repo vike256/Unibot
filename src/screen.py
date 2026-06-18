@@ -46,8 +46,20 @@ class Screen:
         self.dilated = None
         self.target = None
         self.closest_contour = None
+        self.closest_rect = None
         self.img = None
         self.aim_fov = (self.cfg.aim_fov_x, self.cfg.aim_fov_y)
+        self.dilate_kernel = np.ones(
+            (self.cfg.group_close_target_blobs_threshold[0], self.cfg.group_close_target_blobs_threshold[1]),
+            np.uint8
+        )
+        self.trigger_test_points = [
+            (self.fov_center[0], self.fov_center[1]),
+            (self.fov_center[0] + self.cfg.trigger_threshold, self.fov_center[1]),
+            (self.fov_center[0] - self.cfg.trigger_threshold, self.fov_center[1]),
+            (self.fov_center[0], self.fov_center[1] + self.cfg.trigger_threshold),
+            (self.fov_center[0], self.fov_center[1] - self.cfg.trigger_threshold),
+        ]
 
         # Setup debug display
         if self.cfg.debug:
@@ -67,7 +79,7 @@ class Screen:
         while True:
             image = self.cam.grab(region)
             if image is not None:
-                return np.array(image)
+                return image
             time.sleep(0.001)
 
     @staticmethod
@@ -83,9 +95,9 @@ class Screen:
         """Check if a point is within the aim FOV bounds."""
         return -self.aim_fov[0] <= x <= self.aim_fov[0] and -self.aim_fov[1] <= y <= self.aim_fov[1]
 
-    def _check_trigger(self, contour):
+    def _check_trigger(self, contour, rect):
         """Check if the crosshair is inside the target contour with a bounding-box pre-filter."""
-        cx, cy, cw, ch = cv2.boundingRect(contour)
+        cx, cy, cw, ch = rect
         if not (
             cx <= self.fov_center[0] - self.cfg.trigger_threshold and
             self.fov_center[0] + self.cfg.trigger_threshold <= cx + cw and
@@ -94,13 +106,7 @@ class Screen:
         ):
             return False
 
-        points = [
-            (self.fov_center[0], self.fov_center[1]),
-            (self.fov_center[0] + self.cfg.trigger_threshold, self.fov_center[1]),
-            (self.fov_center[0] - self.cfg.trigger_threshold, self.fov_center[1]),
-            (self.fov_center[0], self.fov_center[1] + self.cfg.trigger_threshold),
-            (self.fov_center[0], self.fov_center[1] - self.cfg.trigger_threshold),
-        ]
+        points = self.trigger_test_points
         return all(cv2.pointPolygonTest(contour, pt, False) >= 0 for pt in points)
 
     def get_target(self, recoil_offset):
@@ -109,15 +115,15 @@ class Screen:
         self.target = None
         trigger = False
         self.closest_contour = None
+        self.closest_rect = None
 
         self.img = self.screenshot(self.get_region(self.fov_region, recoil_offset))
         hsv = cv2.cvtColor(self.img, cv2.COLOR_BGR2HSV)
         mask = cv2.inRange(hsv, self.cfg.lower_color, self.cfg.upper_color)
 
-        kernel = np.ones((self.cfg.group_close_target_blobs_threshold[0], self.cfg.group_close_target_blobs_threshold[1]), np.uint8)
-        self.dilated = cv2.dilate(mask, kernel, iterations=5)
+        self.dilated = cv2.dilate(mask, self.dilate_kernel, iterations=5)
 
-        contours, _ = cv2.findContours(self.dilated, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+        contours, _ = cv2.findContours(self.dilated, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
         if len(contours) != 0:
             min_distance_sq = float('inf')
@@ -130,10 +136,11 @@ class Screen:
                 if distance_sq < min_distance_sq:
                     min_distance_sq = distance_sq
                     self.closest_contour = contour
+                    self.closest_rect = (rect_x, rect_y, rect_w, rect_h)
                     if self._is_within_aim_fov(x, y):
                         self.target = (x, y)
 
-            if self.closest_contour is not None and self._check_trigger(self.closest_contour):
+            if self.closest_contour is not None and self._check_trigger(self.closest_contour, self.closest_rect):
                 trigger = True
 
         if self.cfg.debug:
@@ -153,7 +160,7 @@ class Screen:
             )
 
         if self.closest_contour is not None:
-            x, y, w, h = cv2.boundingRect(self.closest_contour)
+            x, y, w, h = self.closest_rect
             debug_img = cv2.rectangle(
                 debug_img,
                 (x, y),

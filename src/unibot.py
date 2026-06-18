@@ -44,8 +44,9 @@ class Unibot:
 
             # Cheat loop
             while True:
-                delta_time = time.perf_counter() - start_time
-                start_time = time.perf_counter()
+                now = time.perf_counter()
+                delta_time = now - start_time
+                start_time = now
 
                 reload_config = keybinds.check_key_binds(cheats)
                 if reload_config:

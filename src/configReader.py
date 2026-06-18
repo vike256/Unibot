@@ -133,7 +133,7 @@ class ConfigReader:
         self.aim_fov_x = self.parser.getint('screen', 'aim_fov_x')
         self.aim_fov_y = self.parser.getint('screen', 'aim_fov_y')
         max_loops_per_sec = self.parser.getint('screen', 'max_loops_per_sec')
-        self.min_loop_time = int(np.floor(1000 / max_loops_per_sec + 1))
+        self.min_loop_time = 1000 // max_loops_per_sec + 1
 
         self.auto_detect_resolution = self.parser.getboolean('screen', 'auto_detect_resolution')
 

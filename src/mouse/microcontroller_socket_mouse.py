@@ -20,6 +20,8 @@ import socket
 
 
 class MicrocontrollerSocketMouse(BaseMicrocontrollerMouse):
+    label = "Socket"
+
     def __init__(self, config):
         super().__init__(config)
         self.board = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -39,8 +41,11 @@ class MicrocontrollerSocketMouse(BaseMicrocontrollerMouse):
     def send_command(self, command: str):
         with self.send_command_lock:
             self.board.sendall(command.encode())
-            print(f'(Socket) Sent: {command}')
-            print(f'(Socket) Response: {self.get_response()}')
+            if self.cfg.debug:
+                print(f'({self.label}) Sent: {command}')
+            response = self.get_response()
+            if self.cfg.debug:
+                print(f'({self.label}) Response: {response}')
 
 
     def get_response(self):  # Waits for a response before sending a new instruction

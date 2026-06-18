@@ -31,6 +31,7 @@ class BaseMouse(abc.ABC):
         self.last_click_time = time.time()
         self.remainder_x = 0
         self.remainder_y = 0
+        self.min_click_interval = 1 / config.target_cps
 
     def _click_worker(self):
         while True:
@@ -63,7 +64,7 @@ class BaseMouse(abc.ABC):
         return (move_x, move_y)
 
     def click(self, delay_before_click=0):
-        if time.time() - self.last_click_time >= 1 / self.cfg.target_cps:
+        if time.time() - self.last_click_time >= self.min_click_interval:
             self.click_queue.put(delay_before_click)
 
     def move(self, x: float, y: float):
@@ -87,7 +88,8 @@ class DriverMouse(BaseMouse, abc.ABC):
         self.mouse_down()
         time.sleep(random_delay)
         self.mouse_up()
-        print(f'({self.__class__.__name__}) Sent: Click(random_delay={random_delay * 1000:g})')
+        if self.cfg.debug:
+            print(f'({self.label}) Sent: Click(random_delay={random_delay * 1000:g})')
 
         time.sleep(random.randint(25, 34) / 1000)
 

@@ -20,6 +20,8 @@ import interception
 
 
 class InterceptionMouse(DriverMouse):
+    label = "Interception"
+
     def __init__(self, config):
         super().__init__(config)
         interception.auto_capture_devices(mouse=True)
@@ -32,4 +34,5 @@ class InterceptionMouse(DriverMouse):
 
     def send_move(self, x, y):
         interception.move_relative(x, y)
-        print(f'(Interception) Sent: Move({x}, {y})')
+        if self.cfg.debug:
+            print(f'({self.label}) Sent: Move({x}, {y})')

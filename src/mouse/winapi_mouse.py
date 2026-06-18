@@ -21,6 +21,8 @@ import win32con
 
 
 class WinApiMouse(DriverMouse):
+    label = "WinApi"
+
     def __init__(self, config):
         super().__init__(config)
 
@@ -32,4 +34,5 @@ class WinApiMouse(DriverMouse):
 
     def send_move(self, x, y):
         win32api.mouse_event(win32con.MOUSEEVENTF_MOVE, x, y, 0, 0)
-        print(f'(WinApi) Sent: Move({x}, {y})')
+        if self.cfg.debug:
+            print(f'({self.label}) Sent: Move({x}, {y})')

@@ -20,6 +20,8 @@ import serial
 
 
 class MicrocontrollerSerialMouse(BaseMicrocontrollerMouse):
+    label = "Serial"
+
     def __init__(self, config):
         super().__init__(config)
         self.board = None
@@ -39,8 +41,11 @@ class MicrocontrollerSerialMouse(BaseMicrocontrollerMouse):
     def send_command(self, command: str):
         with self.send_command_lock:
             self.board.write(command.encode())
-            print(f'(Serial) Sent: {command}')
-            print(f'(Serial) Response: {self.get_response()}')
+            if self.cfg.debug:
+                print(f'({self.label}) Sent: {command}')
+            response = self.get_response()
+            if self.cfg.debug:
+                print(f'({self.label}) Response: {response}')
 
 
     def get_response(self):  # Waits for a response before sending a new instruction

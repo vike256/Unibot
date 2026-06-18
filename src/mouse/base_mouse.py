@@ -1,20 +1,4 @@
-"""
-    Unibot, an open-source colorbot.
-    Copyright (C) 2026 vike256
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-"""
+# Copyright (C) 2026 vike256 — Unibot. See LICENSE.txt for full GPL-3.0 license.
 import abc
 import threading
 import time
@@ -65,6 +49,7 @@ class BaseMouse(abc.ABC):
 
     def click(self, delay_before_click=0):
         if time.time() - self.last_click_time >= self.min_click_interval:
+            self.last_click_time = time.time()
             self.click_queue.put(delay_before_click)
 
     def move(self, x: float, y: float):
@@ -82,7 +67,6 @@ class DriverMouse(BaseMouse, abc.ABC):
 
     def send_click(self, delay_before_click=0):
         time.sleep(delay_before_click)
-        self.last_click_time = time.time()
 
         random_delay = random.randint(40, 80) / 1000
         self.mouse_down()

@@ -1,20 +1,4 @@
-"""
-    Unibot, an open-source colorbot.
-    Copyright (C) 2026 vike256
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-"""
+# Copyright (C) 2026 vike256 — Unibot. See LICENSE.txt for full GPL-3.0 license.
 import time
 import random
 
@@ -81,11 +65,6 @@ class Unibot:
 
             screen.close()
             mouse.close()
-            del keybinds
-            del cheats
-            del mouse
-            del screen
-            del config
             print('Reloading')
 
     def _should_process_frame(self, keybinds, cheats, config):
@@ -100,7 +79,7 @@ class Unibot:
         """Calculate the randomized delay before a triggerbot click."""
         if config.trigger_delay == 0:
             return 0
-        return (random.randint(0, config.trigger_randomization - 1) + config.trigger_delay) / 1000
+        return (random.randint(0, max(config.trigger_randomization - 1, 0)) + config.trigger_delay) / 1000
 
     def print_license(self):
         print('Unibot  Copyright (C) 2026  vike256 \n'

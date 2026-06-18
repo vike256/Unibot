@@ -48,7 +48,8 @@ class BaseMouse(abc.ABC):
         return (move_x, move_y)
 
     def click(self, delay_before_click=0):
-        if time.time() - self.last_click_time >= self.min_click_interval:
+        if (time.time() - self.last_click_time >= self.min_click_interval
+                and self.click_queue.empty()):
             self.last_click_time = time.time()
             self.click_queue.put(delay_before_click)
 

@@ -44,7 +44,8 @@ class BaseMicrocontrollerMouse(BaseMouse, abc.ABC):
     def close_connection(self):
         if self.board is not None:
             self.board.close()
+            self.board = None
 
     def close(self):
-        self.close_connection()
         super().close()
+        self.close_connection()

@@ -1,4 +1,6 @@
 **\__pycache__
 **\.idea
 **\venv
+.uf2build
 .python-version
+unibot.log

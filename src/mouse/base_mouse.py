@@ -15,7 +15,7 @@ class BaseMouse(abc.ABC):
         self.last_click_time = time.time()
         self.remainder_x = 0
         self.remainder_y = 0
-        self.min_click_interval = 1 / config.target_cps
+        self.min_click_interval = 1 / config.click_rate
 
     def _click_worker(self):
         while True:

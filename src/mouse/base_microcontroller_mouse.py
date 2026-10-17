@@ -23,7 +23,6 @@ class BaseMicrocontrollerMouse(BaseMouse, abc.ABC):
         time.sleep(delay_before_click)
 
         self.send_command(self.click_cmd)
-        
         time.sleep(random.randint(25, 34) / 1000)  # Sleep to avoid sending another click instantly after mouseup
 
     def send_move(self, x: int, y: int):

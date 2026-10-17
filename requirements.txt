@@ -2,6 +2,5 @@ dxcam
 interception-python
 numpy
 opencv-python
-PyAutoGUI
 pyserial
 pywin32

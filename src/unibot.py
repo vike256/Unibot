@@ -1,8 +1,8 @@
 # Copyright (C) 2026 vike256 — Unibot. See LICENSE.txt for full GPL-3.0 license.
 import time
 import random
+import ctypes
 
-from cheats import Cheats
 from configReader import ConfigReader
 from keybinds import KeybindManager
 from mouse import get_mouse_implementation
@@ -11,69 +11,69 @@ from screen import Screen
 
 class Unibot:
     def run(self):
+        self._boost_process_priority()
         self.print_license()
         while True:
-            # Track delta time
-            start_time = time.perf_counter()
-
             config = ConfigReader()
             config.read_config()
 
             keybinds = KeybindManager(config)
-            cheats = Cheats(config)
             mouse = get_mouse_implementation(config)
             screen = Screen(config)
 
-            print('Unibot ON')
+            if config.trigger_mode == 'head':
+                print('Unibot ON - head mode: fires when the crosshair is on a head, no key needed')
+            elif config.trigger_mode == 'both':
+                print('Unibot ON - both mode: heads always, anything else while the trigger key is held')
+            else:
+                print('Unibot ON - hold the trigger key to fire, release to stop')
+            print('F5 switches mode, F6 pause, F1 reloads config, F4 exits')
 
-            # Cheat loop
-            while True:
-                now = time.perf_counter()
-                delta_time = now - start_time
-                start_time = now
+            # Triggerbot loop
+            try:
+                while True:
+                    start_time = time.perf_counter()
 
-                reload_config = keybinds.check_key_binds(cheats)
-                if reload_config:
-                    break
+                    reload_config = keybinds.check_key_binds()
+                    if reload_config:
+                        break
 
-                if self._should_process_frame(keybinds, cheats, config):
-                    target, trigger = screen.get_target(cheats.recoil_offset)
+                    if self._should_process_frame(keybinds, config):
+                        trigger = screen.get_trigger(keybinds.get_trigger_state())
 
-                    if keybinds.get_trigger_state() and trigger:
-                        delay_before_click = self._calculate_trigger_delay(config)
-                        mouse.click(delay_before_click)
+                        if trigger:
+                            mouse.click(self._calculate_trigger_delay(config))
 
-                    cheats.calculate_aim(cheats.get_aim_state(), target)
+                    # Do not loop above the set refresh rate (0 = uncapped)
+                    if config.min_loop_time:
+                        time_spent = (time.perf_counter() - start_time) * 1000
+                        if time_spent < config.min_loop_time:
+                            time.sleep((config.min_loop_time - time_spent) / 1000)
+            finally:
+                # Also runs when F4 raises SystemExit, so resources are freed
+                screen.close()
+                mouse.close()
 
-                if keybinds.get_rapid_fire_state():
-                    mouse.click()
-
-                # Apply recoil
-                cheats.apply_recoil(cheats.recoil_state, delta_time)
-
-                # Move the mouse based on the previous calculations
-                if cheats.move_x != 0 or cheats.move_y != 0:
-                    mouse.move(cheats.move_x, cheats.move_y)
-
-                # Reset move values so the aim doesn't keep drifting when no targets are on the screen
-                cheats.move_x, cheats.move_y = (0, 0)
-
-                # Do not loop above the set refresh rate
-                time_spent = (time.perf_counter() - start_time) * 1000
-                if time_spent < config.min_loop_time:
-                    time.sleep((config.min_loop_time - time_spent) / 1000)
-
-            screen.close()
-            mouse.close()
             print('Reloading')
 
-    def _should_process_frame(self, keybinds, cheats, config):
+    def _should_process_frame(self, keybinds, config):
         """Returns True if the frame should be processed for target detection."""
-        if keybinds.get_trigger_state() or cheats.get_aim_state():
-            return True
-        if config.debug and config.debug_always_on:
-            return True
-        return False
+        if keybinds.paused:
+            return False
+        return (config.trigger_mode in ('head', 'both')
+                or keybinds.get_trigger_state()
+                or (config.debug and config.debug_always_on))
+
+    @staticmethod
+    def _boost_process_priority():
+        """Raise the process priority so the triggerbot is scheduled with less jitter."""
+        try:
+            high_priority_class = 0x00000080
+            ctypes.windll.kernel32.SetPriorityClass(
+                ctypes.windll.kernel32.GetCurrentProcess(), high_priority_class
+            )
+        except OSError:
+            pass
 
     def _calculate_trigger_delay(self, config):
         """Calculate the randomized delay before a triggerbot click."""

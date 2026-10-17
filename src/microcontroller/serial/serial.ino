@@ -8,8 +8,8 @@
 #define HID_MOVE_MIN -128
 #define HID_MOVE_MAX 127
 
-#define CLICK_DELAY_MIN 40
-#define CLICK_DELAY_MAX 80
+#define CLICK_DELAY_MIN 15
+#define CLICK_DELAY_MAX 25
 
 #define SERIAL_BAUD 115200
 

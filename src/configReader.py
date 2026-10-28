@@ -2,6 +2,7 @@
 from configparser import ConfigParser
 import numpy as np
 import os
+import sys
 
 
 class ConfigReader:
@@ -50,7 +51,14 @@ class ConfigReader:
         self.debug_fullscreen_capture = None
 
         # Get config path and read it
-        self.path = os.path.join(os.path.dirname(__file__), '../config.ini')
+        # Support PyInstaller one-file: config lives next to the exe, not in _MEIPASS
+        base = getattr(sys, '_MEIPASS', None)
+        if base and hasattr(sys, 'frozen'):
+            # frozen exe: look next to the actual exe location
+            exe_dir = os.path.dirname(sys.executable)
+            self.path = os.path.join(exe_dir, 'config.ini')
+        else:
+            self.path = os.path.join(os.path.dirname(__file__), '../config.ini')
         self.parser.read(self.path)
 
     def read_config(self):

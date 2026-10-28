@@ -117,8 +117,11 @@ Set `mode` in `[trigger]`:
 
 `head` and `both` need no key for headshots: just play, and it fires the moment your
 crosshair lands on an enemy's head and stops the instant you move off. `head_height`
-controls how much of the target counts as the head (fraction from the top, default `0.2`,
-lower = stricter). `both` additionally lets you hold Mouse 5 to spray anywhere on the body.
+controls how much counts as the head when a whole body is highlighted (fraction from the
+top, default `0.2`, lower = stricter). When only the head is highlighted — an enemy
+behind cover, or far away — the entire highlight counts as the head, so you never have to
+nudge the aim to make it fire. `both` additionally lets you hold Mouse 5 to spray
+anywhere on the body.
 
 Switch modes by editing `mode` and pressing **F1**, or just tap **F5** while playing.
 
@@ -131,7 +134,7 @@ Everything lives in `config.ini` and reloads with **F1**.
 | `lower_color` / `upper_color` | The target color to detect (HSV) |
 | `capture_fov_x` / `capture_fov_y` | Size of the detection box at screen center |
 | `mode` | `normal` (hold key, anywhere), `head` (always on, headshots only) or `both` |
-| `head_height` | How much of the target counts as head, from the top (`0.2` default) |
+| `head_height` | How much counts as the head when a body is highlighted, from the top (`0.2` default). Head-only highlights always count in full |
 | `head_threshold` | Head mode tolerance in px (`0` = must be exactly on the head) |
 | `trigger_threshold` | Tolerated gap in px between crosshair and target (`0` = must be on it) |
 | `min_target_area` | Ignore blobs smaller than this — kills speck false positives |

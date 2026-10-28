@@ -8,6 +8,15 @@ from comtypes import COMError
 # Blobs closer than this kernel get grouped into one target.
 BLOB_GROUPING_RADIUS = 5
 
+# Head-band detection. The head is the top of the target, but how tall it is
+# depends on what the highlight covers: a standing enemy shows head + shoulders,
+# while an enemy behind cover or far away shows the head alone. Treating
+# head_height as a fraction of the whole bounding box put the "head" inside the
+# top 20% of a bare head, so a crosshair sitting on the head never fired.
+NECK_JUMP_RATIO = 0.4         # shoulders at least this much wider than the head
+SHOULDER_PERSIST_RATIO = 0.9  # rows below the neck stay this wide (rejects hollow outlines)
+HEAD_MAX_ASPECT = 2.0         # taller than this is a body even if the neck is invisible
+
 
 class Screen:
     def __init__(self, config):
@@ -156,6 +165,67 @@ class Screen:
             return 'off'
         return mode
 
+    @staticmethod
+    def _row_extents(strip):
+        """Width of the leftmost-to-rightmost filled pixel of every row.
+
+        Counting filled pixels per row would report a hollow outline as narrow
+        and make the detector think the whole blob is a head.
+        """
+        if strip.size == 0:
+            return np.empty(0, np.int32)
+        filled = strip.any(axis=1)
+        if not filled.any():
+            return np.zeros(strip.shape[0], np.int32)
+        first = np.argmax(strip, axis=1)
+        last = strip.shape[1] - 1 - np.argmax(strip[:, ::-1], axis=1)
+        extents = (last - first + 1).astype(np.int32)
+        extents[~filled] = 0
+        return extents
+
+    def _head_height(self, rect):
+        """Height of the head inside this blob, in pixels from its top.
+
+        head_height is a fraction of the whole *target*, which is only right when
+        the highlight includes a body: a standing enemy is head + shoulders, so
+        the head really is the top fraction. An enemy behind cover or far away
+        highlights as the head alone, and scaling that by head_height put the
+        "head" inside the top of the head, so aiming at it never fired.
+        """
+        x, y, w, h = rect
+        if h <= 2 or w <= 0:
+            return h * self.cfg.head_height
+
+        # Width per row of this blob, top to bottom. Use the row's extent rather
+        # than its pixel count so a hollow (outline-only) highlight measures the
+        # same as a filled silhouette.
+        widths = self._row_extents(self.dilated[y:y + h, x:x + w])
+        if widths.size == 0:
+            return h * self.cfg.head_height
+        max_width = int(widths.max())
+        if max_width == 0:
+            return h * self.cfg.head_height
+
+        # A body is present when a widening step is followed by a wide run of
+        # rows: the shoulders. Hollow outlines and bare heads have no such run.
+        jumps = np.diff(widths.astype(np.int32))
+        if jumps.size:
+            neck = int(np.argmax(jumps))
+            if jumps[neck] >= NECK_JUMP_RATIO * max_width:
+                below = widths[neck + 1:]
+                if below.size and np.count_nonzero(below >= SHOULDER_PERSIST_RATIO * max_width) >= 2:
+                    return h * self.cfg.head_height
+
+        # No visible neck. Distant targets are only a few pixels wide, where the
+        # closing kernel rounds the shoulders away; an elongated blob is still a
+        # body, and head_height has to keep scaling it or the shot goes at the
+        # whole silhouette.
+        if h > HEAD_MAX_ASPECT * max(w, 1):
+            return h * self.cfg.head_height
+
+        # Otherwise the whole blob is the head.
+        return float(h)
+
     def _check_trigger(self, contour, rect, mode):
         """True if the crosshair is on the target's head (head mode) or anywhere."""
         x, y, w, h = rect
@@ -166,8 +236,7 @@ class Screen:
 
         if mode == 'head':
             threshold = self.cfg.head_threshold
-            # Crosshair must sit inside the head band at the very top of the target
-            if center_y > y + h * self.cfg.head_height:
+            if not (y - threshold <= center_y <= y + self._head_height(rect) + threshold):
                 return False
         else:
             threshold = self.cfg.trigger_threshold
@@ -254,7 +323,7 @@ class Screen:
             x, y, w, h = self.closest_rect
             debug_img = cv2.rectangle(debug_img, (x, y), (x + w, y + h), (0, 0, 255), 2)
             if self.cfg.trigger_mode in ('head', 'both'):
-                head_y = int(y + h * self.cfg.head_height)
+                head_y = int(y + self._head_height(self.closest_rect))
                 debug_img = cv2.line(debug_img, (x, head_y), (x + w, head_y), (255, 0, 0), 2)
         return debug_img
 

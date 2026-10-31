@@ -50,14 +50,32 @@ If you are using Unibot to cheat, please take a moment to reflect on why. Cheati
 
 ### 1. Flash the firmware (RP2040 / Pico only)
 
-Firmware lives in `src/microcontroller/`. Use the `serial` one for a USB connection.
+Firmware lives in `src/microcontroller/`. Use a `serial` sketch for a USB
+connection; both speak the same protocol, so `config.ini` is identical.
+
+| Sketch | Board | Notes |
+|---|---|---|
+| `serial/serial.ino` | any RP2040 board, e.g. `Seeed XIAO RP2040` | plain, no LED; the smallest sketch |
+| `pico/pico.ino` | `Raspberry Pi Pico` / `Pico 2` / `Pico W` | onboard LED = ready, goes dark while a click is held, so every shot blinks; also answers `V` with `a pico` so you can tell the boards apart |
+
+Both target the RP2040 board package. `serial.ino` is built and tested for the
+`Seeed XIAO RP2040`; `pico.ino` for the `Raspberry Pi Pico`. Either sketch runs
+on either board — pick the one whose LED behaviour you want.
 
 1. Install [Arduino IDE](https://www.arduino.cc/en/software) and add the
    [RP2040 board package](https://github.com/earlephilhower/arduino-pico)
-2. Open `src/microcontroller/serial/serial.ino`
-3. Select your board (e.g. `Seeed XIAO RP2040`) and set
-   **Tools → USB Stack → Pico SDK** (TinyUSB does not work with this sketch)
+2. Open the sketch for your board (see the table)
+3. Select your board and set **Tools → USB Stack → Pico SDK**
+   (TinyUSB does not work with these sketches)
 4. Upload, then note the COM port that appears in Device Manager
+
+To flash a board that is already running the firmware without pressing
+**BOOTSEL**, reset it into bootloader mode over USB serial — opening the port at
+1200 baud does it:
+
+```
+python -c "import serial; serial.Serial('COM4', 1200).close()"
+```
 
 ### 2. Configure `config.ini`
 
@@ -135,7 +153,8 @@ Everything lives in `config.ini` and reloads with **F1**.
 | `capture_fov_x` / `capture_fov_y` | Size of the detection box at screen center |
 | `mode` | `normal` (hold key, anywhere), `head` (always on, headshots only) or `both` |
 | `head_height` | How much counts as the head when a body is highlighted, from the top (`0.2` default). Head-only highlights always count in full |
-| `head_threshold` | Head mode tolerance in px (`0` = must be exactly on the head) |
+| `head_threshold` | Head mode tolerance in px, applied **below** the head only (`0` = exactly on the head). Firing earlier than the head is not allowed, so a stray px cannot shoot over the target |
+| `head_inset` | Shrink the head band from the top by this many px (`2` default, `0` = old behaviour). Compensates for capture + HID latency so the shot lands inside the head instead of on its top edge |
 | `trigger_threshold` | Tolerated gap in px between crosshair and target (`0` = must be on it) |
 | `min_target_area` | Ignore blobs smaller than this — kills speck false positives |
 | `trigger_delay` / `trigger_randomization` | Delay before shooting (ms), for a more human feel |

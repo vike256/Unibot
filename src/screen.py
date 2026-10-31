@@ -13,10 +13,9 @@ BLOB_GROUPING_RADIUS = 5
 # while an enemy behind cover or far away shows the head alone. Treating
 # head_height as a fraction of the whole bounding box put the "head" inside the
 # top 20% of a bare head, so a crosshair sitting on the head never fired.
-NECK_JUMP_RATIO = 0.4         # shoulders at least this much wider than the head
-SHOULDER_PERSIST_RATIO = 0.9  # rows below the neck stay this wide (rejects hollow outlines)
+NECK_JUMP_RATIO = 0.25        # shoulders at least this much wider than the head
+SHOULDER_PERSIST_RATIO = 0.7  # rows below the neck stay this wide (rejects hollow outlines)
 HEAD_MAX_ASPECT = 2.0         # taller than this is a body even if the neck is invisible
-
 
 class Screen:
     def __init__(self, config):
@@ -43,7 +42,8 @@ class Screen:
         self.img = None
         self.closest_contour = None
         self.closest_rect = None
-        self._last_ticks = None
+        self._prev_frame = None
+        self._last_mode = None
         self._last_trigger = False
 
         if self.cfg.debug:
@@ -112,7 +112,8 @@ class Screen:
             raise RuntimeError("Could not recreate the capture device (dxcam).")
         self._apply_screen_geometry()
         self._missed_since = None
-        self._last_ticks = None
+        self._prev_frame = None
+        self._last_mode = None
 
     def close(self):
         if self.cam is not None:
@@ -216,6 +217,14 @@ class Screen:
                 if below.size and np.count_nonzero(below >= SHOULDER_PERSIST_RATIO * max_width) >= 2:
                     return h * self.cfg.head_height
 
+        # Compact bodies (crouching, close targets) widen gradually, so no single
+        # step clears the neck ratio. A blob whose lower rows are clearly wider
+        # than its top rows is still a body: head = top head_height fraction.
+        top_rows = max(2, widths.size // 5)
+        top_width = int(np.median(widths[:top_rows]))
+        if max_width >= 1.35 * top_width and h >= 12:
+            return h * self.cfg.head_height
+
         # No visible neck. Distant targets are only a few pixels wide, where the
         # closing kernel rounds the shoulders away; an elongated blob is still a
         # body, and head_height has to keep scaling it or the shot goes at the
@@ -226,26 +235,50 @@ class Screen:
         # Otherwise the whole blob is the head.
         return float(h)
 
+    def _head_band(self, rect):
+        """Rows (top, bottom) of this blob that count as the head.
+
+        head_threshold is applied only to the bottom edge. A tolerance above the
+        head means the trigger fires while the crosshair is still over empty air
+        and the shot lands on the head edge or misses; a tolerance below it lands
+        on the neck, which is still a hit.
+
+        head_inset shrinks the band from the top only, for the same reason: with
+        capture plus HID latency the game resolves the click a few milliseconds
+        after this frame, so a shot taken on the head's top row can land above
+        it. Raising head_inset trades a little head coverage for never shooting
+        over the target.
+        """
+        x, y, w, h = rect
+        top = y + self.cfg.head_inset
+        bottom = y + self._head_height(rect) + self.cfg.head_threshold
+        if top > bottom:
+            # inset larger than the band: collapse to the deepest allowed row so
+            # the band stays inside the blob instead of wandering past it.
+            top = bottom
+        return top, bottom
+
     def _check_trigger(self, contour, rect, mode):
         """True if the crosshair is on the target's head (head mode) or anywhere."""
-        x, y, w, h = rect
-        center_x, center_y = self.fov_center
-
         if mode == 'off':
             return False
 
-        if mode == 'head':
-            threshold = self.cfg.head_threshold
-            if not (y - threshold <= center_y <= y + self._head_height(rect) + threshold):
-                return False
-        else:
-            threshold = self.cfg.trigger_threshold
+        x, y, w, h = rect
+        center_x, center_y = self.fov_center
+        threshold = self.cfg.head_threshold if mode == 'head' else self.cfg.trigger_threshold
 
+        # Cheap rejection first: _head_height walks every row of the blob, so the
+        # bounding box test must not wait for it.
         if not (
             x - threshold <= center_x <= x + w + threshold and
             y - threshold <= center_y <= y + h + threshold
         ):
             return False
+
+        if mode == 'head':
+            head_top, head_bottom = self._head_band(rect)
+            if not (head_top <= center_y <= head_bottom):
+                return False
 
         return cv2.pointPolygonTest(contour, self.fov_center, True) >= -threshold
 
@@ -259,14 +292,27 @@ class Screen:
                 cv2.waitKey(1)
             return False
 
-        # Same frame as last time -> the result cannot have changed, skip the work
-        ticks = self.cam.latest_frame_ticks
-        # Only skip when the backend actually reports a frame timestamp
-        if ticks and ticks == self._last_ticks:
+        # Resolve the mode before the duplicate-frame check: in 'both' mode the
+        # same frame means "fire" while the trigger key is held and "only heads"
+        # while it is not, so a cached result is only valid for the same mode.
+        mode = self._effective_mode(trigger_held)
+
+        # Same pixels and same mode as last time -> the result cannot have
+        # changed, skip the work. dxcam 0.3.0 returns None from
+        # latest_frame_ticks on the grab() path, so the timestamp check that used
+        # to live here never fired. Comparing the frame exactly costs ~21 us
+        # against the ~330 us detection pass, and an exact test cannot mistake a
+        # real scene change for a duplicate.
+        if (mode == self._last_mode and self._prev_frame is not None
+                and np.array_equal(frame, self._prev_frame)):
             if self.cfg.debug:
                 cv2.waitKey(1)
             return self._last_trigger
-        self._last_ticks = ticks
+        self._last_mode = mode
+        if self._prev_frame is None:
+            self._prev_frame = frame.copy()
+        else:
+            np.copyto(self._prev_frame, frame)
         self.img = frame
 
         cv2.cvtColor(self.img, cv2.COLOR_BGR2HSV, dst=self.hsv)
@@ -277,7 +323,6 @@ class Screen:
 
         center_x, center_y = self.fov_center
         min_area = self.cfg.min_target_area
-        mode = self._effective_mode(trigger_held)
         min_distance_sq = float('inf')
         closest = None
         closest_rect = None

@@ -32,6 +32,7 @@ class ConfigReader:
         self.trigger_mode = None
         self.head_height = None
         self.head_threshold = None
+        self.head_inset = None
         self.trigger_delay = None
         self.trigger_randomization = None
         self.trigger_threshold = None
@@ -121,6 +122,15 @@ class ConfigReader:
         else:
             print('WARNING: Invalid head_threshold value')
             self.head_threshold = 1
+
+        # Pixels to shrink the head band from its top and bottom, so the shot is
+        # taken with the crosshair safely inside the head instead of on its edge.
+        value = self.parser.getfloat('trigger', 'head_inset', fallback=0)
+        if value >= 0:
+            self.head_inset = value
+        else:
+            print('WARNING: Invalid head_inset value')
+            self.head_inset = 0
 
         self.trigger_delay = self.parser.getint('trigger', 'trigger_delay')
         self.trigger_randomization = self.parser.getint('trigger', 'trigger_randomization')
